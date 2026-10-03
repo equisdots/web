@@ -1,0 +1,148 @@
+---
+title: Actualización y diagnóstico
+description: Cómo dots update, list, doctor y uninstall mantienen la pila sincronizada y cómo corregir los fallos más comunes.
+order: 3
+section: start
+---
+
+`dots` gestiona toda la pila desde un único comando. Actualizar descarga todos
+los repositorios, vuelve a desplegar la carga útil y mantiene el demonio de
+fondos de pantalla alineado con la versión fijada. El diagnóstico es una pasada
+independiente de solo lectura que indica qué falta o está desincronizado.
+
+## Referencia de comandos
+
+| Comando | Acción |
+|---|---|
+| `dots install` | Clonar o actualizar cada repositorio y colocar su carga útil. |
+| `dots update` | `dots install` más la comprobación de la versión de xwww. |
+| `dots system` | Ejecutar el instalador de hyprland (paquetes, fuentes, login, PAM, requiere sudo). |
+| `dots doctor` | Comprobar binarios, clones y rutas instaladas. Termina con código distinto de cero si falla. |
+| `dots list` | Estado de los repositorios: `clean`, `dirty` o `missing`. |
+| `dots uninstall` | Eliminar los wrappers y el temporizador de actualización; las configuraciones y los clones permanecen. |
+
+```sh
+dots update
+dots doctor
+dots list
+```
+
+## Qué hace dots update
+
+Para cada repositorio de la organización (`dots`, `palettes`, `theme-sync`,
+`davincix`, `shell`, `hyprland`, `timex`, `xturing`, `login`):
+
+1. Descarga `origin/main` con profundidad 1 y restablece por la fuerza el clon
+   gestionado a esa versión. El restablecimiento forzado también recupera de
+   los force-push ascendentes, donde un pull de avance rápido fallaría siempre.
+2. Si `dots` cambió durante la descarga, el script se vuelve a ejecutar con la
+   nueva versión antes de tocar ninguna carga útil.
+3. Despliega la carga útil de ese repositorio, omitiendo los clones con cambios
+   locales.
+
+Tras la fase de carga útil, `dots update` compara el binario `xwww` en
+ejecución con la versión fijada en `scripts/install-xwww.sh` y reinstala cuando
+difieren (`XWWW_VERSION` anula la versión fijada). También escribe el estado de
+versión que usan la página Acerca de y el emergente del actualizador.
+
+## Cambios locales en clones gestionados
+
+Los clones gestionados son de solo lectura desde el punto de vista de `dots`.
+Un clon con cambios sin confirmar se conserva exactamente como está y su carga
+útil **no se despliega**, de modo que una copia obsoleta nunca puede degradar
+ni eliminar archivos activos.
+
+```sh
+dots list                                  # shows dirty clones
+git -C ~/.local/share/equisdots/shell status
+```
+
+Reconcilie confirmando o guardando los cambios, o apartando el clon:
+
+```sh
+mv ~/.local/share/equisdots/shell{,.local}
+dots install
+```
+
+`dots doctor` señala cada clon sucio para que las actualizaciones no se detengan
+en silencio.
+
+## Reglas de combinación de settings.json
+
+`dots install` nunca sobrescribe sus ajustes. El archivo se siembra desde
+`default_settings.json` solo cuando falta, y en cada actualización se reescribe
+como **valores predeterminados distribuidos más sus valores** con `jq`:
+
+1. El objeto `dock` anterior a equisdots se migra a la clave canónica `bar`.
+2. Se eliminan las claves heredadas que ya no lee nadie.
+3. Los valores predeterminados distribuidos se aplican como base; sus valores
+   ganan, y los arrays de usuario como `bar.zones` se conservan tal cual.
+
+Si la combinación falla, el archivo se deja intacto y `dots` imprime una
+advertencia.
+
+## El temporizador mensual de actualización
+
+`dots install` registra un temporizador de usuario de systemd que ejecuta la
+actualización de los dotfiles mensualmente:
+
+```sh
+systemctl --user status dotfiles-update.timer
+systemctl --user list-timers dotfiles-update.timer
+```
+
+`dots uninstall` elimina el temporizador y los wrappers. El servicio apunta a
+`~/.config/hypr/scripts/dotfiles-update.sh`; `dots doctor` avisa cuando la
+unidad apunta a otro sitio.
+
+## Comprobaciones de dots doctor
+
+El doctor es el primer diagnóstico que debe ejecutar. Informa, en orden:
+
+- Binarios requeridos: `git`, `rsync`, `hyprland`, `qs`, `jq`, `curl`,
+  `python3`, `cava`, `playerctl`, `wl-paste`, `cliphist`, `brightnessctl`,
+  `pamixer`, `kitty`, `rofi`, `xwww-daemon`, `mpvpaper`.
+- Binarios opcionales: `grim`, `slurp`, `satty`, `hyprpicker`, `blueman-applet`,
+  `nm-applet`, `gsettings`, `cargo`.
+- Comprobación de fuentes mediante `fc-match "Hack Nerd Font"`.
+- La versión de `xwww` en ejecución frente a la versión fijada.
+- Clones de repositorios y clones con cambios.
+- Rutas de la carga útil instalada (paletas, `hyprland.lua`, `Shell.qml`,
+  wrappers, `settings.json` y más).
+- Versión de Hyprland (se requiere 0.55+ para Lua) y `~/.local/bin` en `PATH`.
+- Piezas del sistema: `/etc/pam.d/quickshell`, la configuración del tema SDDM,
+  el tema estático y el gestor de pantalla activo.
+- El temporizador mensual de actualización.
+
+```sh
+dots doctor; echo "exit: $?"
+```
+
+El comando termina con `1` cuando al menos un elemento ha fallado, lo que lo
+hace utilizable en scripts.
+
+## Solución de problemas
+
+- La actualización informa de `local changes; skipping its payload` (cambios
+  locales; se omite su carga útil): reconcilie el clon como se muestra arriba y
+  vuelva a ejecutar `dots update`.
+- Fallo en la descarga (red): la copia existente se conserva y el resto de la
+  actualización continúa; reintente más tarde.
+- `settings.json could not be migrated` (no se pudo migrar settings.json):
+  consulte la advertencia; el archivo está intacto. Compruebe que `jq` está
+  instalado.
+- `hyprland < 0.55`: actualice el paquete del compositor; la configuración Lua
+  necesita soporte de Lua.
+- Discrepancia de xwww: `dots update` (o `scripts/install-xwww.sh`) reinstala
+  la versión fijada.
+- El gestor de pantalla activo no es SDDM: el tema de inicio de sesión estático
+  no se mostrará; `dots system` cambia el enlace del gestor de pantalla.
+- Fallo en la fase de sistema: inspeccione el registro más reciente con
+  `ls -t /tmp/hyprland-install-*.log | head -1`.
+
+## Páginas relacionadas
+
+- [Instalación](/es/docs/installation) para la primera configuración.
+- [Arquitectura y repositorios](/es/docs/architecture) para el diseño de la
+  instalación y los contratos.
+- [Contribución y seguridad](/es/docs/contributing) para notificar problemas.

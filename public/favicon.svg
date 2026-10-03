@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024.0 1024.0" width="1024.0" height="1024.0">
+<defs><linearGradient id="xgrad" gradientUnits="userSpaceOnUse" x1="0.0" y1="0.0" x2="800.0" y2="960.0"><stop offset="0.000" stop-color="#fc618d"/><stop offset="0.200" stop-color="#fd9353"/><stop offset="0.400" stop-color="#fce566"/><stop offset="0.600" stop-color="#7bd88f"/><stop offset="0.800" stop-color="#5ad4e6"/><stop offset="1.000" stop-color="#948ae3"/></linearGradient></defs>
+<rect width="1024.0" height="1024.0" fill="#050505"/>
+<g transform="translate(160.333 90.000) scale(0.87917)">
+<g fill="none" stroke-width="27.0" stroke-linecap="round" stroke-linejoin="round">
+<path d="M 0.0 160.0 L 100.0 160.0" stroke="url(#xgrad)"/>
+<path d="M 100.0 160.0 L 200.0 160.0" stroke="url(#xgrad)"/>
+<path d="M 400.0 160.0 L 500.0 160.0" stroke="url(#xgrad)"/>
+<path d="M 500.0 160.0 L 600.0 160.0" stroke="url(#xgrad)"/>
+<path d="M 200.0 160.0 L 300.0 320.0" stroke="url(#xgrad)"/>
+<path d="M 400.0 160.0 L 500.0 320.0" stroke="url(#xgrad)"/>
+<path d="M 500.0 320.0 L 600.0 160.0" stroke="url(#xgrad)"/>
+<path d="M 700.0 320.0 L 800.0 160.0" stroke="url(#xgrad)"/>
+<path d="M 300.0 320.0 L 400.0 480.0" stroke="url(#xgrad)"/>
+<path d="M 600.0 480.0 L 700.0 320.0" stroke="url(#xgrad)"/>
+<path d="M 300.0 640.0 L 400.0 480.0" stroke="url(#xgrad)"/>
+<path d="M 600.0 480.0 L 700.0 640.0" stroke="url(#xgrad)"/>
+<path d="M 200.0 800.0 L 300.0 640.0" stroke="url(#xgrad)"/>
+<path d="M 300.0 800.0 L 400.0 800.0" stroke="url(#xgrad)"/>
+<path d="M 400.0 800.0 L 500.0 640.0" stroke="url(#xgrad)"/>
+<path d="M 500.0 640.0 L 600.0 800.0" stroke="url(#xgrad)"/>
+<path d="M 600.0 800.0 L 700.0 800.0" stroke="url(#xgrad)"/>
+<path d="M 700.0 640.0 L 800.0 800.0" stroke="url(#xgrad)"/>
+<path d="M 100.0 960.0 L 200.0 800.0" stroke="#7e7b82"/>
+<path d="M 200.0 960.0 L 300.0 960.0" stroke="#7e7b82"/>
+<path d="M 300.0 960.0 L 400.0 960.0" stroke="#7e7b82"/>
+<path d="M 400.0 960.0 L 500.0 960.0" stroke="#7e7b82"/>
+<path d="M 500.0 960.0 L 600.0 960.0" stroke="#7e7b82"/>
+<path d="M 600.0 960.0 L 700.0 800.0" stroke="#7e7b82"/>
+</g>
+</g></svg>
