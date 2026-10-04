@@ -69,6 +69,12 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   background-color: var(--bg);
   color: var(--text);
@@ -93,6 +99,19 @@ body {
   width: 100%;
   max-width: 72rem;
   padding-inline: 1.5rem;
+}
+
+/* Wider container for the preview gallery only. */
+.container-wide {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 88rem;
+  padding-inline: 1.5rem;
+}
+
+/* The /previews lightbox uses a native <dialog>; lock the page behind it. */
+body:has(dialog[open]) {
+  overflow: hidden;
 }
 
 .hairline {
