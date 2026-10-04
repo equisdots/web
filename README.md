@@ -1,7 +1,8 @@
 # equisdots · web
 
 Official website of the [equisdots](https://github.com/equisdots) desktop: landing page,
-wiki-style documentation (English and Spanish) and the future preview gallery.
+wiki-style documentation (English and Spanish) and a gallery of real captures
+and clips.
 
 ## Stack
 
@@ -38,12 +39,17 @@ Public assets referenced with plain `<img>` must go through
 ```
 content/docs/{en,es}/      documentation pages (Markdown + frontmatter)
 public/logos/              equisdots brand assets (all six variants)
+public/previews/shots/     optimized WebP stills (+ 640/1280 variants)
+public/previews/clips/     MP4 clips and WebP posters for the gallery
+public/previews/clips/gif/ optimized GIF clips for READMEs (GIFS=1)
 public/search-index.*.json generated search indexes (do not edit by hand)
 scripts/build-search-index.mjs
+scripts/build-previews.sh  regenerates public/previews from raw captures
 src/app/                   routes: /, /docs, /previews and their /es counterparts
 src/components/            Navbar, Footer, previews, widget illustrations
 src/components/docs/       wiki shell, sidebar, search dialog, table of contents
-src/lib/                   base path, i18n dictionaries, docs loader, repo catalog
+src/components/previews/   stills lightbox and clip cards
+src/lib/                   base path, i18n dictionaries, docs loader, repo catalog, previews manifest
 ```
 
 ## Documentation pages
@@ -62,6 +68,35 @@ section: start   # start | desktop | wallpapers | more
 `src/lib/docs.ts` reads the folder at build time; new pages appear in the
 sidebar and the index automatically, in both languages (add the file to
 `content/docs/en/` and `content/docs/es/`).
+
+## Previews
+
+`/previews` (and `/es/previews`) is a gallery of real captures and clips. The
+manifest lives in `src/lib/previews.ts` (ids, intrinsic sizes, sections) and
+the copy in `src/lib/i18n.ts`. The interactive parts are two client components:
+a click-to-zoom lightbox for stills, and clip cards that autoplay muted when
+they enter the viewport and pause when they leave (fully paused when
+`prefers-reduced-motion` is set).
+
+Assets are pre-optimized, never edited by hand:
+
+| Folder | Contents |
+|---|---|
+| `public/previews/shots/` | WebP stills, full size plus 640/1280 variants used via `srcset` |
+| `public/previews/clips/` | H.264 MP4 (CRF 27, `+faststart`) plus a WebP poster per clip |
+| `public/previews/clips/gif/` | gifski GIFs for READMEs (committed set: 640px wide, 12 fps, Q80) |
+
+The raw sources live outside this repository, in `previews-equisdots/`
+(`images/*.png` and `gifs/*.gif`). Regenerate everything with:
+
+```sh
+./scripts/build-previews.sh ../previews-equisdots
+GIFS=1 ./scripts/build-previews.sh ../previews-equisdots   # + GIFs for READMEs (gifski)
+GIFS=1 GIF_WIDTH=640 GIF_FPS=12 GIF_QUALITY=78 ./scripts/build-previews.sh ../previews-equisdots
+```
+
+The script requires `ffmpeg`; `GIFS=1` also requires `gifski`. Keep the slug
+map in the script and `src/lib/previews.ts` in sync when adding new files.
 
 ## Theme
 

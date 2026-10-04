@@ -3,7 +3,8 @@ import { PreviewsPage } from "@/components/previews/PreviewsPage";
 
 export const metadata: Metadata = {
   title: "Previews",
-  description: "Galería del escritorio equisdots: estilos de barra, paletas, fondos, escenas y widgets.",
+  description:
+    "Capturas y clips reales del escritorio equisdots: tiling de Hyprland, barra y editor de ajustes de Quickshell, paletas, escenas interactivas y widgets.",
 };
 
 export default function Page() {

@@ -1,3 +1,5 @@
+import type { ClipGroupId, ShotKind } from "./previews";
+
 export const LOCALES = ["en", "es"] as const;
 export type Locale = (typeof LOCALES)[number];
 
@@ -61,11 +63,21 @@ export type Dict = {
     backToDocs: string;
   };
   previews: {
+    eyebrow: string;
     title: string;
     subtitle: string;
-    phase: string;
-    phaseNote: string;
-    items: { title: string; kind: string }[];
+    stats: { shots: string; clips: string };
+    sections: {
+      desktop: { title: string; note: string };
+      shell: { title: string; note: string };
+      clips: { title: string; note: string };
+    };
+    shots: Record<string, { title: string; note: string }>;
+    kinds: Record<ShotKind, string>;
+    clipLabel: string;
+    clipMeta: string;
+    clipGroups: Record<ClipGroupId, { title: string; note: string }>;
+    a11y: { open: string; close: string; play: string; pause: string; dialog: string };
   };
   footer: {
     tagline: string;
@@ -146,21 +158,91 @@ const en: Dict = {
     backToDocs: "Back to the documentation index",
   },
   previews: {
+    eyebrow: "Real desktop",
     title: "Previews",
-    subtitle: "A gallery of the desktop is coming in the next phase.",
-    phase: "Phase 2",
-    phaseNote:
-      "This page will host a full gallery: bar styles, palettes, wallpapers, scenes and desktop widgets. For now, here is what is planned.",
-    items: [
-      { title: "Bar styles", kind: "Shell" },
-      { title: "Palette gallery", kind: "Theming" },
-      { title: "Wallpapers", kind: "Collection" },
-      { title: "Interactive scenes", kind: "Scenes" },
-      { title: "Desktop widgets", kind: "Widgets" },
-      { title: "Lock screen", kind: "Login" },
-      { title: "Terminal settings", kind: "xturing" },
-      { title: "Window borders", kind: "Hyprland" },
-    ],
+    subtitle:
+      "Real captures and short clips of the equisdots desktop: Hyprland tiling, the Quickshell shell and settings editor, palettes, scenes and widgets.",
+    stats: { shots: "captures", clips: "clips" },
+    sections: {
+      desktop: {
+        title: "The desktop",
+        note: "1440p captures of the full stack running: tiling, interactive scenes and the daily drivers.",
+      },
+      shell: {
+        title: "Shell and settings",
+        note: "The Quickshell surfaces and the settings editor, panel by panel.",
+      },
+      clips: {
+        title: "Tours in motion",
+        note: "Eighteen 10-second clips recorded on the real desktop.",
+      },
+    },
+    shots: {
+      "desktop-doctor": {
+        title: "The full desktop",
+        note: "equisdots doctor, the timex TUI and btop over an interactive scene.",
+      },
+      "desktop-tiling": {
+        title: "Tiling and panels",
+        note: "Hyprland tiling with btop, the widgets panel and the settings editor at once.",
+      },
+      "desktop-scenes": {
+        title: "Scenes and monitors",
+        note: "A scene wallpaper reacting to the palette, with the system monitor and terminal UI on top.",
+      },
+      bar: {
+        title: "Bar islands",
+        note: "Workspaces, clock and status islands: palette-tinted, blur-aware and position-independent.",
+      },
+      "settings-bar-engine": {
+        title: "Bar engine",
+        note: "Pick an engine (Bar, ClassicBar) and preview its modules and zones live.",
+      },
+      "settings-bar-position": {
+        title: "Bar position",
+        note: "Move the bar to any edge; the preview reflects position and zones.",
+      },
+      "settings-timex": {
+        title: "Timex",
+        note: "Weather provider, city, forecast layout and calendar popup options.",
+      },
+      "settings-monitors": {
+        title: "Monitors",
+        note: "Resolution, refresh rate, VRR, bit depth, HDR and mirroring per output.",
+      },
+      "settings-glass": {
+        title: "Glass and blur",
+        note: "Translucency for popups, menus and the bar; blur comes from a Hyprland layer rule.",
+      },
+      "widgets-panel": {
+        title: "Widgets panel",
+        note: "The floating hub: palettes, settings and desktop widgets one tap away.",
+      },
+      "app-launcher": {
+        title: "App launcher",
+        note: "Fuzzy search over installed applications with instant launch.",
+      },
+    },
+    kinds: { shell: "Shell", settings: "Settings", desktop: "Desktop", theming: "Theming", scenes: "Scenes" },
+    clipLabel: "Clip",
+    clipMeta: "10 s · 960 × 540 · 20 fps",
+    clipGroups: {
+      v1: {
+        title: "Desktop tour · v1",
+        note: "Palettes, light theme, tiling, terminals, panels and notifications.",
+      },
+      v2: {
+        title: "Desktop tour · v2",
+        note: "The palette engine and panels on the latest build.",
+      },
+    },
+    a11y: {
+      open: "Open full size",
+      close: "Close preview",
+      play: "Play clip",
+      pause: "Pause clip",
+      dialog: "Preview",
+    },
   },
   footer: {
     tagline: "Palette-driven desktop, documented and open.",
@@ -241,21 +323,91 @@ const es: Dict = {
     backToDocs: "Volver al índice de documentación",
   },
   previews: {
+    eyebrow: "Escritorio real",
     title: "Previews",
-    subtitle: "La galería del escritorio llega en la siguiente fase.",
-    phase: "Fase 2",
-    phaseNote:
-      "Esta página alojará una galería completa: estilos de barra, paletas, fondos, escenas y widgets de escritorio. Por ahora, esto es lo planeado.",
-    items: [
-      { title: "Estilos de barra", kind: "Shell" },
-      { title: "Galería de paletas", kind: "Theming" },
-      { title: "Fondos", kind: "Colección" },
-      { title: "Escenas interactivas", kind: "Scenes" },
-      { title: "Widgets de escritorio", kind: "Widgets" },
-      { title: "Pantalla de bloqueo", kind: "Login" },
-      { title: "Ajustes en terminal", kind: "xturing" },
-      { title: "Bordes de ventana", kind: "Hyprland" },
-    ],
+    subtitle:
+      "Capturas y clips cortos del escritorio equisdots: tiling de Hyprland, shell y editor de ajustes de Quickshell, paletas, escenas y widgets.",
+    stats: { shots: "capturas", clips: "clips" },
+    sections: {
+      desktop: {
+        title: "El escritorio",
+        note: "Capturas a 1440p con todo el stack en marcha: tiling, escenas interactivas y uso diario.",
+      },
+      shell: {
+        title: "Shell y ajustes",
+        note: "Las superficies de Quickshell y el editor de ajustes, panel a panel.",
+      },
+      clips: {
+        title: "Tours en movimiento",
+        note: "Dieciocho clips de 10 segundos grabados en el escritorio real.",
+      },
+    },
+    shots: {
+      "desktop-doctor": {
+        title: "El escritorio completo",
+        note: "equisdots doctor, la TUI de timex y btop sobre una escena interactiva.",
+      },
+      "desktop-tiling": {
+        title: "Tiling y paneles",
+        note: "Tiling de Hyprland con btop, el panel de widgets y el editor de ajustes a la vez.",
+      },
+      "desktop-scenes": {
+        title: "Escenas y monitores",
+        note: "Un fondo de escena que reacciona a la paleta, con el monitor del sistema y la TUI encima.",
+      },
+      bar: {
+        title: "Islas de la barra",
+        note: "Islas de espacios, reloj y estado: tintadas por la paleta, compatibles con blur e independientes de la posición.",
+      },
+      "settings-bar-engine": {
+        title: "Motor de la barra",
+        note: "Elige un motor (Bar, ClassicBar) y previsualiza módulos y zonas en vivo.",
+      },
+      "settings-bar-position": {
+        title: "Posición de la barra",
+        note: "Mueve la barra a cualquier borde; la vista previa refleja posición y zonas.",
+      },
+      "settings-timex": {
+        title: "Timex",
+        note: "Proveedor meteorológico, ciudad, diseño de la previsión y opciones del calendario.",
+      },
+      "settings-monitors": {
+        title: "Monitores",
+        note: "Resolución, tasa de refresco, VRR, profundidad de bits, HDR y espejado por salida.",
+      },
+      "settings-glass": {
+        title: "Cristal y blur",
+        note: "Translucidez para popups, menús y barra; el blur viene de una layer rule de Hyprland.",
+      },
+      "widgets-panel": {
+        title: "Panel de widgets",
+        note: "El centro flotante: paletas, ajustes y widgets de escritorio a un toque.",
+      },
+      "app-launcher": {
+        title: "Lanzador de apps",
+        note: "Búsqueda difusa sobre las aplicaciones instaladas con lanzamiento inmediato.",
+      },
+    },
+    kinds: { shell: "Shell", settings: "Ajustes", desktop: "Escritorio", theming: "Temas", scenes: "Escenas" },
+    clipLabel: "Clip",
+    clipMeta: "10 s · 960 × 540 · 20 fps",
+    clipGroups: {
+      v1: {
+        title: "Tour del escritorio · v1",
+        note: "Paletas, tema claro, tiling, terminales, paneles y notificaciones.",
+      },
+      v2: {
+        title: "Tour del escritorio · v2",
+        note: "El motor de paletas y los paneles en la última build.",
+      },
+    },
+    a11y: {
+      open: "Abrir a tamaño completo",
+      close: "Cerrar vista previa",
+      play: "Reproducir clip",
+      pause: "Pausar clip",
+      dialog: "Vista previa",
+    },
   },
   footer: {
     tagline: "Escritorio guiado por paletas, documentado y abierto.",
