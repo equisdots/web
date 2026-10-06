@@ -14,8 +14,8 @@ them together.
 
 - A Lua-configured Hyprland session: environment, keybinds, animations,
   window rules, workspaces and autostart.
-- A Quickshell UI: bar, popups, panels, settings editor, desktop widgets and
-  lock screen.
+- A Quickshell UI: bar, popups, panels, settings editor, desktop widgets,
+  lock screen and the Nyx mascot island/notch with its control-center dock.
 - A base16 palette system shared by the shell, window borders, terminals,
   editors and browsers.
 - A wallpaper kernel with still images, videos, slideshow rotation and
@@ -29,7 +29,9 @@ them together.
 |---|---|---|
 | [hyprland](https://github.com/equisdots/hyprland) | Compositor config (Lua), scripts, installer | `~/.config/hypr` |
 | [shell](https://github.com/equisdots/shell) | Quickshell UI (bar, panels, editor, popups) | `~/.config/hypr/scripts/quickshell` |
+| [nyx](https://github.com/equisdots/nyx) | Mascot island/notch and control-center dock | `.../quickshell/ui/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Color palettes (JSON set and schema) | `~/.config/hypr/scripts/quickshell/dock/palettes` |
+| [background](https://github.com/equisdots/background) | Curated wallpaper collection and scene catalog | released as `background.zip` |
 | [davincix](https://github.com/equisdots/davincix) | Wallpaper fetch/apply kernel | `~/.local/bin/davincix` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Cross-app theme regeneration | `~/.local/bin/theme-sync` |
 | [timex](https://github.com/equisdots/timex) | Time and weather engine plus calendar UI | `~/.local/bin/timex`, `.../quickshell/ui/timex` |
@@ -80,6 +82,7 @@ Nerd Font. `dots doctor` reports exactly what is missing. See
 - [Updating and diagnosing](/docs/updating) - `dots update` and `dots doctor`.
 - [Hyprland desktop](/docs/desktop) - config modules, keybinds, monitors.
 - [Quickshell shell](/docs/shell) - bar, panels, widgets and IPC.
+- [Nyx mascot island](/docs/nyx) - species, island/notch and the widget dock.
 - [Theming and palettes](/docs/theming) - base16 palettes and theme-sync.
 - [Wallpapers](/docs/wallpapers) - davincix, xwww and the picker.
 - [Interactive scenes](/docs/scenes) - authoring and running JS wallpapers.

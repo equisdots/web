@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s · equisdots",
   },
   description:
-    "An opinionated Arch-based desktop stack: Hyprland in the Lua era, a Quickshell shell, a live palette engine and interactive wallpaper scenes.",
+    "The X desktop: an Arch-based stack with Hyprland in the Lua era, a Quickshell shell, a live palette engine and interactive wallpaper scenes.",
   applicationName: "equisdots",
 };
 

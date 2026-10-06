@@ -32,6 +32,14 @@ export const REPOS: Repo[] = [
     },
   },
   {
+    name: "nyx",
+    url: "https://github.com/equisdots/nyx",
+    description: {
+      en: "Self-contained mascot island and control-center notch with a widget dock.",
+      es: "Isla de mascotas y notch de centro de control, autocontenida, con dock de widgets.",
+    },
+  },
+  {
     name: "davincix",
     url: "https://github.com/equisdots/davincix",
     description: {

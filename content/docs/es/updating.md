@@ -19,6 +19,7 @@ independiente de solo lectura que indica qué falta o está desincronizado.
 | `dots system` | Ejecutar el instalador de hyprland (paquetes, fuentes, login, PAM, requiere sudo). |
 | `dots doctor` | Comprobar binarios, clones y rutas instaladas. Termina con código distinto de cero si falla. |
 | `dots list` | Estado de los repositorios: `clean`, `dirty` o `missing`. |
+| `dots reset` | Reinstalación limpia forzada de la carga útil (los datos de usuario se conservan). |
 | `dots uninstall` | Eliminar los wrappers y el temporizador de actualización; las configuraciones y los clones permanecen. |
 
 ```sh
@@ -30,7 +31,7 @@ dots list
 ## Qué hace dots update
 
 Para cada repositorio de la organización (`dots`, `palettes`, `theme-sync`,
-`davincix`, `shell`, `hyprland`, `timex`, `xturing`, `login`):
+`davincix`, `shell`, `nyx`, `hyprland`, `timex`, `xturing`, `login`):
 
 1. Descarga `origin/main` con profundidad 1 y restablece por la fuerza el clon
    gestionado a esa versión. El restablecimiento forzado también recupera de
@@ -66,6 +67,25 @@ dots install
 
 `dots doctor` señala cada clon sucio para que las actualizaciones no se detengan
 en silencio.
+
+## Reinstalación forzada con dots reset
+
+`dots reset` es la salida de emergencia para una instalación rota: elimina los
+archivos gestionados (configuración/scripts de Hyprland, shell, configuraciones
+de aplicaciones) y los clones gestionados, reinstala todo desde el último
+`origin/main` y vuelve a aplicar la paleta activa. Nunca toca sus datos:
+`settings.json`, los overrides de `config/`, `wallpapers/`, el almacén de
+paletas (`dock/palettes`, incluidos los cambios de la comunidad y del editor),
+`display-config`, `idle-settings.json` y las instantáneas
+`hyprland-backup-*` sobreviven. También es la forma de recuperar clones
+gestionados sucios que bloquean su carga útil durante `update`/`install`. La
+pila del sistema (sudo) queda fuera: ejecute `dots system` para paquetes,
+fuentes, tema de login y PAM.
+
+`dots install`, `dots update` y `dots reset` normalizan un `~` inicial en
+`wallpaperDir` de `settings.json` a una ruta absoluta, para que el selector de
+fondos siempre encuentre la colección (un `~` literal dejaba la rejilla vacía y
+hacía fallar cada aplicación con `File not found`).
 
 ## Reglas de combinación de settings.json
 

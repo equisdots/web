@@ -1,3 +1,4 @@
+import { SectionHeader } from "./SectionHeader";
 import { getDict, type Locale } from "@/lib/i18n";
 import { REPOS } from "@/lib/repos";
 
@@ -7,25 +8,37 @@ export function RepoList({ locale }: { locale: Locale }) {
   return (
     <section className="border-t border-border">
       <div className="container-page max-w-4xl py-16">
-        <div className="max-w-2xl">
-          <h2 className="text-2xl font-semibold tracking-tight">{dict.home.reposTitle}</h2>
-          <p className="mt-2 text-muted">{dict.home.reposSubtitle}</p>
+        <SectionHeader
+          index="03"
+          label={dict.home.labels.repos}
+          title={dict.home.reposTitle}
+          subtitle={dict.home.reposSubtitle}
+        />
+
+        <div className="mt-10 hidden grid-cols-[9rem_1fr_2rem] gap-6 border-b border-border pb-2 sm:grid">
+          <span className="label">{dict.home.table.repo}</span>
+          <span className="label">{dict.home.table.purpose}</span>
+          <span />
         </div>
 
-        <ul className="mt-8 border-t border-border">
-          {REPOS.map((repo) => (
+        <ul>
+          {REPOS.map((repo, index) => (
             <li key={repo.name}>
               <a
                 href={repo.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex flex-col gap-1 border-b border-border py-4 sm:flex-row sm:items-baseline sm:gap-6"
+                className="group grid grid-cols-[2rem_1fr] items-baseline gap-x-4 gap-y-1 border-b border-border py-4 sm:grid-cols-[9rem_1fr_2rem] sm:gap-6"
               >
-                <span className="w-36 shrink-0 font-mono text-sm transition-colors group-hover:text-accent">
-                  {repo.name}
+                <span className="index sm:hidden">{String(index + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-sm transition-colors group-hover:text-accent">{repo.name}</span>
+                <span className="col-start-2 text-sm leading-6 text-muted sm:col-start-auto">
+                  {repo.description[locale]}
                 </span>
-                <span className="text-sm text-muted">{repo.description[locale]}</span>
-                <span aria-hidden="true" className="ml-auto hidden text-muted transition-colors group-hover:text-text sm:block">
+                <span
+                  aria-hidden="true"
+                  className="col-start-2 hidden text-muted transition-colors group-hover:text-text sm:col-start-auto sm:block"
+                >
                   ↗
                 </span>
               </a>

@@ -55,6 +55,33 @@ update, recording, time, date, media, workspaces, tray, keyboard, wifi,
 bluetooth, sysmon, volume, battery, weather and focus. `weather` and `focus`
 ship disabled so upgrades never change a layout on their own.
 
+### Customizing the bar and its modules
+
+Every module in `ui/bar/modules/` is one island pill built on the shared
+`ModulePill` component: it declares what to show, and the pill handles the
+background, border, hover scale, entrance animation and clicks. The zone (or
+the classic engine) always injects the same seven properties — `bar`,
+`colors`, `zoneReady`, `slotIndex`, `effectiveBorderWidth`,
+`effectiveBorderColor` and `unified` — and `ModulePill` adds the orientation
+helpers plus the normalized per-module config.
+
+Per-module values live under `bar.modules.<id>` and every field is optional:
+
+| Field | Meaning |
+|---|---|
+| `icon` | Glyph override (help, search, settings, update, keyboard, wifi, bluetooth, volume, battery, weather, focus, recording). |
+| `color` | Content color: a `colors.*` role name or a `#hex` string. |
+| `fill` | Island fill: `default` / `on` / `off`. |
+| `accent` | Accent role override (for example `green`), turning the island into an accent island. |
+| `size` | Font pixel size override (0 keeps the module default). |
+| `effect` / `cursor` | Per-module view effect (`typewriter` on the clock) and its blinking cursor. |
+
+The workspaces module has its own bar-wide options: `workspacesMarker`
+(`number`, `dot`, `letter`, `custom`) and `workspacesMarkerText`. Built-in
+defaults give `battery`, `settings`, `search`, `time` and `help` their
+palette fill, and every module has a built-in accent role that follows the
+active palette.
+
 Key options under `bar` in `settings.json`:
 
 ```json
@@ -104,6 +131,23 @@ Bar, Theme, Behavior and System. Collapse state and page order persist under
 (`settings.notifications`), and shadows, glass and mascots are configured from
 the Theme group.
 
+## Windows, shadows and glass
+
+`Shell.qml` mounts `ui/Main.qml` (master window, widget stack, morph, IPC),
+`ui/bar/Bar.qml` (the bar host), `ui/Floating.qml` (notifications and
+OSD-like surfaces), `ui/Mascots.qml` (the Nyx island wrapper, see
+[Nyx mascot island](/docs/nyx)), `ui/widgets/Widgets.qml` (one widget loader
+per screen) and `ui/ScreenshotOverlay.qml`; `Lock.qml` is the alternate PAM
+session-lock entry.
+
+Hyprland does not decorate layer-shell surfaces, so popup shadows are drawn
+in QML by `Main.qml` and follow the animated box (position, size, morph and
+fade). Configure them under `settings.json -> shadows` (`enabled`, `blur`,
+`spread`, `offsetX`, `offsetY`, `opacity`, `radius`; scaled by the UI scale)
+from Theme -> Shadows; `settings.json -> glass` (`enabled`, `opacity`) makes
+the shell backgrounds translucent so the compositor backdrop blur shows
+through. The bar draws its own shadows from the same config.
+
 ## Desktop widgets
 
 Press `SUPER + SHIFT + W` to open the redactor on the current monitor. The
@@ -118,6 +162,8 @@ wallpaper folder). Layouts are stored per monitor:
 ~/.local/state/quickshell/widgets/<monitor>/layout.json
 ```
 
+Each layout entry stores the variant, position, size, rotation, opacity and,
+for Image widgets, the chosen file; the picker browses the wallpaper folder.
 Widgets render above the wallpaper and below windows, on every monitor, with
 grid and edge snapping, rotation, opacity and resize handles. Palette changes
 recolor them instantly.

@@ -1,7 +1,7 @@
 ---
 title: Contributing and security
 description: Where to report issues, how pull requests are reviewed, the local checks to run and the security policy.
-order: 11
+order: 12
 section: more
 ---
 
@@ -19,6 +19,7 @@ Open the issue in the repository that owns the behavior:
 | Installation, updates, packages, login theme | [dots](https://github.com/equisdots/dots) |
 | Compositor config, keybinds, scripts | [hyprland](https://github.com/equisdots/hyprland) |
 | Bar, panels, widgets, editor | [shell](https://github.com/equisdots/shell) |
+| Mascots, island/notch, dock | [nyx](https://github.com/equisdots/nyx) |
 | Wallpapers, scenes, picker | [davincix](https://github.com/equisdots/davincix), [background](https://github.com/equisdots/background) |
 | Colors and theming | [palettes](https://github.com/equisdots/palettes), [theme-sync](https://github.com/equisdots/theme-sync) |
 | Time, weather, calendar | [timex](https://github.com/equisdots/timex) |
@@ -26,7 +27,9 @@ Open the issue in the repository that owns the behavior:
 | Scene engine and wallpaper daemon | [x-ports/xwww](https://github.com/x-ports/xwww) |
 
 If you are not sure, use the organization-wide issue template and pick the
-component there.
+component there. Support channels and the code of conduct live in
+[hyprland](https://github.com/equisdots/hyprland) (`SUPPORT.md`,
+`CODE_OF_CONDUCT.md`), and the organization profile summarizes the stack.
 
 ## Pull requests
 

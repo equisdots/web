@@ -83,7 +83,8 @@ carga útil:
 
 - Configuración de Hyprland en `~/.config/hypr`, más las configuraciones de
   rofi, dunst y cava.
-- Shell Quickshell, paletas, theme-sync, davincix, timex y xturing.
+- Shell Quickshell, la isla de mascotas Nyx, paletas, theme-sync, davincix,
+  timex y xturing.
 - Scripts de envoltura (wrappers) en `~/.local/bin` y el temporizador de
   actualización mensual.
 
