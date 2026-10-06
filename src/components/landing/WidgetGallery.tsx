@@ -40,7 +40,7 @@ export function WidgetGallery({ locale }: { locale: Locale }) {
 
         <div className="mt-12 grid gap-x-6 gap-y-10 md:grid-cols-2">
           {ITEMS.map(({ key, Component }, index) => (
-            <figure key={key}>
+            <figure key={key} className="min-w-0">
               <div className="mb-3 flex items-baseline justify-between gap-4 border-t border-border pt-4">
                 <h3 className="text-sm font-medium">{dict.widgets[key]}</h3>
                 <span className="index">fig. {String(index + 1).padStart(2, "0")}</span>

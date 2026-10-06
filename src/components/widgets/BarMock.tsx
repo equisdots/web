@@ -64,7 +64,7 @@ export function BarMock({ className }: MockProps) {
   return (
     <div className={`relative overflow-hidden rounded-2xl border border-border bg-surface ${className ?? ""}`}>
       <div className="bg-linear-to-b from-bg/70 via-surface to-surface px-4 pt-4">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-between">
           <Island>
             <span className="flex size-5 items-center justify-center rounded-full bg-accent font-mono text-[10px] font-bold text-accent-fg">
               2
@@ -81,7 +81,7 @@ export function BarMock({ className }: MockProps) {
             <span className="font-mono text-[10px] text-accent/70">:07</span>
             <span className="hidden text-[10px] text-muted sm:inline">Sat, Oct 03</span>
           </Island>
-          <Island className="gap-1.5">
+          <Island className="flex-wrap justify-center gap-1.5">
             <Chip label="18%">
               <CpuGlyph />
             </Chip>
