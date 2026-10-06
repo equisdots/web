@@ -59,6 +59,7 @@ Essential bindings, all defined in `config/hypr/keybinds.lua`:
 | `SUPER + L` | Lock screen |
 | `SUPER + Escape` | Exit Hyprland |
 | `Print` / `SUPER + Print` | Screenshot overlay / full screenshot |
+| `SHIFT + Print` / `SUPER + SHIFT + Print` | Screenshot overlay in edit mode / full screenshot with edit |
 
 Bindings are declared with the Lua API:
 
@@ -96,6 +97,29 @@ desc|x|y|scale|mode
 the kernel renames its connector. `scripts/restore-monitors.sh` re-applies the
 layout shortly after login and reconciles it every couple of seconds. Unknown
 monitors keep the wildcard auto layout.
+
+### Monitor keybinds
+
+| Shortcut | Action |
+|---|---|
+| `SUPER + ALT + I` / `U` | Focus next / previous monitor. |
+| `SUPER + ALT + SHIFT + I` / `U` | Move window to next / previous monitor. |
+| `SUPER + ALT + O` | Swap workspaces between monitors. |
+| `SUPER + ALT + P` | Move workspace to the next monitor. |
+| `SUPER + ALT + M` | Open the rofi monitor manager. |
+| `SUPER + ALT + SHIFT + M` | Show monitor info. |
+
+### Workspace binding
+
+Bind a workspace to a physical monitor by EDID description in
+`~/.config/hypr/workspaces.conf`:
+
+```
+workspace = 1, monitor:desc:Your Monitor Description, default:true
+workspace = 2, monitor:desc:Your Monitor Description
+```
+
+`hyprctl monitors all` prints the description string of each monitor.
 
 ### Unified desktops
 
@@ -139,16 +163,33 @@ Deployed to `~/.config/hypr/scripts/`:
 
 ## Screenshots and recording
 
-`Print` opens the interactive overlay (area selection, full screen, active
-window, QR scan, magnifier, edit mode). Recording uses
-`gpu-screen-recorder` with separate desktop and microphone tracks and writes
-MP4 files to `~/Videos/Recordings/`.
+`Print` opens the interactive overlay: area selection with live pixel
+dimensions and window snapping, full screen, active window, a recording toggle
+with independent desktop and microphone volume, QR scanning via `zbarimg`,
+magnifier and edit mode via `satty`. Recording uses `gpu-screen-recorder`
+with virtual PipeWire audio routing and writes MP4 files to
+`~/Videos/Recordings/`. Overlay dependencies: `grim`, `slurp`, `satty`,
+`gpu-screen-recorder`, `zbarimg`, `pactl`/PipeWire, `wl-copy` and `ffmpeg`.
 
 ## GPU modes
 
 On NVIDIA Optimus laptops, `SUPER + ALT + G` cycles integrated, hybrid and
 NVIDIA modes; `SUPER + ALT + SHIFT + G` opens a selector. A reboot or logout
-is required after switching.
+is required after switching. The installer can add a passwordless sudo rule
+for envycontrol (`%wheel ALL=(ALL) NOPASSWD: /usr/bin/envycontrol -s *`) so
+`gpu-mode.sh` switches without a prompt, and `gpu-mode.sh status` prints JSON
+(mode, icon, tooltip) for bar integrations.
+
+## Neovim
+
+Neovim is not bundled in the repository: the installer clones
+[xscriptor-colors/nvim](https://github.com/xscriptor-colors/nvim) into
+`~/.config/nvim` (update it with `git pull` there). The config ships its own
+`lua/config/` modules, `lua/plugins/` and a theme engine under `lua/themes/`;
+`theme-sync` regenerates `lua/themes/palettes.lua` and
+`lua/config/theme.lua` from `dock/palettes`, so the editor follows the same
+palette as the bar, kitty, starship and VS Code. After the first launch run
+`:Lazy` to install plugins and `:Mason` for the LSP servers.
 
 ## Next steps
 

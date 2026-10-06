@@ -1,7 +1,7 @@
 ---
 title: "Herramientas: timex, xturing, login"
 description: Referencia del motor de hora y clima timex, la interfaz de ajustes de terminal xturing y el tema de inicio de sesión SDDM estático.
-order: 9
+order: 10
 section: more
 ---
 
@@ -25,19 +25,26 @@ timex --invalidate               # drop the cache after a config change
 timex --current-icon             # bar module reads
 timex --current-temp
 timex --current-hex
+timex --icon | --temp | --hex    # forecast[0] variants
 timex providers list             # name|label|needs_key|hint
 timex geocode "Tokyo"            # top 5 matches for the UI picker
 timex test                       # ok|description or fail|error
-timex status
+timex snapshot                   # icon|temp|max|min|desc|updated_epoch
+timex status                     # provider|city|unit|configured|key_set|last_update|last_error
 timex keys set OPENWEATHER_KEY <value>
-timex keys list
+timex keys remove OPENWEATHER_KEY
+timex keys list                  # NAME|label|where|0-1
 ```
 
 El motor ejecuta exactamente el proveedor seleccionado; no hay alternativas
 silenciosas. Si al proveedor le falta una ciudad o una clave, la caché recibe
 un estado de error explícito (`Select a provider` ["seleccione un proveedor"],
 `Set a city` ["establezca una ciudad"], `Set the API key` ["establezca la clave
-de API"]).
+de API"], `Unknown provider` ["proveedor desconocido"]). La interfaz QML vive
+en `ui/` (`TimexPopup.qml` para el emergente de calendario vinculado a
+`SUPER + S`, `TimexTab.qml` para la pestaña de ajustes), y el antiguo
+`calendar/weather.sh` del shell es ahora un shim fino sobre la CLI, así que los
+llamadores de barra y calendario no cambiaron.
 
 ### Proveedores
 
@@ -53,8 +60,10 @@ documento JSON normalizado, más una línea de catálogo en `core/timex.sh`.
 ### Configuración
 
 - `settings.json -> timex`: `{ provider, city, unit }` más las claves de diseño
-  de la interfaz (`forecastEnabled`, `forecastPosition`, `forecastHours`,
-  `clockScale` y más). Sin secretos.
+  de la interfaz (`forecastEnabled`, `forecastPosition` `below`/`above`,
+  `forecastSize`, `forecastGap`, `forecastHours`, `forecastShowTime/Icon/Temp`,
+  `forecastOrder` y `clockScale`). Sin secretos; los valores predeterminados
+  viven en la sección timex de `core/Personalization.js` del shell.
 - Claves de API: `~/.local/state/quickshell/timex/keys.conf` (modo 600),
   escritas con `timex keys set`.
 - Caché: `~/.cache/quickshell/timex/weather.json`, con el contrato estable
@@ -128,6 +137,35 @@ XTURING_DRY=1 XTURING_SETTINGS=/tmp/settings-test.json \
   XTURING_PALETTES_DIR=/tmp/palettes-test xturing
 ```
 
+### Diferencias conocidas frente al panel QML
+
+La interacción difiere donde el arrastrar y soltar o las muestras de color no
+se traducen a una TUI; el archivo de ajustes y su formato son idénticos:
+
+- Zonas: no hay drag and drop; `Shift + Left/Right` mueven un módulo dentro y
+  entre zonas, Enter lo activa o desactiva.
+- Barra clásica: agrupar y desagrupar con `g` / `u` en vez de arrastrar.
+- Monitores: los campos Position X/Y sustituyen al lienzo de arrastre.
+- Paleta: los colores se editan como `#rrggbb`; Nueva paleta clona los 8
+  colores base de la paleta activa.
+- General: la lista de distribuciones xkb es un campo de texto libre.
+- El botón Refresh de Hyprland funciona aquí (`hypr-effects.sh read`); en el
+  panel QML actual llama a un método que no existe.
+
+### Estructura
+
+```
+src/
+  settings.rs   lectura/escritura atómica + tests
+  catalog.rs    definición basada en datos de las 25 páginas y sus controles
+  app.rs        estado, navegación, edición, páginas especiales, efectos
+  ui.rs         renderizado ratatui (rail, contenido, selector, formularios)
+  palette.rs    index.json, edición de paletas con backup, crear/borrar
+  classic.rs    valores por defecto de ClassicBar, mirrorBar, normalize
+  monitors.rs   hyprctl monitors, aplicar/reset con lua + display-config
+  actions.rs    spawn/capture (con modo dry), notify-send
+```
+
 ## login
 
 [equisdots/login](https://github.com/equisdots/login) es la pantalla de inicio
@@ -149,7 +187,9 @@ El instalador copia el tema a `/usr/share/sddm/themes/x`, lo selecciona en
 `/etc/sddm.conf.d/10-x-theme.conf` y desactiva el teclado en pantalla. Si otro
 gestor de pantalla posee `display-manager.service`, el enlace se cambia a SDDM
 (el anterior se respalda como `display-manager.service.equisdots-backup`).
-`--uninstall` lo restaura.
+`--uninstall` lo restaura. El tema vive bajo `theme/x/` con
+`metadata.desktop` y respeta `theme.conf.user`; `dots system` ejecuta el
+instalador por usted.
 
 `dots doctor` verifica el archivo de configuración, el tema estático (sin
 `Colors.qml`) y que SDDM sea el gestor de pantalla activo.

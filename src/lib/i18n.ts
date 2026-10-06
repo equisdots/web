@@ -10,15 +10,19 @@ export type Dict = {
   hero: {
     eyebrow: string;
     title: string;
+    dots: string;
     subtitle: string;
     install: string;
     copy: string;
     copied: string;
     docs: string;
     previews: string;
+    visualLabel: string;
     paletteNote: string;
   };
   home: {
+    labels: { highlights: string; widgets: string; repos: string; cta: string };
+    table: { repo: string; purpose: string };
     highlightsTitle: string;
     highlightsSubtitle: string;
     widgetsTitle: string;
@@ -96,17 +100,21 @@ const en: Dict = {
   lang: { label: "Language" },
   hero: {
     eyebrow: "equisdots · X Linux",
-    title: "Equisdots",
+    title: "equisdots",
+    dots: "dots",
     subtitle:
-      "An opinionated Arch-based desktop stack: Hyprland in the Lua era, a Quickshell shell, a live palette engine and a wallpaper kernel with interactive scenes.",
+      "The X desktop: an Arch-based stack with Hyprland in the Lua era, a Quickshell shell, a live palette engine and a wallpaper kernel with interactive scenes.",
     install: "Install with one command",
     copy: "Copy",
     copied: "Copied",
     docs: "Read the docs",
     previews: "See previews",
+    visualLabel: "Shell surfaces · bar, palette and timex",
     paletteNote: "This site uses two palettes from the collection: X (dark) and Catppuccin Latte (light).",
   },
   home: {
+    labels: { highlights: "Highlights", widgets: "Widgets", repos: "Repositories", cta: "Get started" },
+    table: { repo: "repo", purpose: "purpose" },
     highlightsTitle: "What makes it different",
     highlightsSubtitle: "Small repositories, one command, one palette across the whole desktop.",
     widgetsTitle: "The widgets, illustrated",
@@ -261,17 +269,21 @@ const es: Dict = {
   lang: { label: "Idioma" },
   hero: {
     eyebrow: "equisdots · X Linux",
-    title: "Equisdots",
+    title: "equisdots",
+    dots: "dots",
     subtitle:
-      "Un escritorio opinionado sobre Arch: Hyprland en la era Lua, un shell Quickshell, un motor de paletas en vivo y un kernel de fondos con escenas interactivas.",
+      "El escritorio X: un stack sobre Arch con Hyprland en la era Lua, un shell Quickshell, un motor de paletas en vivo y un kernel de fondos con escenas interactivas.",
     install: "Instala con un solo comando",
     copy: "Copiar",
     copied: "Copiado",
     docs: "Leer la documentación",
     previews: "Ver previews",
+    visualLabel: "Superficies del shell · barra, paleta y timex",
     paletteNote: "Este sitio usa dos paletas de la colección: X (oscura) y Catppuccin Latte (clara).",
   },
   home: {
+    labels: { highlights: "Claves", widgets: "Widgets", repos: "Repositorios", cta: "Empieza" },
+    table: { repo: "repo", purpose: "propósito" },
     highlightsTitle: "Qué lo hace diferente",
     highlightsSubtitle: "Repositorios pequeños, un comando, una paleta en todo el escritorio.",
     widgetsTitle: "Los widgets, ilustrados",

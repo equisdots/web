@@ -1,7 +1,7 @@
 ---
 title: Escenas interactivas
 description: Cree, ejecute y depure escenas JavaScript de xwww que reaccionan a la paleta activa.
-order: 8
+order: 9
 section: wallpapers
 ---
 
@@ -32,6 +32,36 @@ scene.js -> xwww scene run -> rendered frame -> xwww-daemon -> layer surface
 Requiere `xwww` 0.13.1+ compilado con la característica `scene` (las versiones
 publicadas la incluyen), un compositor con `wlr-layer-shell` y solo
 rasterización por CPU.
+
+## Catálogo
+
+La colección incluye 21 escenas; sus tarjetas dibujan un bloque compartido de
+muestras de paleta en la posición medida sobre el arte original 3840x2160
+(`x:1112 y:1104 w:1528 h:604`).
+
+| Escena | Arte |
+|---|---|
+| `astro-palette` | Astronauta en line art con tarjetas de muestras en vivo. |
+| `astro-ascii` | Astronauta en arte ASCII (alfa del esténcil como cobertura de tinta). |
+| `ascii-astro` | Render ASCII refinado, conservado junto al anterior. |
+| `matrix-rain` | Lluvia de glifos guiada por la paleta (`XSCRIPTORDEV` más glifos geométricos). |
+| `kanji-rain` | Lluvia de kana/kanji/chino; necesita `noto-fonts-cjk`. |
+| `cartesian-veil` | Plano cartesiano, puntos simétricos y una curva que se revela. |
+| `asymptote-veil` | Gráfica de `f(x) = 1/x` acercándose a ambas asíntotas. |
+| `fourier-synth` | Onda cuadrada reconstruida con sus armónicos impares. |
+| `lissajous-orbit` | Curvas de Lissajous paramétricas con cabeza y estela. |
+| `field-lines` | Campo vectorial rotatorio con partículas en órbitas cerradas. |
+| `riemann-sum` | Rectángulos de Riemann por la izquierda convergiendo al área. |
+| `bezier-mesh` | Tres mallas de Bézier cúbicas con un jinete de de Casteljau. |
+| `phase-portrait` | Péndulo amortiguado en el espacio de fases. |
+| `monte-carlo` | Estimación de π lanzando puntos deterministas. |
+| `bifurcation` | Duplicación de período del mapa logístico hacia el caos. |
+| `descent-path` | Descenso de gradiente con elipses de nivel y una ruta. |
+| `interference` | Dos fuentes coherentes con líneas nodales a la deriva. |
+| `epicycle-veil` | Quince epiciclos proyectando una onda cuadrada. |
+| `matrix-veil` | Aplicación lineal 2×2 en vivo con rejilla transformada. |
+| `kepler-veil` | Órbita de Kepler excéntrica con la cuña barrida. |
+| `complex-veil` | Raíces n-ésimas de la unidad en el plano de Argand. |
 
 ## Integración con davincix
 
@@ -152,6 +182,23 @@ Todas las llamadas son métodos del objeto global `canvas`. Los colores aceptan
 - El texto se cachea por glifo, familia y color, pero mantenga bajos los
   dibujos únicos.
 - Prefiera `canvas.remap` y los activos de imagen al trabajo por píxel.
+- Límites duros: un fotograma síncrono a la vez, un presupuesto de
+  `--timeout-ms` (100 ms por defecto, 2000 ms con davincix) y 32 MB de memoria
+  JavaScript con una pila de 1 MB.
+
+## Publicar una escena
+
+Las escenas viven bajo `scenes/` en
+[equisdots/background](https://github.com/equisdots/background). Para
+contribuir con una:
+
+1. Añada el directorio con `scene.js` y `base.jpg`.
+2. Añada una fila al catálogo en `docs/interactive-scenes.md`.
+3. Añada una entrada a `CHANGELOG.md` bajo la sección fechada actual.
+4. Regenere miniaturas y pruebe la transición en local: `davincix thumbs` y
+   `davincix set <dir> --transition decrypt`.
+5. Abra un pull request; envíe solo arte propio o explícitamente
+   redistribuible.
 
 ## Depuración
 

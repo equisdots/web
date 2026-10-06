@@ -58,6 +58,34 @@ bluetooth, sysmon, volume, battery, weather y focus. `weather` y `focus` se
 distribuyen desactivados para que las actualizaciones nunca cambien un diseño
 por sí solas.
 
+### Personalizar la barra y sus módulos
+
+Cada módulo de `ui/bar/modules/` es una isla construida sobre el componente
+compartido `ModulePill`: el módulo declara qué muestra y la píldora se encarga
+del fondo, el borde, la escala al pasar, la animación de entrada y los clics.
+La zona (o el motor classic) inyecta siempre las mismas siete propiedades —
+`bar`, `colors`, `zoneReady`, `slotIndex`, `effectiveBorderWidth`,
+`effectiveBorderColor` y `unified` — y `ModulePill` añade los ayudantes de
+orientación y la configuración normalizada del módulo.
+
+Los valores por módulo viven bajo `bar.modules.<id>` y todos los campos son
+opcionales:
+
+| Campo | Significado |
+|---|---|
+| `icon` | Glifo de reemplazo (help, search, settings, update, keyboard, wifi, bluetooth, volume, battery, weather, focus, recording). |
+| `color` | Color del contenido: un rol `colors.*` o una cadena `#hex`. |
+| `fill` | Relleno de la isla: `default` / `on` / `off`. |
+| `accent` | Rol de acento de reemplazo (por ejemplo `green`), convirtiendo la isla en isla de acento. |
+| `size` | Tamaño de fuente en píxeles (0 mantiene el predeterminado). |
+| `effect` / `cursor` | Efecto de vista por módulo (`typewriter` en el reloj) y su cursor parpadeante. |
+
+El módulo workspaces tiene sus propias opciones globales de barra:
+`workspacesMarker` (`number`, `dot`, `letter`, `custom`) y
+`workspacesMarkerText`. Los valores integrados dan a `battery`, `settings`,
+`search`, `time` y `help` su relleno de paleta, y cada módulo tiene un rol de
+acento integrado que sigue la paleta activa.
+
 Opciones clave bajo `bar` en `settings.json`:
 
 ```json
@@ -107,6 +135,24 @@ de las páginas persisten en `settings.editor`. El sistema de notificaciones
 tiene sus propias opciones (`settings.notifications`), y las sombras, el cristal
 y las mascotas se configuran desde el grupo Tema.
 
+## Ventanas, sombras y cristal
+
+`Shell.qml` monta `ui/Main.qml` (ventana maestra, pila de widgets, morph, IPC),
+`ui/bar/Bar.qml` (el host de la barra), `ui/Floating.qml` (notificaciones y
+superficies tipo OSD), `ui/Mascots.qml` (el wrapper de la isla Nyx, véase
+[Isla de mascotas Nyx](/es/docs/nyx)), `ui/widgets/Widgets.qml` (un cargador
+de widgets por pantalla) y `ui/ScreenshotOverlay.qml`; `Lock.qml` es la entrada
+alternativa de bloqueo de sesión PAM.
+
+Hyprland no decora las superficies layer-shell, así que las sombras de los
+emergentes las dibuja QML en `Main.qml` y siguen la caja animada (posición,
+tamaño, morph y fundido). Se configuran en `settings.json -> shadows`
+(`enabled`, `blur`, `spread`, `offsetX`, `offsetY`, `opacity`, `radius`;
+escaladas por la escala de UI) desde Tema -> Sombras; `settings.json -> glass`
+(`enabled`, `opacity`) vuelve translúcidos los fondos del shell para que se vea
+el blur del compositor. La barra dibuja sus propias sombras con la misma
+configuración.
+
 ## Widgets de escritorio
 
 Pulse `SUPER + SHIFT + W` para abrir el editor en el monitor actual. Las
@@ -122,10 +168,12 @@ monitor:
 ~/.local/state/quickshell/widgets/<monitor>/layout.json
 ```
 
-Los widgets se dibujan por encima del fondo de pantalla y por debajo de las
-ventanas, en todos los monitores, con ajuste a cuadrícula y bordes, rotación,
-opacidad y tiradores de redimensionado. Los cambios de paleta los recolorean al
-instante.
+Cada entrada del diseño guarda la variante, la posición, el tamaño, la
+rotación, la opacidad y, para los widgets de Imagen, el archivo elegido; el
+selector navega la carpeta de fondos. Los widgets se dibujan por encima del
+fondo de pantalla y por debajo de las ventanas, en todos los monitores, con
+ajuste a cuadrícula y bordes, rotación, opacidad y tiradores de
+redimensionado. Los cambios de paleta los recolorean al instante.
 
 ## IPC
 

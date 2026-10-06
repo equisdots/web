@@ -1,7 +1,7 @@
 ---
 title: Contribución y seguridad
 description: Dónde notificar problemas, cómo se revisan las pull requests, las comprobaciones locales que hay que ejecutar y la política de seguridad.
-order: 11
+order: 12
 section: more
 ---
 
@@ -20,6 +20,7 @@ Abra el issue en el repositorio que posee el comportamiento:
 | Instalación, actualizaciones, paquetes, tema de inicio de sesión | [dots](https://github.com/equisdots/dots) |
 | Configuración del compositor, atajos de teclado, scripts | [hyprland](https://github.com/equisdots/hyprland) |
 | Barra, paneles, widgets, editor | [shell](https://github.com/equisdots/shell) |
+| Mascotas, isla/notch, dock | [nyx](https://github.com/equisdots/nyx) |
 | Fondos de pantalla, escenas, selector | [davincix](https://github.com/equisdots/davincix), [background](https://github.com/equisdots/background) |
 | Colores y temas | [palettes](https://github.com/equisdots/palettes), [theme-sync](https://github.com/equisdots/theme-sync) |
 | Hora, clima, calendario | [timex](https://github.com/equisdots/timex) |
@@ -27,7 +28,9 @@ Abra el issue en el repositorio que posee el comportamiento:
 | Motor de escenas y demonio de fondos de pantalla | [x-ports/xwww](https://github.com/x-ports/xwww) |
 
 Si no está seguro, use la plantilla de issue de toda la organización y elija el
-componente allí.
+componente allí. Los canales de soporte y el código de conducta viven en
+[hyprland](https://github.com/equisdots/hyprland) (`SUPPORT.md`,
+`CODE_OF_CONDUCT.md`), y el perfil de la organización resume la pila.
 
 ## Pull requests
 

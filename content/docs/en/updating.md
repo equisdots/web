@@ -19,6 +19,7 @@ what is missing or out of sync.
 | `dots system` | Run the hyprland installer (packages, fonts, login, PAM, sudo required). |
 | `dots doctor` | Check binaries, clones and installed paths. Exits non-zero on failure. |
 | `dots list` | Repository status: `clean`, `dirty` or `missing`. |
+| `dots reset` | Forced clean reinstall of the payload (user data kept). |
 | `dots uninstall` | Remove wrappers and the updater timer; configs and clones stay. |
 
 ```sh
@@ -30,7 +31,7 @@ dots list
 ## What dots update does
 
 For every repository in the org (`dots`, `palettes`, `theme-sync`, `davincix`,
-`shell`, `hyprland`, `timex`, `xturing`, `login`):
+`shell`, `nyx`, `hyprland`, `timex`, `xturing`, `login`):
 
 1. Fetch `origin/main` at depth 1 and hard-reset the managed clone to it.
    The hard reset also recovers from upstream force-pushes, where a
@@ -63,6 +64,24 @@ dots install
 ```
 
 `dots doctor` flags every dirty clone so updates do not silently stall.
+
+## Forced reinstall with dots reset
+
+`dots reset` is the escape hatch for a bad install: it deletes the managed
+files (Hyprland config/scripts, shell, app configs) and the managed clones,
+reinstalls everything from the latest `origin/main` and re-applies the active
+palette. It never touches your data: `settings.json`, `config/` overrides,
+`wallpapers/`, the palette store (`dock/palettes`, including community and
+editor edits), `display-config`, `idle-settings.json` and the
+`hyprland-backup-*` snapshots survive. It is also the way to recover dirty
+managed clones that block their payload during `update`/`install`. The system
+stack (sudo) is out of scope: run `dots system` for packages, fonts, the login
+theme and PAM.
+
+`dots install`, `dots update` and `dots reset` normalize a leading `~` in
+`settings.json`'s `wallpaperDir` to an absolute path, so the wallpaper picker
+always finds the collection (a literal `~` left the grid empty and failed
+every apply with `File not found`).
 
 ## settings.json merge rules
 

@@ -163,12 +163,100 @@ body:has(dialog[open]) {
   padding: 0.25rem 0.35rem;
 }
 
-.eyebrow {
+.eyebrow,
+.label {
+  font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+/* Monospace index used to number sections, figures and list rows. */
+.index {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+/* X palette gradient hairline (dark). Light stays a plain hairline. */
+.x-rule {
+  background-color: var(--border);
+  height: 1px;
+  border: 0;
+}
+
+html[data-theme="dark"] .x-rule {
+  background-image: linear-gradient(
+    90deg,
+    var(--c1),
+    var(--c4),
+    var(--c3),
+    var(--c2),
+    var(--c6),
+    var(--c5)
+  );
+}
+
+/*
+ * The brick-ASCII X mark. Monochrome by default (light); in dark mode it
+ * takes the X palette gradient sampled from the logo and shifts on hover.
+ */
+.ascii-x {
+  color: var(--text);
+}
+
+/*
+ * Braille raster. A braille cell is 2 dots wide x 4 tall, so with square
+ * dots the line box must be exactly twice the advance width (2ch). The
+ * font stack guarantees the braille glyphs and the ch unit resolve to the
+ * same face, so the art never skews.
+ */
+.ascii-braille,
+.ascii-braille pre {
+  font-family: "DejaVu Sans Mono", "Liberation Mono", Menlo, Consolas, ui-monospace, monospace;
+  line-height: 2ch;
+  letter-spacing: 0;
+  font-variant-ligatures: none;
+}
+
+/*
+ * text-align: left is mandatory: the containers are text-centered for the
+ * headings and inherited centering would skew every art line.
+ */
+.ascii-mark {
+  text-align: left;
+}
+
+html[data-theme="dark"] .ascii-x {
+  background-image: linear-gradient(
+    150deg,
+    var(--c1) 0%,
+    var(--c4) 18%,
+    var(--c3) 38%,
+    var(--c2) 58%,
+    var(--c6) 78%,
+    var(--c5) 100%
+  );
+  background-size: 180% 180%;
+  background-position: 0% 0%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 700ms cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+html[data-theme="dark"] .ascii-x:hover {
+  background-position: 100% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="dark"] .ascii-x {
+    transition: none;
+  }
 }
 
 /* ------------------------------------------------------------- markdown -- */

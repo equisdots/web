@@ -1,7 +1,7 @@
 ---
 title: Architecture and repositories
 description: How the equisdots repositories fit together, the shared contracts they rely on and the decisions behind them.
-order: 10
+order: 11
 section: more
 ---
 
@@ -17,7 +17,9 @@ the invariants the pieces rely on.
 | [dots](https://github.com/equisdots/dots) | Meta installer, updater, diagnostics | `~/.local/bin/dots` |
 | [hyprland](https://github.com/equisdots/hyprland) | Compositor config and scripts | `~/.config/hypr` |
 | [shell](https://github.com/equisdots/shell) | Quickshell UI | `~/.config/hypr/scripts/quickshell` |
+| [nyx](https://github.com/equisdots/nyx) | Mascot island/notch and control-center dock | `.../quickshell/ui/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Palette data and schema | `.../quickshell/dock/palettes` |
+| [background](https://github.com/equisdots/background) | Curated wallpapers and scene catalog | release asset `background.zip` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Cross-app theming engine | `~/.local/bin/theme-sync` |
 | [davincix](https://github.com/equisdots/davincix) | Wallpaper kernel | `~/.local/bin/davincix` |
 | [timex](https://github.com/equisdots/timex) | Weather/time engine and UI | `~/.local/bin/timex`, `.../quickshell/ui/timex` |

@@ -78,7 +78,8 @@ installer:
 places the payload:
 
 - Hyprland config to `~/.config/hypr`, plus rofi, dunst and cava configs.
-- Quickshell shell, palettes, theme-sync, davincix, timex and xturing.
+- Quickshell shell, the Nyx mascot island, palettes, theme-sync, davincix,
+  timex and xturing.
 - Wrapper scripts in `~/.local/bin` and the monthly updater timer.
 
 `install` copies over a live config but treats `settings.json` carefully: it

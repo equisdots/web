@@ -1,7 +1,7 @@
 ---
 title: Interactive scenes
 description: Author, run and debug xwww JavaScript scenes that react to the active palette.
-order: 8
+order: 9
 section: wallpapers
 ---
 
@@ -28,6 +28,36 @@ scene.js -> xwww scene run -> rendered frame -> xwww-daemon -> layer surface
 
 Requires `xwww` 0.13.1+ built with the `scene` feature (releases include it),
 a `wlr-layer-shell` compositor and CPU rasterization only.
+
+## Catalog
+
+The collection ships 21 scenes; their cards draw a shared palette swatch block
+at the position measured on the original 3840x2160 artwork
+(`x:1112 y:1104 w:1528 h:604`).
+
+| Scene | Art |
+|---|---|
+| `astro-palette` | Astronaut line art with live palette swatch cards. |
+| `astro-ascii` | ASCII-art astronaut (stencil alpha as ink coverage). |
+| `ascii-astro` | Refined ASCII render kept alongside the previous one. |
+| `matrix-rain` | Palette-driven glyph rain (`XSCRIPTORDEV` plus geometric glyphs). |
+| `kanji-rain` | Kana/kanji/Chinese glyph rain; needs `noto-fonts-cjk`. |
+| `cartesian-veil` | Cartesian plane, mirrored points and a revealed curve. |
+| `asymptote-veil` | Graph of `f(x) = 1/x` approaching both asymptotes. |
+| `fourier-synth` | Square wave rebuilt from its odd harmonics. |
+| `lissajous-orbit` | Parametric Lissajous ratios with a trailing head. |
+| `field-lines` | Rotating vector field with particles on closed orbits. |
+| `riemann-sum` | Left Riemann rectangles converging to the area. |
+| `bezier-mesh` | Three cubic Bézier meshes with a de Casteljau rider. |
+| `phase-portrait` | Damped pendulum in phase space. |
+| `monte-carlo` | π estimation by deterministic point throwing. |
+| `bifurcation` | Logistic map period doubling into chaos. |
+| `descent-path` | Gradient descent with contour ellipses and a path. |
+| `interference` | Two coherent sources with drifting nodal lines. |
+| `epicycle-veil` | Fifteen epicycles projecting a square wave. |
+| `matrix-veil` | Live 2×2 linear map with a transformed grid. |
+| `kepler-veil` | Eccentric Kepler orbit with the swept wedge. |
+| `complex-veil` | n-th roots of unity on the Argand plane. |
 
 ## Integration with davincix
 
@@ -140,6 +170,23 @@ All calls are methods of the global `canvas` object. Colors accept `#rgb`,
   before the display refresh rate (roughly 30-35 fps at 1080p).
 - Text is cached per glyph, family and color, but keep unique draws low.
 - Prefer `canvas.remap` and image assets over per-pixel work.
+- Hard limits: one synchronous frame at a time, a `--timeout-ms` budget
+  (100 ms by default, 2000 ms under davincix) and 32 MB of JavaScript memory
+  with a 1 MB stack.
+
+## Publishing a scene
+
+Scenes live under `scenes/` in
+[equisdots/background](https://github.com/equisdots/background). To contribute
+one:
+
+1. Add the directory with `scene.js` and `base.jpg`.
+2. Add a row to the catalog in `docs/interactive-scenes.md`.
+3. Add an entry to `CHANGELOG.md` under the current dated section.
+4. Regenerate thumbnails and test the transition locally:
+   `davincix thumbs` and `davincix set <dir> --transition decrypt`.
+5. Open a pull request; only submit artwork you own or that is explicitly
+   redistributable.
 
 ## Debugging
 

@@ -1,7 +1,7 @@
 ---
 title: Fondos de pantalla
 description: El núcleo de fondos davincix, xwww y mpvpaper, el selector de Quickshell, los proveedores de búsqueda y la presentación de diapositivas.
-order: 7
+order: 8
 section: wallpapers
 ---
 
@@ -36,9 +36,10 @@ usan el prefijo `000_`.
 ## CLI
 
 ```sh
-davincix set ~/.config/hypr/wallpapers/nord.png
-davincix set ~/.config/hypr/wallpapers/clip.mp4 --video
+davincix set <file|url|scene-dir> [--video] [--monitors all|A,B] \
+         [--transition name] [--thumb <poster>] [--notify] [--dry-run]
 davincix set ~/.config/hypr/wallpapers/astro-palette --transition decrypt
+davincix fetch --name <n> --map <f> --dest <f>
 
 davincix current
 davincix current --thumb-name
@@ -49,15 +50,21 @@ davincix search --clear
 davincix stop
 davincix rm ~/.config/hypr/wallpapers/nord.png
 davincix import ~/Downloads/*.jpg
-davincix slideshow start
-davincix slideshow status
+davincix slideshow start|stop|status [interval]
+davincix keys list
 davincix keys set PIXABAY_KEY <value>
 davincix paths
+davincix --version
 ```
 
 `set` acepta un archivo, una URL o un directorio de escena y resuelve el
-destino por sí mismo. `--transition` acepta el conjunto de xwww (`fade`,
+destino por sí mismo; `--monitors`, `--thumb`, `--notify` y `--dry-run`
+refinan la aplicación. `--transition` acepta el conjunto de xwww (`fade`,
 `wipe`, `glitch`, `decrypt` y más) más `random`; vacío significa aleatorio.
+`fetch` es el descargador que el selector llama tras elegir un resultado, y
+`keys` gestiona las claves de proveedor en `keys.conf`. El selector resuelve
+la CLI mediante `$DAVINCIX_CLI` y luego un `../kernel/davincix.sh` hermano, así
+que otros frontends solo necesitan la ruta.
 
 ## Anulaciones de entorno
 
@@ -67,8 +74,10 @@ destino por sí mismo. `--transition` acepta el conjunto de xwww (`fade`,
 | `DAVINCIX_CACHE_DIR` | `~/.cache/quickshell/wallpaper_picker` | Miniaturas, fondo actual y búsqueda. |
 | `DAVINCIX_STATE_DIR` | `~/.local/state/quickshell/wallpaper_picker` | Indicadores persistentes y `current_scene`. |
 | `DAVINCIX_RUN_DIR` | `$XDG_RUNTIME_DIR/quickshell/wallpaper_picker` | Archivos de control, bloqueos y PIDs. |
+| `DAVINCIX_LOG_DIR` | `$XDG_RUNTIME_DIR/quickshell/logs` | Registros del núcleo. |
 | `DAVINCIX_XWWW` | `~/.local/bin/xwww`, luego `PATH` | Binario del cliente. |
 | `DAVINCIX_XWWW_DAEMON` | `~/.local/bin/xwww-daemon`, luego `PATH` | Binario del demonio. |
+| `DAVINCIX_CLI` | — | Ruta explícita a `davincix.sh` que consume el selector. |
 
 ## El selector
 
@@ -91,7 +100,10 @@ Las descargas de búsqueda pasan por scripts de proveedor en `providers/`:
 | `pixabay` | `PIXABAY_KEY` | Vídeos de stock; mejor variante >= 1920x1080. |
 
 Las claves viven en `$DAVINCIX_STATE_DIR/keys.conf` o en el entorno. Los
-resultados se filtran a al menos 1920x1080 y se validan antes de conservarlos.
+resultados se filtran a al menos 1920x1080 y se validan (`content-type` más
+mime) antes de conservarlos. La paginación guarda un cursor por proveedor en
+`search_cursors/<source>`, y el proveedor activo se persiste en `search_source`
+para que `search --continue` pregunte a la misma fuente.
 
 ## Presentación de diapositivas
 
@@ -108,6 +120,25 @@ ejecución y estado. La presentación omite las escenas.
   en ejecución; aplicar una imagen o un vídeo lo elimina.
 - `thumbs/.manifest` y `thumbs/.source_dir` indexan la caché de miniaturas.
 - `search_map.txt` almacena `name|url` para los resultados de búsqueda.
+- `ddg_search_control` lleva `run`, `pause` o `stop`, escrito por la interfaz.
+- `search_cursors/<source>` y `search_source` persisten la paginación y el proveedor.
+- `slideshow.pid` y `slideshow_enabled` guardan el estado del demonio de diapositivas.
+- `keys.conf` (modo 600) almacena las claves de API de los proveedores.
+
+## Contribuir con fondos de pantalla
+
+El repositorio [background](https://github.com/equisdots/background) alberga la
+colección de fondos y el catálogo de escenas. Las imágenes se distribuyen como
+assets de release, nunca se rastrean en git:
+
+- Envíe solo imágenes creadas por usted o con licencia explícita para su
+  redistribución; se rechaza la procedencia poco clara.
+- JPEG (optimizado), 4K preferido y 2560x1440 mínimo, 16:9 o más ancho, menos de
+  unos 5 MB, sin marcas de agua.
+- Abra un PR o issue titulado `wallpaper: <nombre corto>`, adjunte la imagen e
+  incluya autor, fuente, licencia y una descripción breve.
+- Las releases publicadas incluyen `LICENSE` y `CREDITS.md`; las imágenes y la
+  documentación se licencian CC BY 4.0 y cada autor recibe crédito.
 
 ## Solución de problemas
 

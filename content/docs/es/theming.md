@@ -1,7 +1,7 @@
 ---
 title: Temas y paletas
 description: El sistema de paletas base16, la edición de paletas en vivo, los bordes de ventana y la propagación de temas entre aplicaciones con theme-sync.
-order: 6
+order: 7
 section: desktop
 ---
 
@@ -71,6 +71,13 @@ Esta ruta la leen el shell (`ui/bar/Colors.qml`, `core/Theme.qml`),
 slug de la paleta activa vive en `settings.json` bajo `bar.palette`; la forma
 heredada `dock.palette` se migra una vez y `x` es el último recurso, por lo que
 siempre debe existir.
+
+El conjunto `community/` se convierte desde las definiciones de esquemas
+base16 recopiladas por [tinted-theming](https://github.com/tinted-theming)
+(`base16-schemes` y `schemes`, MIT); cada archivo conserva el nombre original
+del esquema y la atribución de su autor, y las ranuras base16 se mapean a la
+disposición `color0`-`color15` de equisdots. Se incluyen solo como referencias
+de color, sin afiliación con los proyectos originales.
 
 La interfaz agrupa las paletas en tres secciones: X (12 integradas),
 Personalizadas (portes de la comunidad) y Usuario (paletas que usted cree).

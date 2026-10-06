@@ -61,6 +61,7 @@ Enlaces esenciales, todos definidos en `config/hypr/keybinds.lua`:
 | `SUPER + L` | Pantalla de bloqueo |
 | `SUPER + Escape` | Salir de Hyprland |
 | `Print` / `SUPER + Print` | Superposición de captura / captura completa |
+| `SHIFT + Print` / `SUPER + SHIFT + Print` | Superposición en modo edición / captura completa con edición |
 
 Los enlaces se declaran con la API de Lua:
 
@@ -99,6 +100,29 @@ desc|x|y|scale|mode
 cuando el kernel renombra su conector. `scripts/restore-monitors.sh` vuelve a
 aplicar el diseño poco después del inicio de sesión y lo reconcilia cada dos
 segundos. Los monitores desconocidos conservan el diseño automático comodín.
+
+### Atajos de monitores
+
+| Atajo | Acción |
+|---|---|
+| `SUPER + ALT + I` / `U` | Enfocar el monitor siguiente / anterior. |
+| `SUPER + ALT + SHIFT + I` / `U` | Mover la ventana al monitor siguiente / anterior. |
+| `SUPER + ALT + O` | Intercambiar espacios de trabajo entre monitores. |
+| `SUPER + ALT + P` | Mover el espacio de trabajo al monitor siguiente. |
+| `SUPER + ALT + M` | Abrir el gestor de monitores en rofi. |
+| `SUPER + ALT + SHIFT + M` | Mostrar información del monitor. |
+
+### Vincular espacios de trabajo
+
+Vincule un espacio de trabajo a un monitor físico por su descripción EDID en
+`~/.config/hypr/workspaces.conf`:
+
+```
+workspace = 1, monitor:desc:Your Monitor Description, default:true
+workspace = 2, monitor:desc:Your Monitor Description
+```
+
+`hyprctl monitors all` imprime la cadena de descripción de cada monitor.
 
 ### Escritorios unificados
 
@@ -143,16 +167,35 @@ Desplegados en `~/.config/hypr/scripts/`:
 
 ## Capturas de pantalla y grabación
 
-`Print` abre la superposición interactiva (selección de área, pantalla completa,
-ventana activa, escaneo QR, lupa, modo edición). La grabación usa
-`gpu-screen-recorder` con pistas separadas de escritorio y micrófono y escribe
-archivos MP4 en `~/Videos/Recordings/`.
+`Print` abre la superposición interactiva: selección de área con dimensiones en
+píxeles en vivo y ajuste a ventanas, pantalla completa, ventana activa, un
+conmutador de grabación con volumen independiente de escritorio y micrófono,
+escaneo QR mediante `zbarimg`, lupa y modo edición mediante `satty`. La
+grabación usa `gpu-screen-recorder` con enrutado de audio virtual por PipeWire
+y escribe archivos MP4 en `~/Videos/Recordings/`. Dependencias de la
+superposición: `grim`, `slurp`, `satty`, `gpu-screen-recorder`, `zbarimg`,
+`pactl`/PipeWire, `wl-copy` y `ffmpeg`.
 
 ## Modos de GPU
 
 En portátiles NVIDIA Optimus, `SUPER + ALT + G` alterna los modos integrado,
 híbrido y NVIDIA; `SUPER + ALT + SHIFT + G` abre un selector. Se requiere
-reiniciar o cerrar la sesión después del cambio.
+reiniciar o cerrar la sesión después del cambio. El instalador puede añadir
+una regla sudo sin contraseña para envycontrol
+(`%wheel ALL=(ALL) NOPASSWD: /usr/bin/envycontrol -s *`) para que `gpu-mode.sh`
+cambie de modo sin preguntar, y `gpu-mode.sh status` imprime JSON (modo, icono,
+tooltip) para integraciones en la barra.
+
+## Neovim
+
+Neovim no está incluido en el repositorio: el instalador clona
+[xscriptor-colors/nvim](https://github.com/xscriptor-colors/nvim) en
+`~/.config/nvim` (actualícelo con `git pull` allí). La configuración trae sus
+propios módulos `lua/config/`, `lua/plugins/` y un motor de temas en
+`lua/themes/`; `theme-sync` regenera `lua/themes/palettes.lua` y
+`lua/config/theme.lua` desde `dock/palettes`, de modo que el editor sigue la
+misma paleta que la barra, kitty, starship y VS Code. Tras el primer arranque
+ejecute `:Lazy` para instalar plugins y `:Mason` para los servidores LSP.
 
 ## Siguientes pasos
 

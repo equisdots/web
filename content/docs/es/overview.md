@@ -15,7 +15,8 @@ coloca y actualiza en conjunto.
 - Una sesión de Hyprland configurada en Lua: entorno, atajos de teclado,
   animaciones, reglas de ventanas, espacios de trabajo y arranque automático.
 - Una interfaz Quickshell: barra, emergentes, paneles, editor de ajustes,
-  widgets de escritorio y pantalla de bloqueo.
+  widgets de escritorio, pantalla de bloqueo y la isla/notch de mascotas Nyx
+  con su dock de centro de control.
 - Un sistema de paletas base16 compartido por el shell, los bordes de ventana,
   las terminales, los editores y los navegadores.
 - Un núcleo (kernel) de fondos de pantalla con imágenes fijas, vídeos, rotación
@@ -30,7 +31,9 @@ coloca y actualiza en conjunto.
 |---|---|---|
 | [hyprland](https://github.com/equisdots/hyprland) | Configuración del compositor (Lua), scripts, instalador | `~/.config/hypr` |
 | [shell](https://github.com/equisdots/shell) | Interfaz Quickshell (barra, paneles, editor, emergentes) | `~/.config/hypr/scripts/quickshell` |
+| [nyx](https://github.com/equisdots/nyx) | Isla/notch de mascotas y dock de centro de control | `.../quickshell/ui/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Paletas de color (conjunto JSON y esquema) | `~/.config/hypr/scripts/quickshell/dock/palettes` |
+| [background](https://github.com/equisdots/background) | Colección curada de fondos y catálogo de escenas | publicado como `background.zip` |
 | [davincix](https://github.com/equisdots/davincix) | Núcleo de descarga y aplicación de fondos | `~/.local/bin/davincix` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Regeneración de temas entre aplicaciones | `~/.local/bin/theme-sync` |
 | [timex](https://github.com/equisdots/timex) | Motor de hora y clima más interfaz de calendario | `~/.local/bin/timex`, `.../quickshell/ui/timex` |
@@ -83,6 +86,7 @@ Hack Nerd Font. `dots doctor` informa exactamente de lo que falta. Consulte
 - [Escritorio Hyprland](/es/docs/desktop) - módulos de configuración, atajos de
   teclado, monitores.
 - [Shell Quickshell](/es/docs/shell) - barra, paneles, widgets e IPC.
+- [Isla de mascotas Nyx](/es/docs/nyx) - especies, isla/notch y el dock.
 - [Temas y paletas](/es/docs/theming) - paletas base16 y theme-sync.
 - [Fondos de pantalla](/es/docs/wallpapers) - davincix, xwww y el selector.
 - [Escenas interactivas](/es/docs/scenes) - creación y ejecución de fondos JS.

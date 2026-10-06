@@ -1,7 +1,7 @@
 ---
 title: Theming and palettes
 description: The base16 palette system, live palette editing, window borders and cross-app theme propagation with theme-sync.
-order: 6
+order: 7
 section: desktop
 ---
 
@@ -47,6 +47,13 @@ The repository layout:
 | `community/` | Base16 ports of well-known terminal themes, with attribution |
 | `index.json` | Ordered list with display name and preview colors; drives the panel |
 | `schema.json` | Contract v1 |
+
+The `community/` set is converted from the base16 scheme definitions
+collected by [tinted-theming](https://github.com/tinted-theming)
+(`base16-schemes` and `schemes`, MIT); each file keeps its original scheme
+name and author attribution, and the base16 slots map onto the equisdots
+`color0`-`color15` layout. They are included as color references only, with no
+affiliation to the original projects.
 
 Validate a checkout with:
 

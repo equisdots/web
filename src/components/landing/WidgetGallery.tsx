@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { SectionHeader } from "./SectionHeader";
 import {
   BarMock,
   DavincixMock,
@@ -28,23 +29,26 @@ export function WidgetGallery({ locale }: { locale: Locale }) {
   const dict = getDict(locale);
 
   return (
-    <section className="border-t border-border bg-surface/30">
+    <section className="border-t border-border">
       <div className="container-page py-16">
-        <div className="max-w-2xl">
-          <h2 className="text-2xl font-semibold tracking-tight">{dict.home.widgetsTitle}</h2>
-          <p className="mt-2 text-muted">{dict.home.widgetsSubtitle}</p>
-        </div>
+        <SectionHeader
+          index="02"
+          label={dict.home.labels.widgets}
+          title={dict.home.widgetsTitle}
+          subtitle={dict.home.widgetsSubtitle}
+        />
 
-        <div className="mt-10 grid gap-x-6 gap-y-10 md:grid-cols-2">
-          {ITEMS.map(({ key, Component }) => (
+        <div className="mt-12 grid gap-x-6 gap-y-10 md:grid-cols-2">
+          {ITEMS.map(({ key, Component }, index) => (
             <figure key={key}>
-              <div className="rounded-2xl border border-border bg-bg p-3">
+              <div className="mb-3 flex items-baseline justify-between gap-4 border-t border-border pt-4">
+                <h3 className="text-sm font-medium">{dict.widgets[key]}</h3>
+                <span className="index">fig. {String(index + 1).padStart(2, "0")}</span>
+              </div>
+              <div className="border border-border bg-bg p-3">
                 <Component />
               </div>
-              <figcaption className="mt-4">
-                <h3 className="text-sm font-medium">{dict.widgets[key]}</h3>
-                <p className="mt-1 text-sm leading-6 text-muted">{dict.widgetNotes[key]}</p>
-              </figcaption>
+              <figcaption className="mt-3 text-sm leading-6 text-muted">{dict.widgetNotes[key]}</figcaption>
             </figure>
           ))}
         </div>

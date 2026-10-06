@@ -1,7 +1,7 @@
 ---
 title: Arquitectura y repositorios
 description: Cómo encajan los repositorios de equisdots, los contratos compartidos en los que se apoyan y las decisiones que hay detrás.
-order: 10
+order: 11
 section: more
 ---
 
@@ -18,7 +18,9 @@ las piezas.
 | [dots](https://github.com/equisdots/dots) | Meta instalador, actualizador, diagnóstico | `~/.local/bin/dots` |
 | [hyprland](https://github.com/equisdots/hyprland) | Configuración y scripts del compositor | `~/.config/hypr` |
 | [shell](https://github.com/equisdots/shell) | Interfaz Quickshell | `~/.config/hypr/scripts/quickshell` |
+| [nyx](https://github.com/equisdots/nyx) | Isla/notch de mascotas y dock de centro de control | `.../quickshell/ui/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Datos de paletas y esquema | `.../quickshell/dock/palettes` |
+| [background](https://github.com/equisdots/background) | Fondos curados y catálogo de escenas | asset de release `background.zip` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Motor de temas entre aplicaciones | `~/.local/bin/theme-sync` |
 | [davincix](https://github.com/equisdots/davincix) | Núcleo de fondos de pantalla | `~/.local/bin/davincix` |
 | [timex](https://github.com/equisdots/timex) | Motor de clima/hora e interfaz | `~/.local/bin/timex`, `.../quickshell/ui/timex` |
