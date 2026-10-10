@@ -31,7 +31,8 @@ scene.js -> xwww scene run -> rendered frame -> xwww-daemon -> layer surface
 
 Requiere `xwww` 0.13.1+ compilado con la característica `scene` (las versiones
 publicadas la incluyen), un compositor con `wlr-layer-shell` y solo
-rasterización por CPU.
+rasterización por CPU. Las escenas corren igual en Hyprland y
+[niri](/es/docs/niri): ambos ofrecen la capa sobre la que dibuja el demonio.
 
 ## Catálogo
 

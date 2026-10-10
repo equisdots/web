@@ -10,8 +10,17 @@ notch de centro de control autocontenidos. Se despliega en el shell como
 `ui/nyx/` (el instalador `dots` hace la copia) y lo envuelve `ui/Mascots.qml`,
 que inyecta la paleta viva y las rutas. Nyx nunca importa el núcleo del shell:
 la paleta, la ruta de ajustes y los datos en vivo llegan como propiedades, y
-los únicos requisitos de ejecución son Quickshell, Hyprland (`hyprctl
-cursorpos`, socket2) y una Nerd Font.
+los únicos requisitos de ejecución son Quickshell, un compositor soportado
+(Hyprland o niri) y una Nerd Font.
+
+Sobre niri la misma isla corre a través del overlay
+[`nyx-niri`](https://github.com/equisdots/nyx-niri). niri **no tiene IPC para la
+posición global del puntero**, así que el bucle `hyprctl cursorpos` de Hyprland
+se detiene y las mascotas quedan inactivas (pupilas al centro); los eventos de
+ventana llegan desde `niri msg --json event-stream`. El seguimiento global del
+cursor bajo niri necesita acceso privilegiado a input crudo y es opcional
+mediante `NYX_CURSOR_PROVIDER` (un comando cuyo stdout emite líneas `x,y`). Ver
+[Compositor niri](/es/docs/niri).
 
 ## Qué es
 

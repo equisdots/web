@@ -21,8 +21,9 @@ núcleo decide cómo.
 | `davincix` | CLI del núcleo: listado, aplicación, estado, búsqueda y presentación. |
 | Selector de Quickshell | `SUPER + W`, cuadrícula de tarjetas con filtros y transiciones. |
 
-El demonio se inicia desde `autostart.lua` y el shell lo reinicia tras los
-cambios de tema.
+El demonio se inicia desde `autostart.lua` de Hyprland (o `autostart.kdl` de
+niri) y el shell lo reinicia tras los cambios de tema. El stack de fondos es
+neutral al compositor: corre igual en Hyprland y [niri](/es/docs/niri).
 
 ## El directorio de fondos de pantalla
 

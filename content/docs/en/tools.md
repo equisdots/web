@@ -188,6 +188,12 @@ theme lives under `theme/x/` with `metadata.desktop` and honors
 `dots doctor` verifies the config file, the static theme (no `Colors.qml`) and
 that SDDM is the active display manager.
 
+Separately, [niri-login](https://github.com/equisdots/niri-login) installs the
+Wayland session entry so display managers (SDDM, GDM, any greeter reading
+`wayland-sessions`) list "Niri" at login. It is a system install (sudo) and is
+skipped when the distro already ships an entry. `dotsniri login install|remove|status`
+runs it; see [niri compositor](/docs/niri).
+
 ## Related pages
 
 - [Quickshell shell](/docs/shell) for the settings panel xturing mirrors.

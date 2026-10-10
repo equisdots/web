@@ -11,6 +11,11 @@ Lua desde Hyprland 0.55. Cada aspecto es un módulo cargado con `require()`, de
 modo que los atajos de teclado, las animaciones o las reglas pueden editarse de
 forma aislada sin tocar el resto.
 
+El mismo escritorio corre también sobre **niri**, el compositor de
+scrollable-tiling; allí la configuración es KDL y el shell, las paletas y Nyx
+compartidos se reutilizan sin cambios. Ver [Compositor niri](/es/docs/niri) para
+ese frontend. Esta página cubre la sesión de Hyprland.
+
 ## Estructura de la configuración
 
 | Archivo | Propósito |

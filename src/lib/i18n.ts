@@ -103,7 +103,7 @@ const en: Dict = {
     title: "equisdots",
     dots: "dots",
     subtitle:
-      "The X desktop: an Arch-based stack with Hyprland in the Lua era, a Quickshell shell, a live palette engine and a wallpaper kernel with interactive scenes.",
+      "The X desktop: an Arch-based stack with Hyprland in the Lua era and a niri port, a Quickshell shell, a live palette engine and a wallpaper kernel with interactive scenes.",
     install: "Install with one command",
     copy: "Copy",
     copied: "Copied",
@@ -126,6 +126,7 @@ const en: Dict = {
   },
   highlights: [
     { title: "Hyprland, Lua era", body: "Compositor configuration written against the Lua API (0.55+), split into reusable modules for keybinds, rules, animations and colors." },
+    { title: "niri, too", body: "The same desktop also runs on niri: the shell, palettes, widgets and the Nyx mascot are shared, and a separate dotsniri meta manages the niri stack." },
     { title: "Live palette engine", body: "base16 palettes with semantic roles: switching one recolors the bar, window borders, widgets and running scenes without a reload." },
     { title: "Interactive scenes", body: "JavaScript wallpapers rendered by the xwww engine: procedural art that reacts to the palette and the clock." },
     { title: "Quickshell shell", body: "Bar with zones, a full settings editor, panels, popups and floating desktop widgets with a visual redactor." },
@@ -272,7 +273,7 @@ const es: Dict = {
     title: "equisdots",
     dots: "dots",
     subtitle:
-      "El escritorio X: un stack sobre Arch con Hyprland en la era Lua, un shell Quickshell, un motor de paletas en vivo y un kernel de fondos con escenas interactivas.",
+      "El escritorio X: un stack sobre Arch con Hyprland en la era Lua y un port a niri, un shell Quickshell, un motor de paletas en vivo y un kernel de fondos con escenas interactivas.",
     install: "Instala con un solo comando",
     copy: "Copiar",
     copied: "Copiado",
@@ -295,6 +296,7 @@ const es: Dict = {
   },
   highlights: [
     { title: "Hyprland, era Lua", body: "Configuración del compositor escrita contra la API Lua (0.55+), dividida en módulos reutilizables para atajos, reglas, animaciones y colores." },
+    { title: "niri, también", body: "El mismo escritorio corre también sobre niri: el shell, las paletas, los widgets y la mascota Nyx son compartidos, y un meta aparte, dotsniri, gestiona el stack de niri." },
     { title: "Motor de paletas en vivo", body: "Paletas base16 con roles semánticos: cambiar una recolorea la barra, los bordes de ventana, los widgets y las escenas activas sin recargar." },
     { title: "Escenas interactivas", body: "Fondos en JavaScript renderizados por el motor de xwww: arte procedural que reacciona a la paleta y al reloj." },
     { title: "Shell Quickshell", body: "Barra con zonas, editor de ajustes completo, paneles, popups y widgets flotantes de escritorio con redactor visual." },

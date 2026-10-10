@@ -6,10 +6,10 @@ section: desktop
 ---
 
 Los colores de equisdots provienen de paletas JSON planas que consumen el
-shell, los bordes de ventana de Hyprland, las escenas de fondos de pantalla y
-todas las aplicaciones que gestiona theme-sync. No hay extracción de color por
-fondo de pantalla: la paleta que elija es la que usan todos los componentes
-hasta que la cambie.
+shell, los bordes de ventana del compositor (Hyprland o [niri](/es/docs/niri)),
+las escenas de fondos de pantalla y todas las aplicaciones que gestiona
+theme-sync. No hay extracción de color por fondo de pantalla: la paleta que elija
+es la que usan todos los componentes hasta que la cambie.
 
 ## Contrato de paleta
 
@@ -152,11 +152,20 @@ Los bordes de ventana siguen la paleta por defecto:
 `config/hypr/colors.lua` deriva los valores predeterminados en tiempo de carga
 del JSON de la paleta activa y exporta `X.active_border`, `X.inactive_border` y
 los colores en sí. El shell envía las actualizaciones en vivo mediante el
-adaptador del compositor:
+adaptador del compositor (`core/Compositor.qml`), así que el mecanismo difiere
+por compositor:
 
 ```sh
+# Hyprland: config en vivo mediante hyprctl
 hyprctl eval 'hl.config({ general = { col = { active_border = "rgb(eab308)" } } })'
+
+# niri: escribe generated/borders.kdl y recarga (sin hyprctl eval)
 ```
+
+Bajo niri el borde parte de un gris neutro (el `color8` apagado de la paleta,
+no el acento llamativo) y el focus-ring se desactiva para que toda ventana
+conserve un borde, igual que en Hyprland. Ver
+[Compositor niri](/es/docs/niri).
 
 ## Roles semánticos
 

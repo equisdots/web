@@ -24,6 +24,46 @@ export const REPOS: Repo[] = [
     },
   },
   {
+    name: "niri",
+    url: "https://github.com/equisdots/niri",
+    description: {
+      en: "niri compositor configuration (KDL), session scripts and session/portal files.",
+      es: "Configuración del compositor niri (KDL), scripts de sesión y ficheros de sesión/portal.",
+    },
+  },
+  {
+    name: "niri-meta",
+    url: "https://github.com/equisdots/niri-meta",
+    description: {
+      en: "Meta installer and updater (dotsniri) for the niri stack.",
+      es: "Meta instalador y actualizador (dotsniri) del stack de niri.",
+    },
+  },
+  {
+    name: "niri-shell",
+    url: "https://github.com/equisdots/niri-shell",
+    description: {
+      en: "Overlay that makes the shared Quickshell shell compositor-neutral.",
+      es: "Overlay que hace neutral al compositor el shell Quickshell compartido.",
+    },
+  },
+  {
+    name: "nyx-niri",
+    url: "https://github.com/equisdots/nyx-niri",
+    description: {
+      en: "Overlay that makes the Nyx mascot island compositor-neutral.",
+      es: "Overlay que hace neutral al compositor la isla de mascotas Nyx.",
+    },
+  },
+  {
+    name: "niri-login",
+    url: "https://github.com/equisdots/niri-login",
+    description: {
+      en: "Wayland session entry so display managers list \"Niri\".",
+      es: "Entrada de sesión Wayland para que los gestores de pantalla listen \"Niri\".",
+    },
+  },
+  {
     name: "shell",
     url: "https://github.com/equisdots/shell",
     description: {

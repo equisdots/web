@@ -15,7 +15,8 @@ todos los repositorios.
 
 - Arch Linux o una derivada (EndeavourOS, Manjaro, CachyOS, Garuda).
 - Linux 6.x o posterior recomendado, 4 GB de RAM mínimo, 8 GB recomendado.
-- Hyprland 0.55 o posterior (la configuración es Lua).
+- Hyprland 0.55 o posterior (la configuración es Lua), o niri 26.04 o posterior
+  para la sesión de niri.
 - `git`, `rsync`, `jq`, Quickshell (`qs`), `xwww-daemon`, `mpvpaper` y la
   Hack Nerd Font.
 
@@ -120,6 +121,26 @@ XWWW_VERSION=v0.13.1 ./scripts/install-xwww.sh
 FORCE_XWWW=1 ./install.sh   # reinstall an existing binary
 ```
 
+## La sesión de niri (dotsniri)
+
+El mismo escritorio corre sobre el compositor [niri](https://github.com/YaLTeR/niri).
+El stack de niri tiene su propio meta instalador, `dotsniri`, separado de `dots`
+y con su propia raíz de clones (`~/.local/share/equisdots-niri`), así que una
+instalación de `dots` en paralelo nunca se modifica:
+
+```sh
+bash <(curl -fsSL https://raw.githubusercontent.com/equisdots/niri-meta/main/bin/dotsniri) install
+dotsniri doctor            # check binaries, clones, deploy and config
+dotsniri desktop niri      # select niri as the default session
+```
+
+`dotsniri` despliega la configuración del compositor niri (`~/.config/niri`),
+los overlays del shell que hacen neutral al compositor la interfaz Quickshell
+compartida, y la entrada de sesión del gestor de pantalla. Reutiliza la raíz
+compartida: `settings.json`, paletas, fondos y el shell permanecen en
+`~/.config/hypr`, así que Hyprland y niri corren en paralelo desde una única
+configuración. Ver [Compositor niri](/es/docs/niri) para el panorama completo.
+
 ## Verificar la instalación
 
 ```sh
@@ -136,7 +157,7 @@ atención.
 ## Primer inicio de sesión
 
 1. Reinicie, especialmente si el controlador de NVIDIA cambió.
-2. Elija Hyprland en el gestor de pantalla (`SUPER + Return` abre kitty,
+2. Elija Hyprland (o Niri) en el gestor de pantalla (`SUPER + Return` abre kitty,
    `SUPER + D` el lanzador).
 3. El primer arranque inicializa el demonio de fondos de pantalla, elige un
    fondo de pantalla aleatorio e inicia los servicios en segundo plano.
@@ -171,5 +192,5 @@ gestionados; el tema de inicio de sesión tiene su propio
 ## Siguientes pasos
 
 Lea [Actualización y diagnóstico](/es/docs/updating) para mantener la instalación
-sincronizada y después [Escritorio Hyprland](/es/docs/desktop) para la superficie
-de configuración.
+sincronizada y después [Escritorio Hyprland](/es/docs/desktop) o
+[Compositor niri](/es/docs/niri) para la superficie de configuración.

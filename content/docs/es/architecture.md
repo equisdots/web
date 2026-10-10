@@ -17,6 +17,11 @@ las piezas.
 |---|---|---|
 | [dots](https://github.com/equisdots/dots) | Meta instalador, actualizador, diagnóstico | `~/.local/bin/dots` |
 | [hyprland](https://github.com/equisdots/hyprland) | Configuración y scripts del compositor | `~/.config/hypr` |
+| [niri](https://github.com/equisdots/niri) | Configuración (KDL) y scripts del compositor niri | `~/.config/niri` |
+| [niri-meta](https://github.com/equisdots/niri-meta) | Meta instalador, actualizador, diagnóstico (`dotsniri`) | `~/.local/bin/dotsniri` |
+| [niri-shell](https://github.com/equisdots/niri-shell) | Overlay del shell (backend Niri) | se fusiona en el shell |
+| [nyx-niri](https://github.com/equisdots/nyx-niri) | Overlay de Nyx (neutral al compositor) | se fusiona en el shell |
+| [niri-login](https://github.com/equisdots/niri-login) | Entrada de sesión Wayland | `/usr/share/wayland-sessions` |
 | [shell](https://github.com/equisdots/shell) | Interfaz Quickshell | `~/.config/hypr/scripts/quickshell` |
 | [nyx](https://github.com/equisdots/nyx) | Isla/notch de mascotas y dock de centro de control | `.../quickshell/ui/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Datos de paletas y esquema | `.../quickshell/dock/palettes` |
@@ -27,9 +32,54 @@ las piezas.
 | [xturing](https://github.com/equisdots/xturing) | Interfaz de ajustes de terminal | `~/.local/bin/xturing` |
 | [login](https://github.com/equisdots/login) | Pantalla de inicio de sesión SDDM | `/usr/share/sddm/themes/x` |
 
-Los clones gestionados viven en `~/.local/share/equisdots/<repo>`. Los
-wrappers de `~/.local/bin` ejecutan los motores clonados, por lo que
-`dots update` cambia el comportamiento sin tocar el wrapper.
+Los clones gestionados viven en `~/.local/share/equisdots/<repo>` (el stack de
+niri usa `~/.local/share/equisdots-niri/<repo>`). Los wrappers de
+`~/.local/bin` ejecutan los motores clonados, por lo que `dots update` cambia el
+comportamiento sin tocar el wrapper.
+
+`hyprland` y `niri` son los dos frontends de compositor; `shell`, `nyx`,
+`palettes`, `theme-sync`, `background`, `timex`, `davincix` y `login` son
+compartidos por ambos.
+
+## Un shell, dos compositores
+
+El repositorio `shell` es Hyprland-primero; `niri-shell` y `nyx-niri` son
+overlays que añaden lo que niri necesita y dejan intacto todo lo demás. El meta
+de niri los fusiona en el shell desplegado, de modo que un solo árbol sirve a
+ambas sesiones:
+
+```
+shell (base)  +  niri-shell  +  nyx-niri  =  ~/.config/hypr/scripts/quickshell
+```
+
+`core/Compositor.qml` no tiene ningún compositor fijo. Lee el entorno y elige
+`core/compositors/Niri.qml` cuando `XDG_CURRENT_DESKTOP` contiene `niri` o hay
+un `NIRI_SOCKET` definido; en caso contrario,
+`core/compositors/Hyprland.qml`. Ambos backends implementan la misma superficie
+— `workspacesCommand`, `keyboardCommand`, `focusCommand`, `setWindowBorders`,
+`switchWorkspace`, `cycleKeyboardLayout` — más las llamadas neutras de
+persistencia de `core/Config.qml` (`persistKeybinds`, `persistStartup`,
+`applyMonitors`, `resetMonitors`, `reload`). Los widgets nunca ramifican por
+compositor.
+
+La raíz de datos compartida se queda en `~/.config/hypr` en ambos compositores
+(ajustes, paletas, fondos, shell); solo la salida del compositor se mueve a
+`~/.config/niri`. Los scripts de niri leen la raíz compartida a través de
+`EQUISDOTS_CONFIG_DIR`.
+
+| Aspecto | Hyprland | niri |
+|---|---|---|
+| Espacios | `hyprctl` + `.socket2.sock` | `niri msg --json event-stream` |
+| Bordes | `hyprctl eval` | `generated/borders.kdl` + recarga |
+| Atajos / startup / apariencia | `config/*.lua` + recarga | `generated/user-*.kdl` + recarga |
+| Efectos / monitores | `hyprctl getoption/eval`, `hl.monitor` | `generated/*.kdl` + recarga |
+
+Los dos meta instaladores son independientes: `dots` posee el stack de Hyprland
+(`~/.local/share/equisdots`) y `dotsniri` el de niri
+(`~/.local/share/equisdots-niri`), y ambos conviven. Los overlays son
+condicionales y reversibles: un archivo compartido solo se reemplaza por su
+variante niri mientras se selecciona la sesión niri. Ver
+[Compositor niri](/es/docs/niri).
 
 ## Flujo de configuración
 
@@ -121,6 +171,11 @@ comandos.
 - **Las escenas se renderizan en el cliente xwww**: el demonio sigue siendo un
   simple consumidor de fotogramas y el sandbox mantiene el código de las
   escenas solo en CPU, sin E/S ni entrada.
+- **Dos frontends de compositor, un shell**: `hyprland` y `niri` son
+  intercambiables tras `core/Compositor.qml`; el shell, las paletas y Nyx son
+  compartidos, la raíz de datos compartida se queda en `~/.config/hypr`, y el
+  código específico de niri se distribuye como overlays reversibles
+  (`niri-shell`, `nyx-niri`).
 - **Sin CI**: cada repositorio incluye un script de comprobación local, que se
   ejecuta antes de hacer push.
 
@@ -130,6 +185,8 @@ comandos.
 |---|---|---|
 | shell | `scripts/check.sh` | `qmllint` sobre QML, `node --check` sobre JS |
 | hyprland | `scripts/check.sh` | `luac -p` sobre Lua, `bash -n` sobre scripts |
+| niri | `scripts/check.sh` | `bash -n` sobre scripts, balance de llaves KDL |
+| niri-meta | `dotsniri doctor --self-test` | `bash -n` del toolkit (funciona sin niri) |
 | palettes | `scripts/check.sh` | Consistencia del esquema y de `index.json` |
 | theme-sync | `scripts/check.sh` | `compileall` más una prueba de humo de la CLI |
 | xturing | `scripts/check.sh` | `cargo fmt`, clippy y pruebas |

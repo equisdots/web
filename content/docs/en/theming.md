@@ -5,10 +5,11 @@ order: 7
 section: desktop
 ---
 
-Colors in equisdots come from plain JSON palettes consumed by the shell,
-Hyprland's window borders, the wallpaper scenes and every application that
-theme-sync manages. There is no per-wallpaper color extraction: the palette
-you pick is the palette every component uses until you change it.
+Colors in equisdots come from plain JSON palettes consumed by the shell, the
+compositor's window borders (Hyprland or [niri](/docs/niri)), the wallpaper
+scenes and every application that theme-sync manages. There is no
+per-wallpaper color extraction: the palette you pick is the palette every
+component uses until you change it.
 
 ## Palette contract
 
@@ -146,11 +147,19 @@ Window borders follow the palette by default:
 
 `config/hypr/colors.lua` derives load-time defaults from the active palette
 JSON and exports `X.active_border`, `X.inactive_border` and the colors
-themselves. The shell pushes live updates through the compositor adapter:
+themselves. The shell pushes live updates through the compositor adapter
+(`core/Compositor.qml`), so the mechanism differs per compositor:
 
 ```sh
+# Hyprland: live config through hyprctl
 hyprctl eval 'hl.config({ general = { col = { active_border = "rgb(eab308)" } } })'
+
+# niri: write generated/borders.kdl and reload (no hyprctl eval)
 ```
+
+Under niri the border defaults to a neutral grey (the palette's muted `color8`,
+not the loud accent) and the focus-ring is disabled so every window keeps a
+border, matching the Hyprland look. See [niri compositor](/docs/niri).
 
 ## Semantic roles
 

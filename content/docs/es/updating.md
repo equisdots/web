@@ -28,6 +28,36 @@ dots doctor
 dots list
 ```
 
+## El stack de niri (dotsniri)
+
+La sesión de niri tiene su propio meta instalador, `dotsniri`, paralelo a
+`dots`. Usa una raíz de clones aparte (`~/.local/share/equisdots-niri`) y nunca
+toca una instalación de `dots` en paralelo, así que los dos stacks conviven en
+una máquina.
+
+| Comando | Acción |
+|---|---|
+| `dotsniri install` | Clonar/actualizar y desplegar el stack de niri (repos propios + `shell`/`nyx` compartidos). |
+| `dotsniri update` | Descargar los repos propios más las bases compartidas `shell`/`nyx` y volver a desplegar. |
+| `dotsniri deploy` | Volver a desplegar desde los clones existentes (reaplica los overlays tras un `dots update`). |
+| `dotsniri desktop <niri\|hyprland\|both>` | Fijar la sesión por defecto y aplicar o retirar los overlays del shell. |
+| `dotsniri login <install\|remove\|status>` | Gestionar la entrada de sesión del gestor de pantalla (vía `niri-login`, sudo). |
+| `dotsniri system [--apply]` | Instalar paquetes de la distro (niri, portales, ...). |
+| `dotsniri doctor` | Comprobar binarios, clones, deploy, el backend del shell y `niri validate`. |
+| `dotsniri doctor --self-test` | Comprobar la sintaxis del toolkit; funciona sin niri. |
+| `dotsniri reset` | Reinstalación limpia forzada del deploy de niri (elimina los clones propios). |
+
+```sh
+bash <(curl -fsSL https://raw.githubusercontent.com/equisdots/niri-meta/main/bin/dotsniri) install
+dotsniri doctor
+dotsniri desktop niri
+```
+
+Los overlays del shell son condicionales y reversibles: un archivo compartido
+solo se reemplaza por su variante niri mientras se selecciona la sesión niri, y
+`dotsniri deploy` los reaplica cuando `dots update` reescribe el shell. Ver
+[Compositor niri](/es/docs/niri).
+
 ## Qué hace dots update
 
 Para cada repositorio de la organización (`dots`, `palettes`, `theme-sync`,
