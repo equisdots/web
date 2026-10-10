@@ -14,7 +14,8 @@ palettes, engines) from every repository.
 
 - Arch Linux or a derivative (EndeavourOS, Manjaro, CachyOS, Garuda).
 - Linux 6.x or newer recommended, 4 GB RAM minimum, 8 GB recommended.
-- Hyprland 0.55 or newer (the configuration is Lua).
+- Hyprland 0.55 or newer (the configuration is Lua), or niri 26.04 or newer for
+  the niri session.
 - `git`, `rsync`, `jq`, Quickshell (`qs`), `xwww-daemon`, `mpvpaper` and the
   Hack Nerd Font.
 
@@ -113,6 +114,26 @@ XWWW_VERSION=v0.13.1 ./scripts/install-xwww.sh
 FORCE_XWWW=1 ./install.sh   # reinstall an existing binary
 ```
 
+## The niri session (dotsniri)
+
+The same desktop runs on the [niri](https://github.com/YaLTeR/niri) compositor.
+The niri stack has its own meta installer, `dotsniri`, which is separate from
+`dots` and uses its own clone root (`~/.local/share/equisdots-niri`), so a
+parallel `dots` install is never modified:
+
+```sh
+bash <(curl -fsSL https://raw.githubusercontent.com/equisdots/niri-meta/main/bin/dotsniri) install
+dotsniri doctor            # check binaries, clones, deploy and config
+dotsniri desktop niri      # select niri as the default session
+```
+
+`dotsniri` deploys the niri compositor config (`~/.config/niri`), the shell
+overlays that make the shared Quickshell UI compositor-neutral, and the
+display-manager session entry. It reuses the shared root: `settings.json`,
+palettes, wallpapers and the shell stay under `~/.config/hypr`, so Hyprland and
+niri run side by side from one configuration. See
+[niri compositor](/docs/niri) for the full picture.
+
 ## Verify the installation
 
 ```sh
@@ -128,7 +149,7 @@ should end without missing items. Every `!` line names what needs attention.
 ## First login
 
 1. Reboot, especially if the NVIDIA driver changed.
-2. Pick Hyprland at the display manager (`SUPER + Return` opens kitty,
+2. Pick Hyprland (or Niri) at the display manager (`SUPER + Return` opens kitty,
    `SUPER + D` the launcher).
 3. The first boot initializes the wallpaper daemon, picks a random wallpaper
    and starts the background services.
@@ -158,4 +179,5 @@ has its own `./install.sh --uninstall` in [equisdots/login](https://github.com/e
 ## Next steps
 
 Read [Updating and diagnosing](/docs/updating) to keep the installation in
-sync, then [Hyprland desktop](/docs/desktop) for the configuration surface.
+sync, then [Hyprland desktop](/docs/desktop) or [niri compositor](/docs/niri)
+for the configuration surface.

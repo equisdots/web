@@ -20,8 +20,10 @@ kernel decides how.
 | `davincix` | CLI kernel: listing, applying, state, search, slideshow. |
 | Quickshell picker | `SUPER + W`, card grid with filters and transitions. |
 
-The daemon is started from `autostart.lua` and restarted by the shell after
-theme changes.
+The daemon is started from Hyprland's `autostart.lua` (or niri's
+`autostart.kdl`) and restarted by the shell after theme changes. The wallpaper
+stack is compositor-agnostic: it runs the same on Hyprland and
+[niri](/docs/niri).
 
 ## The wallpaper directory
 

@@ -6,14 +6,18 @@ section: start
 ---
 
 equisdots es un escritorio Wayland completo para Arch Linux construido en torno
-a Hyprland, el shell Quickshell y el demonio de fondos de pantalla xwww. Cada
-pieza es su propio repositorio, y un único meta instalador, `dots`, los clona,
-coloca y actualiza en conjunto.
+a Hyprland, el shell Quickshell y el demonio de fondos de pantalla xwww. El mismo
+escritorio corre también sobre **niri**, el compositor de scrollable-tiling:
+barra, paneles, widgets, editor de ajustes, pantalla de bloqueo y la mascota Nyx
+son compartidos, y solo cambia la capa del compositor. Cada pieza es su propio
+repositorio, y un único meta instalador, `dots`, los clona, coloca y actualiza en
+conjunto (`dotsniri` gestiona el stack de niri).
 
 ## Qué proporciona la pila
 
-- Una sesión de Hyprland configurada en Lua: entorno, atajos de teclado,
-  animaciones, reglas de ventanas, espacios de trabajo y arranque automático.
+- Una sesión de Hyprland configurada en Lua o una sesión de niri equivalente
+  configurada en KDL: entorno, atajos de teclado, animaciones, reglas de
+  ventanas, espacios de trabajo y arranque automático.
 - Una interfaz Quickshell: barra, emergentes, paneles, editor de ajustes,
   widgets de escritorio, pantalla de bloqueo y la isla/notch de mascotas Nyx
   con su dock de centro de control.
@@ -30,6 +34,11 @@ coloca y actualiza en conjunto.
 | Repositorio | Proporciona | Se instala en |
 |---|---|---|
 | [hyprland](https://github.com/equisdots/hyprland) | Configuración del compositor (Lua), scripts, instalador | `~/.config/hypr` |
+| [niri](https://github.com/equisdots/niri) | Configuración del compositor niri (KDL), scripts de sesión, ficheros de sesión/portal | `~/.config/niri` |
+| [niri-meta](https://github.com/equisdots/niri-meta) | Meta instalador y actualizador del stack niri | `~/.local/bin/dotsniri` |
+| [niri-shell](https://github.com/equisdots/niri-shell) | Overlay que hace neutral al compositor el shell compartido | se fusiona en el shell |
+| [nyx-niri](https://github.com/equisdots/nyx-niri) | Overlay que hace neutral al compositor la isla Nyx | se fusiona en el shell |
+| [niri-login](https://github.com/equisdots/niri-login) | Entrada de sesión Wayland para que los DM listen "Niri" | `/usr/share/wayland-sessions` |
 | [shell](https://github.com/equisdots/shell) | Interfaz Quickshell (barra, paneles, editor, emergentes) | `~/.config/hypr/scripts/quickshell` |
 | [nyx](https://github.com/equisdots/nyx) | Isla/notch de mascotas y dock de centro de control | `.../quickshell/ui/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Paletas de color (conjunto JSON y esquema) | `~/.config/hypr/scripts/quickshell/dock/palettes` |
@@ -41,9 +50,9 @@ coloca y actualiza en conjunto.
 | [login](https://github.com/equisdots/login) | Pantalla de inicio de sesión SDDM mínima y estática | `/usr/share/sddm/themes/x` |
 | [dots](https://github.com/equisdots/dots) | Meta instalador y actualizador | `~/.local/bin/dots` |
 
-Los clones gestionados viven en `~/.local/share/equisdots/<repo>`. `dots` copia
-su carga útil a su destino; nunca elimina por su cuenta una configuración
-activa.
+Los clones gestionados viven en `~/.local/share/equisdots/<repo>` (el stack de
+niri usa `~/.local/share/equisdots-niri/<repo>`). `dots` y `dotsniri` copian su
+carga útil a su destino; nunca eliminan por su cuenta una configuración activa.
 
 ## Cómo se conectan las piezas
 
@@ -74,9 +83,10 @@ davincix (kernel) --> xwww (stills/scenes) or mpvpaper (videos)
 
 ## Requisitos
 
-Una derivada de Arch Linux, Hyprland 0.55 o posterior (la configuración es
-Lua), `git`, `rsync`, `jq`, `quickshell` (`qs`), `xwww-daemon`, `mpvpaper` y la
-Hack Nerd Font. `dots doctor` informa exactamente de lo que falta. Consulte
+Una derivada de Arch Linux, Hyprland 0.55 o posterior (la configuración es Lua)
+**o** niri 26.04 o posterior, `git`, `rsync`, `jq`, `quickshell` (`qs`),
+`xwww-daemon`, `mpvpaper` y la Hack Nerd Font. `dots doctor` (y `dotsniri
+doctor` para el stack niri) informa exactamente de lo que falta. Consulte
 [Instalación](/es/docs/installation) para la lista completa.
 
 ## Mapa de la documentación
@@ -85,6 +95,7 @@ Hack Nerd Font. `dots doctor` informa exactamente de lo que falta. Consulte
 - [Actualización y diagnóstico](/es/docs/updating) - `dots update` y `dots doctor`.
 - [Escritorio Hyprland](/es/docs/desktop) - módulos de configuración, atajos de
   teclado, monitores.
+- [Compositor niri](/es/docs/niri) - el frontend de compositor alternativo.
 - [Shell Quickshell](/es/docs/shell) - barra, paneles, widgets e IPC.
 - [Isla de mascotas Nyx](/es/docs/nyx) - especies, isla/notch y el dock.
 - [Temas y paletas](/es/docs/theming) - paletas base16 y theme-sync.
@@ -100,5 +111,5 @@ Hack Nerd Font. `dots doctor` informa exactamente de lo que falta. Consulte
 ## Siguientes pasos
 
 Ejecute el instalador desde [Instalación](/es/docs/installation), verifíquelo con
-`dots doctor` y después cierre la sesión y elija Hyprland en la pantalla de
-inicio de sesión.
+`dots doctor` y después cierre la sesión y elija Hyprland (o Niri) en la pantalla
+de inicio de sesión.

@@ -10,6 +10,13 @@ aplicación Quickshell que proporciona la barra, los emergentes, los paneles, el
 editor de ajustes, los widgets de escritorio y la pantalla de bloqueo. Está
 escrito en QML con una pequeña capa JavaScript para la lógica pura.
 
+Es **neutral al compositor**: `core/Compositor.qml` selecciona un backend en
+tiempo de ejecución (Hyprland por defecto, [niri](/es/docs/niri) cuando
+`XDG_CURRENT_DESKTOP` contiene `niri` o hay un `NIRI_SOCKET` definido). Los
+widgets nunca ramifican por compositor; consumen la misma superficie del
+adaptador. Bajo niri el shell compartido se completa con el overlay
+`niri-shell` (ver [Arquitectura](/es/docs/architecture)).
+
 `Shell.qml` es la entrada principal: monta la ventana maestra, la barra, la
 capa flotante y los widgets de escritorio. `Lock.qml` es la entrada alternativa
 para el bloqueo de sesión PAM (`WlSessionLock`), lanzada por `lock.sh`; ambas

@@ -10,6 +10,11 @@ and is written in Lua since Hyprland 0.55. Each concern is a module loaded
 with `require()`, so keybinds, animations or rules can be edited in isolation
 without touching the rest.
 
+The same desktop also runs on **niri**, the scrollable-tiling compositor; the
+configuration there is KDL and the shared shell, palettes and Nyx are reused
+unchanged. See [niri compositor](/docs/niri) for that front end. This page
+covers the Hyprland session.
+
 ## Configuration layout
 
 | File | Purpose |

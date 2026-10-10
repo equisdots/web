@@ -28,6 +28,35 @@ dots doctor
 dots list
 ```
 
+## The niri stack (dotsniri)
+
+The niri session has its own meta installer, `dotsniri`, parallel to `dots`. It
+uses a separate clone root (`~/.local/share/equisdots-niri`) and never touches a
+parallel `dots` install, so the two stacks coexist on one machine.
+
+| Command | Action |
+|---|---|
+| `dotsniri install` | Clone/update and deploy the niri stack (own repos + shared `shell`/`nyx`). |
+| `dotsniri update` | Pull the own repos plus the shared `shell`/`nyx` bases, then re-deploy. |
+| `dotsniri deploy` | Re-deploy from the existing clones (re-applies the overlays after a `dots update`). |
+| `dotsniri desktop <niri\|hyprland\|both>` | Set the default session and apply or remove the shell overlays. |
+| `dotsniri login <install\|remove\|status>` | Manage the display-manager session entry (via `niri-login`, sudo). |
+| `dotsniri system [--apply]` | Install distro packages (niri, portals, ...). |
+| `dotsniri doctor` | Check binaries, clones, deploy, the shell backend and `niri validate`. |
+| `dotsniri doctor --self-test` | Syntax-check the toolkit; works without niri. |
+| `dotsniri reset` | Forced clean reinstall of the niri deploy (drops the own clones). |
+
+```sh
+bash <(curl -fsSL https://raw.githubusercontent.com/equisdots/niri-meta/main/bin/dotsniri) install
+dotsniri doctor
+dotsniri desktop niri
+```
+
+The shell overlays are conditional and reversible: a shared file is only
+replaced by its niri variant while the niri session is selected, and
+`dotsniri deploy` re-applies them whenever `dots update` rewrites the shell. See
+[niri compositor](/docs/niri).
+
 ## What dots update does
 
 For every repository in the org (`dots`, `palettes`, `theme-sync`, `davincix`,

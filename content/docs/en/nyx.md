@@ -10,8 +10,16 @@ mascot island and control-center notch. It is deployed into the shell as
 `ui/nyx/` (the dots installer handles the copy) and wrapped by
 `ui/Mascots.qml`, which injects the live palette and paths. Nyx never imports
 the shell core: the palette, the settings path and live data arrive as
-properties, and the only runtime requirements are Quickshell, Hyprland
-(`hyprctl cursorpos`, socket2) and a Nerd Font.
+properties, and the only runtime requirements are Quickshell, a supported
+compositor (Hyprland or niri) and a Nerd Font.
+
+On niri the exact same island runs through the [`nyx-niri`](https://github.com/equisdots/nyx-niri)
+overlay. niri has **no IPC for the global pointer position**, so the Hyprland
+`hyprctl cursorpos` loop is stopped and the mascots idle (pupils stay centred);
+window events come from `niri msg --json event-stream`. Global cursor tracking
+under niri needs privileged raw input access and is opt-in through
+`NYX_CURSOR_PROVIDER` (a command whose stdout streams `x,y` lines). See
+[niri compositor](/docs/niri).
 
 ## What it is
 

@@ -27,7 +27,9 @@ scene.js -> xwww scene run -> rendered frame -> xwww-daemon -> layer surface
    triggers a crossfade (`--palette-fade`, 800 ms by default).
 
 Requires `xwww` 0.13.1+ built with the `scene` feature (releases include it),
-a `wlr-layer-shell` compositor and CPU rasterization only.
+a `wlr-layer-shell` compositor and CPU rasterization only. Scenes run the same
+under Hyprland and [niri](/docs/niri): both provide the layer the daemon draws
+to.
 
 ## Catalog
 

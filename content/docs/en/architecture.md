@@ -16,6 +16,11 @@ the invariants the pieces rely on.
 |---|---|---|
 | [dots](https://github.com/equisdots/dots) | Meta installer, updater, diagnostics | `~/.local/bin/dots` |
 | [hyprland](https://github.com/equisdots/hyprland) | Compositor config and scripts | `~/.config/hypr` |
+| [niri](https://github.com/equisdots/niri) | niri compositor config (KDL) and scripts | `~/.config/niri` |
+| [niri-meta](https://github.com/equisdots/niri-meta) | Meta installer, updater, diagnostics (`dotsniri`) | `~/.local/bin/dotsniri` |
+| [niri-shell](https://github.com/equisdots/niri-shell) | Shell overlay (Niri backend) | merged into the shell |
+| [nyx-niri](https://github.com/equisdots/nyx-niri) | Nyx overlay (compositor-neutral) | merged into the shell |
+| [niri-login](https://github.com/equisdots/niri-login) | Wayland session entry | `/usr/share/wayland-sessions` |
 | [shell](https://github.com/equisdots/shell) | Quickshell UI | `~/.config/hypr/scripts/quickshell` |
 | [nyx](https://github.com/equisdots/nyx) | Mascot island/notch and control-center dock | `.../quickshell/ui/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Palette data and schema | `.../quickshell/dock/palettes` |
@@ -26,9 +31,50 @@ the invariants the pieces rely on.
 | [xturing](https://github.com/equisdots/xturing) | Terminal settings UI | `~/.local/bin/xturing` |
 | [login](https://github.com/equisdots/login) | SDDM greeter | `/usr/share/sddm/themes/x` |
 
-Managed clones live under `~/.local/share/equisdots/<repo>`. Wrappers in
-`~/.local/bin` exec the cloned engines, so `dots update` changes behavior
-without touching the wrapper.
+Managed clones live under `~/.local/share/equisdots/<repo>` (the niri stack uses
+`~/.local/share/equisdots-niri/<repo>`). Wrappers in `~/.local/bin` exec the
+cloned engines, so `dots update` changes behavior without touching the wrapper.
+
+`hyprland` and `niri` are the two compositor front ends; `shell`, `nyx`,
+`palettes`, `theme-sync`, `background`, `timex`, `davincix` and `login` are
+shared by both.
+
+## One shell, two compositors
+
+The `shell` repository is Hyprland-first; `niri-shell` and `nyx-niri` are
+overlays that add what niri needs and leave every other file untouched. The niri
+meta merges them into the deployed shell, so one tree drives both sessions:
+
+```
+shell (base)  +  niri-shell  +  nyx-niri  =  ~/.config/hypr/scripts/quickshell
+```
+
+`core/Compositor.qml` has no hard-coded compositor. It reads the environment and
+picks `core/compositors/Niri.qml` when `XDG_CURRENT_DESKTOP` contains `niri` or
+`NIRI_SOCKET` is set, otherwise `core/compositors/Hyprland.qml`. Both backends
+implement the same surface — `workspacesCommand`, `keyboardCommand`,
+`focusCommand`, `setWindowBorders`, `switchWorkspace`,
+`cycleKeyboardLayout` — plus the neutral persistence calls in `core/Config.qml`
+(`persistKeybinds`, `persistStartup`, `applyMonitors`, `resetMonitors`,
+`reload`). Widgets never branch on the compositor.
+
+The shared data root stays `~/.config/hypr` on both compositors (settings,
+palettes, wallpapers, shell); only the compositor output moves to
+`~/.config/niri`. The niri scripts read the shared root through
+`EQUISDOTS_CONFIG_DIR`.
+
+| Concern | Hyprland | niri |
+|---|---|---|
+| Workspaces | `hyprctl` + `.socket2.sock` | `niri msg --json event-stream` |
+| Borders | `hyprctl eval` | `generated/borders.kdl` + reload |
+| Keybinds / startup / appearance | `config/*.lua` + reload | `generated/user-*.kdl` + reload |
+| Effects / monitors | `hyprctl getoption/eval`, `hl.monitor` | `generated/*.kdl` + reload |
+
+The two meta installers are independent: `dots` owns the Hyprland stack
+(`~/.local/share/equisdots`), `dotsniri` owns the niri stack
+(`~/.local/share/equisdots-niri`), and both can coexist. Overlays are
+conditional and reversible: a shared file is only replaced by its niri variant
+while the niri session is selected. See [niri compositor](/docs/niri).
 
 ## Configuration flow
 
@@ -115,6 +161,10 @@ See [Updating and diagnosing](/docs/updating) for the command details.
   which avoids PAM failures.
 - **Scenes render in the xwww client**: the daemon stays a dumb frame
   consumer, and the sandbox keeps scene code CPU-only with no I/O or input.
+- **Two compositor front ends, one shell**: `hyprland` and `niri` are swappable
+  behind `core/Compositor.qml`; the shell, palettes and Nyx are shared, the
+  shared data root stays at `~/.config/hypr`, and niri-specific code ships as
+  reversible overlays (`niri-shell`, `nyx-niri`).
 - **No CI**: each repository ships a local check script, run before pushing.
 
 ## Development checks
@@ -123,6 +173,8 @@ See [Updating and diagnosing](/docs/updating) for the command details.
 |---|---|---|
 | shell | `scripts/check.sh` | `qmllint` on QML, `node --check` on JS |
 | hyprland | `scripts/check.sh` | `luac -p` on Lua, `bash -n` on scripts |
+| niri | `scripts/check.sh` | `bash -n` on scripts, KDL brace balance |
+| niri-meta | `dotsniri doctor --self-test` | `bash -n` over the toolkit (works without niri) |
 | palettes | `scripts/check.sh` | Schema and `index.json` consistency |
 | theme-sync | `scripts/check.sh` | `compileall` plus CLI smoke test |
 | xturing | `scripts/check.sh` | `cargo fmt`, clippy and tests |

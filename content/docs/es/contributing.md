@@ -19,6 +19,9 @@ Abra el issue en el repositorio que posee el comportamiento:
 |---|---|
 | Instalación, actualizaciones, paquetes, tema de inicio de sesión | [dots](https://github.com/equisdots/dots) |
 | Configuración del compositor, atajos de teclado, scripts | [hyprland](https://github.com/equisdots/hyprland) |
+| Configuración del compositor niri, scripts, sesión/portales | [niri](https://github.com/equisdots/niri) |
+| Instalación/actualización del stack niri, overlays, entrada de sesión | [niri-meta](https://github.com/equisdots/niri-meta) |
+| Overlays de shell y Nyx neutrales al compositor | [niri-shell](https://github.com/equisdots/niri-shell), [nyx-niri](https://github.com/equisdots/nyx-niri) |
 | Barra, paneles, widgets, editor | [shell](https://github.com/equisdots/shell) |
 | Mascotas, isla/notch, dock | [nyx](https://github.com/equisdots/nyx) |
 | Fondos de pantalla, escenas, selector | [davincix](https://github.com/equisdots/davincix), [background](https://github.com/equisdots/background) |
@@ -51,6 +54,8 @@ componente allí. Los canales de soporte y el código de conducta viven en
 |---|---|
 | shell | `scripts/check.sh` |
 | hyprland | `scripts/check.sh` |
+| niri | `scripts/check.sh` |
+| niri-meta | `dotsniri doctor --self-test` |
 | palettes | `scripts/check.sh` |
 | theme-sync | `scripts/check.sh` |
 | xturing | `scripts/check.sh` |
@@ -59,6 +64,10 @@ componente allí. Los canales de soporte y el código de conducta viven en
   JS.
 - Hyprland: `luac -p` sobre cada módulo de configuración Lua y `bash -n` sobre
   los scripts (`shellcheck` se usa como asesor cuando está instalado).
+- niri: `bash -n` sobre los scripts y comprobación de balance de llaves KDL;
+  ejecute `niri validate -c ~/.config/niri/config.kdl` en una máquina con niri.
+- niri-meta: `dotsniri doctor --self-test` ejecuta `bash -n` sobre el toolkit y
+  funciona sin niri instalado.
 - Paletas: validación del esquema más consistencia de `index.json`.
 - theme-sync: `compileall` y una prueba de humo de la CLI (`--list`,
   `--dry-run`).

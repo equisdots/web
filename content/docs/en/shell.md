@@ -10,6 +10,13 @@ Quickshell application that provides the bar, popups, panels, the settings
 editor, the desktop widgets and the lock screen. It is written in QML with a
 small JavaScript layer for pure logic.
 
+It is **compositor-neutral**: `core/Compositor.qml` selects a backend at
+runtime (Hyprland by default, [niri](/docs/niri) when `XDG_CURRENT_DESKTOP`
+contains `niri` or `NIRI_SOCKET` is set). Widgets never branch on the
+compositor; they consume the same adapter surface. Under niri the shared shell
+is completed by the `niri-shell` overlay (see
+[Architecture](/docs/architecture)).
+
 `Shell.qml` is the main entry: it mounts the master window, the bar, the
 floating layer and the desktop widgets. `Lock.qml` is the alternate entry for
 the PAM session lock (`WlSessionLock`), launched by `lock.sh`; both import the
@@ -140,13 +147,15 @@ OSD-like surfaces), `ui/Mascots.qml` (the Nyx island wrapper, see
 per screen) and `ui/ScreenshotOverlay.qml`; `Lock.qml` is the alternate PAM
 session-lock entry.
 
-Hyprland does not decorate layer-shell surfaces, so popup shadows are drawn
-in QML by `Main.qml` and follow the animated box (position, size, morph and
+Neither Hyprland nor niri decorates layer-shell surfaces, so popup shadows are
+drawn in QML by `Main.qml` and follow the animated box (position, size, morph and
 fade). Configure them under `settings.json -> shadows` (`enabled`, `blur`,
 `spread`, `offsetX`, `offsetY`, `opacity`, `radius`; scaled by the UI scale)
 from Theme -> Shadows; `settings.json -> glass` (`enabled`, `opacity`) makes
 the shell backgrounds translucent so the compositor backdrop blur shows
-through. The bar draws its own shadows from the same config.
+through (on Hyprland via a layer rule; on niri only surfaces that request
+`ext-background-effect` are blurred). The bar draws its own shadows from the
+same config.
 
 ## Desktop widgets
 

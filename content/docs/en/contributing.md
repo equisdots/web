@@ -18,6 +18,9 @@ Open the issue in the repository that owns the behavior:
 |---|---|
 | Installation, updates, packages, login theme | [dots](https://github.com/equisdots/dots) |
 | Compositor config, keybinds, scripts | [hyprland](https://github.com/equisdots/hyprland) |
+| niri compositor config, scripts, session/portals | [niri](https://github.com/equisdots/niri) |
+| niri stack install/update, overlays, session entry | [niri-meta](https://github.com/equisdots/niri-meta) |
+| Compositor-neutral shell and Nyx overlays | [niri-shell](https://github.com/equisdots/niri-shell), [nyx-niri](https://github.com/equisdots/nyx-niri) |
 | Bar, panels, widgets, editor | [shell](https://github.com/equisdots/shell) |
 | Mascots, island/notch, dock | [nyx](https://github.com/equisdots/nyx) |
 | Wallpapers, scenes, picker | [davincix](https://github.com/equisdots/davincix), [background](https://github.com/equisdots/background) |
@@ -49,6 +52,8 @@ component there. Support channels and the code of conduct live in
 |---|---|
 | shell | `scripts/check.sh` |
 | hyprland | `scripts/check.sh` |
+| niri | `scripts/check.sh` |
+| niri-meta | `dotsniri doctor --self-test` |
 | palettes | `scripts/check.sh` |
 | theme-sync | `scripts/check.sh` |
 | xturing | `scripts/check.sh` |
@@ -57,6 +62,10 @@ component there. Support channels and the code of conduct live in
   modules.
 - Hyprland: `luac -p` over every Lua config module and `bash -n` over the
   scripts (`shellcheck` is used as an advisory when installed).
+- niri: `bash -n` over the scripts and KDL brace-balance checks; run
+  `niri validate -c ~/.config/niri/config.kdl` on a machine with niri.
+- niri-meta: `dotsniri doctor --self-test` runs `bash -n` over the toolkit and
+  works without niri installed.
 - Palettes: schema validation plus `index.json` consistency.
 - theme-sync: `compileall` and a CLI smoke test (`--list`, `--dry-run`).
 - xturing: `cargo fmt --check`, clippy with `-D warnings` and the tests.

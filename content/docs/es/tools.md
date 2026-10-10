@@ -194,6 +194,13 @@ instalador por usted.
 `dots doctor` verifica el archivo de configuración, el tema estático (sin
 `Colors.qml`) y que SDDM sea el gestor de pantalla activo.
 
+Aparte, [niri-login](https://github.com/equisdots/niri-login) instala la entrada
+de sesión Wayland para que los gestores de pantalla (SDDM, GDM, cualquiera que
+lea `wayland-sessions`) listen "Niri" al iniciar sesión. Es una instalación de
+sistema (sudo) y se omite cuando la distro ya incluye una entrada.
+`dotsniri login install|remove|status` lo ejecuta; ver
+[Compositor niri](/es/docs/niri).
+
 ## Páginas relacionadas
 
 - [Shell Quickshell](/es/docs/shell) para el panel de ajustes que xturing replica.
