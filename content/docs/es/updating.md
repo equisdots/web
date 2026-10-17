@@ -19,6 +19,7 @@ independiente de solo lectura que indica qué falta o está desincronizado.
 | `dots system` | Ejecutar el instalador de hyprland (paquetes, fuentes, login, PAM, requiere sudo). |
 | `dots doctor` | Comprobar binarios, clones y rutas instaladas. Termina con código distinto de cero si falla. |
 | `dots list` | Estado de los repositorios: `clean`, `dirty` o `missing`. |
+| `dots plugins` | Plugins instalados; subcomandos `available`, `add`, `remove`, `enable`, `disable`. |
 | `dots reset` | Reinstalación limpia forzada de la carga útil (los datos de usuario se conservan). |
 | `dots uninstall` | Eliminar los wrappers y el temporizador de actualización; las configuraciones y los clones permanecen. |
 
@@ -45,6 +46,7 @@ una máquina.
 | `dotsniri system [--apply]` | Instalar paquetes de la distro (niri, portales, ...). |
 | `dotsniri doctor` | Comprobar binarios, clones, deploy, el backend del shell y `niri validate`. |
 | `dotsniri doctor --self-test` | Comprobar la sintaxis del toolkit; funciona sin niri. |
+| `dotsniri plugins [list\|available\|add\|remove\|enable\|disable]` | Gestionar el conjunto de plugins con paridad con `dots plugins`. |
 | `dotsniri reset` | Reinstalación limpia forzada del deploy de niri (elimina los clones propios). |
 
 ```sh
@@ -61,7 +63,8 @@ solo se reemplaza por su variante niri mientras se selecciona la sesión niri, y
 ## Qué hace dots update
 
 Para cada repositorio de la organización (`dots`, `palettes`, `theme-sync`,
-`davincix`, `shell`, `nyx`, `hyprland`, `timex`, `xturing`, `login`):
+`davincix`, `shell`, `nyx`, `hyprland`, `timex`, `xturing`, `login`, además del
+estándar de plugins y las fuentes de los plugins por defecto):
 
 1. Descarga `origin/main` con profundidad 1 y restablece por la fuerza el clon
    gestionado a esa versión. El restablecimiento forzado también recupera de
@@ -75,6 +78,14 @@ Tras la fase de carga útil, `dots update` compara el binario `xwww` en
 ejecución con la versión fijada en `scripts/install-xwww.sh` y reinstala cuando
 difieren (`XWWW_VERSION` anula la versión fijada). También escribe el estado de
 versión que usan la página Acerca de y el emergente del actualizador.
+
+Los plugins por defecto se vuelven a desplegar mediante la convención del
+registro sin escribir sus interruptores, así que los usuarios existentes
+conservan las funciones. Los plugins de usuario en
+`~/.config/hypr/plugins-user/` nunca se tocan, y un plugin con `compat`
+incumplido no se monta. Actualice o añada un plugin concreto con
+`dots plugins add <id>` (o el panel de Plugins); ver
+[Plugins y extensiones](/es/docs/plugins).
 
 ## Cambios locales en clones gestionados
 
@@ -157,6 +168,8 @@ El doctor es el primer diagnóstico que debe ejecutar. Informa, en orden:
 - Comprobación de fuentes mediante `fc-match "Hack Nerd Font"`.
 - La versión de `xwww` en ejecución frente a la versión fijada.
 - Clones de repositorios y clones con cambios.
+- El registro de plugins: ids duplicados, desajustes carpeta/manifiesto y
+  colisiones en ejecución.
 - Rutas de la carga útil instalada (paletas, `hyprland.lua`, `Shell.qml`,
   wrappers, `settings.json` y más).
 - Versión de Hyprland (se requiere 0.55+ para Lua) y `~/.local/bin` en `PATH`.
@@ -185,6 +198,9 @@ hace utilizable en scripts.
   necesita soporte de Lua.
 - Discrepancia de xwww: `dots update` (o `scripts/install-xwww.sh`) reinstala
   la versión fijada.
+- Un plugin aparece listado pero no se monta: compruebe en `dots doctor` una
+  violación de `compat` o una colisión de id y use `dots plugins add <id>
+  --force` solo si el desajuste es intencionado.
 - El gestor de pantalla activo no es SDDM: el tema de inicio de sesión estático
   no se mostrará; `dots system` cambia el enlace del gestor de pantalla.
 - Fallo en la fase de sistema: inspeccione el registro más reciente con

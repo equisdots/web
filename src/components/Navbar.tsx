@@ -20,6 +20,8 @@ export function Navbar() {
 
   const links = [
     { href: root === "" ? "/" : root, label: dict.nav.home },
+    { href: `${root}/#stack`, label: dict.home.labels.stack },
+    { href: `${root}/#flows`, label: dict.home.labels.flows },
     { href: `${root}/docs`, label: dict.nav.docs },
     { href: `${root}/previews`, label: dict.nav.previews },
   ];

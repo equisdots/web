@@ -1,7 +1,7 @@
 ---
 title: Contributing and security
 description: Where to report issues, how pull requests are reviewed, the local checks to run and the security policy.
-order: 12
+order: 13
 section: more
 ---
 
@@ -16,7 +16,7 @@ Open the issue in the repository that owns the behavior:
 
 | Topic | Repository |
 |---|---|
-| Installation, updates, packages, login theme | [dots](https://github.com/equisdots/dots) |
+| Installation, updates, packages, login theme, `dots plugins` | [dots](https://github.com/equisdots/dots) |
 | Compositor config, keybinds, scripts | [hyprland](https://github.com/equisdots/hyprland) |
 | niri compositor config, scripts, session/portals | [niri](https://github.com/equisdots/niri) |
 | niri stack install/update, overlays, session entry | [niri-meta](https://github.com/equisdots/niri-meta) |
@@ -26,6 +26,10 @@ Open the issue in the repository that owns the behavior:
 | Wallpapers, scenes, picker | [davincix](https://github.com/equisdots/davincix), [background](https://github.com/equisdots/background) |
 | Colors and theming | [palettes](https://github.com/equisdots/palettes), [theme-sync](https://github.com/equisdots/theme-sync) |
 | Time, weather, calendar | [timex](https://github.com/equisdots/timex) |
+| Plugin standard, hub, registry, converted plugins | [plugins](https://github.com/equisdots/plugins) |
+| Manifest schema, API version, compatibility | [plugin-api](https://github.com/equisdots/plugin-api) |
+| PluginHost, Settings, surfaces, Lua `mod` | [plugin-sdk](https://github.com/equisdots/plugin-sdk) |
+| Plugin architecture and migration notes | [transformpath](https://github.com/equisdots/transformpath) |
 | Terminal settings UI | [xturing](https://github.com/equisdots/xturing) |
 | Scene engine and wallpaper daemon | [x-ports/xwww](https://github.com/x-ports/xwww) |
 
@@ -57,6 +61,9 @@ component there. Support channels and the code of conduct live in
 | palettes | `scripts/check.sh` |
 | theme-sync | `scripts/check.sh` |
 | xturing | `scripts/check.sh` |
+| plugins | `tests/smoke.sh` |
+| plugin-api | compat evaluator fixtures |
+| plugin-sdk | `qmllint` + Lua tests |
 
 - Shell: `qmllint` over every `.qml` file and `node --check` over the JS
   modules.
@@ -69,6 +76,11 @@ component there. Support channels and the code of conduct live in
 - Palettes: schema validation plus `index.json` consistency.
 - theme-sync: `compileall` and a CLI smoke test (`--list`, `--dry-run`).
 - xturing: `cargo fmt --check`, clippy with `-D warnings` and the tests.
+- plugins: the smoke harness checks manifests, `qmldir` imports, scan
+  resolution, duplicate ids and registry consistency.
+- plugin-api: the bash and Lua semver evaluators must agree on the shared
+  fixtures.
+- plugin-sdk: validate the QML host kit and run the Lua `mod` tests.
 
 ## Style guidelines
 
@@ -78,6 +90,10 @@ component there. Support channels and the code of conduct live in
 - Prefer the small existing helpers of each repository over new dependencies.
 - For xwww scenes, stay inside the documented sandbox: local assets only, no
   timers, no network, change-driven redraws.
+- For plugins, keep the feature self-contained: the manifest is the only
+  contract, the plugin owns its UI, settings, defaults and scripts, and hosts
+  must never learn plugin ids. Do not copy external plugin repositories into
+  the hub; reference them by source.
 
 ## Security policy
 
@@ -96,7 +112,8 @@ reporting instead:
 
 The stack runs in the user's session and installs system pieces: packages, the
 SDDM theme and `/etc/pam.d/quickshell`. Reports about the shell, the Hyprland
-scripts, the installers, the wallpaper engine or the scene runtime are welcome.
+scripts, the installers, the plugin loader, the wallpaper engine or the scene
+runtime are welcome.
 Scenes execute user-authored code in the xwww client by design; the runtime
 sandbox (memory and stack limits, frame timeout, no I/O, local assets only) is
 documented in [equisdots/x-ports](https://github.com/x-ports/xwww).

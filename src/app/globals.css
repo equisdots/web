@@ -114,6 +114,38 @@ body:has(dialog[open]) {
   overflow: hidden;
 }
 
+/* Blueprint grid behind the isometric stack diagram. */
+.blueprint {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.42;
+  mask-image: radial-gradient(ellipse at 50% 45%, black 30%, transparent 78%);
+}
+
+.stack-plugin-satellite {
+  animation: stack-float 7s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes stack-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-plugin-satellite {
+    animation: none;
+  }
+}
+
 .hairline {
   border-top: 1px solid var(--border);
 }

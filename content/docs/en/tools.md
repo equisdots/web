@@ -1,7 +1,7 @@
 ---
 title: "Tools: timex, xturing, login"
 description: Reference for the timex time and weather engine, the xturing terminal settings UI and the static SDDM login theme.
-order: 10
+order: 11
 section: more
 ---
 
@@ -38,10 +38,12 @@ timex keys list                  # NAME|label|where|0-1
 The engine runs exactly the selected provider; there are no silent fallbacks.
 If the provider is missing a city or key, the cache gets an explicit error
 state (`Select a provider`, `Set a city`, `Set the API key`,
-`Unknown provider`). The QML lives under `ui/` (`TimexPopup.qml` for the
-calendar popup bound to `SUPER + S`, `TimexTab.qml` for the settings tab), and
-the shell's old `calendar/weather.sh` path is now a thin shim over the CLI, so
-bar and calendar callers did not change.
+`Unknown provider`). timex is deployed as a plugin: the engine, calendar panel
+(`ui/TimexPopup.qml`, bound to `SUPER + S`), bar island (`bar/Weather.qml`) and
+settings page (`settings/TimexPage.qml`) live under
+`.../quickshell/ui/plugins/timex/`. The bar island polls the engine directly,
+and the panel is exported as `provides.panels.calendar`; see
+[Plugins and extensions](/docs/plugins).
 
 ### Providers
 
@@ -59,8 +61,8 @@ normalized JSON document, plus one catalog line in `core/timex.sh`.
 - `settings.json -> timex`: `{ provider, city, unit }` plus the UI layout keys
   (`forecastEnabled`, `forecastPosition` `below`/`above`, `forecastSize`,
   `forecastGap`, `forecastHours`, `forecastShowTime/Icon/Temp`,
-  `forecastOrder` and `clockScale`). No secrets; defaults live in the shell's
-  `core/Personalization.js` timex section.
+  `forecastOrder` and `clockScale`). No secrets; the plugin owns its defaults
+  and exposes them in the Timex settings page.
 - API keys: `~/.local/state/quickshell/timex/keys.conf` (mode 600), written
   with `timex keys set`.
 - Cache: `~/.cache/quickshell/timex/weather.json`, with the stable
@@ -93,11 +95,11 @@ xturing --help
 
 ### Pages
 
-25 pages across six rail groups:
+24 pages across six rail groups:
 
-- Shell: General, Timex, Keyboard, Monitors, Startup.
-- Bar: Engine, Position, Style, Zones, Classic Bar, Modules, Workspaces.
-- Theme: Palette, Animations, Shadows, Glass, Mascots.
+- Shell: General, Keyboard, Monitors, Startup.
+- Bar: General, Position, Style, Zones, Modules, Workspaces.
+- Theme: Appearance, Palette, Animations, Shadows, Frame, Glass.
 - Behavior: Launcher, Notifications.
 - Widgets: Popups (the `Personalization.js` sections).
 - System: Hyprland, Input, GPU, Idle, About.
@@ -139,7 +141,6 @@ settings file and its format are identical:
 
 - Zones: no drag and drop; `Shift + Left/Right` move a module within and
   across zones, Enter enables or disables it.
-- ClassicBar: group and ungroup with `g` / `u` instead of dragging.
 - Monitors: Position X/Y fields replace the drag canvas.
 - Palette: colors are edited as `#rrggbb`; New palette clones the 8 base
   colors of the active palette.
@@ -152,11 +153,10 @@ settings file and its format are identical:
 ```
 src/
   settings.rs   atomic read/write + tests
-  catalog.rs    data-driven definition of the 25 pages and controls
+  catalog.rs    data-driven definition of the 24 pages and controls
   app.rs        state, navigation, editing, special pages, side effects
   ui.rs         ratatui rendering (rail, content, chooser, forms, help)
   palette.rs    index.json, palette editing with backup, create/delete
-  classic.rs    ClassicBar defaults, mirrorBar, normalize
   monitors.rs   hyprctl monitors, apply/reset with lua + display-config
   actions.rs    spawn/capture (with dry mode), notify-send
 ```

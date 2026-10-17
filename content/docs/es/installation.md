@@ -18,7 +18,8 @@ todos los repositorios.
 - Hyprland 0.55 o posterior (la configuración es Lua), o niri 26.04 o posterior
   para la sesión de niri.
 - `git`, `rsync`, `jq`, Quickshell (`qs`), `xwww-daemon`, `mpvpaper` y la
-  Hack Nerd Font.
+  Hack Nerd Font. El conjunto de plugins por defecto también usa `cliphist` y
+  `fd`.
 
 `dots doctor` comprueba todo esto y termina con un código de error cuando falta
 algo; el paquete completo de fondos de pantalla es opcional y ocupa unos
@@ -86,6 +87,9 @@ carga útil:
   rofi, dunst y cava.
 - Shell Quickshell, la isla de mascotas Nyx, paletas, theme-sync, davincix,
   timex y xturing.
+- El estándar de plugins (`plugin-api`, `plugin-sdk`, el hub `plugins`) y el
+  conjunto por defecto: screenshots, timex, lector RSS, portapapeles,
+  quicknotes, búsqueda de archivos, sysmon y keybinds.
 - Scripts de envoltura (wrappers) en `~/.local/bin` y el temporizador de
   actualización mensual.
 
@@ -136,16 +140,39 @@ dotsniri desktop niri      # select niri as the default session
 
 `dotsniri` despliega la configuración del compositor niri (`~/.config/niri`),
 los overlays del shell que hacen neutral al compositor la interfaz Quickshell
-compartida, y la entrada de sesión del gestor de pantalla. Reutiliza la raíz
-compartida: `settings.json`, paletas, fondos y el shell permanecen en
-`~/.config/hypr`, así que Hyprland y niri corren en paralelo desde una única
-configuración. Ver [Compositor niri](/es/docs/niri) para el panorama completo.
+compartida, el estándar de plugins y su conjunto por defecto, y la entrada de
+sesión del gestor de pantalla. Reutiliza la raíz compartida: `settings.json`,
+paletas, fondos y el shell permanecen en `~/.config/hypr`, así que Hyprland y
+niri corren en paralelo desde una única configuración. Ver
+[Compositor niri](/es/docs/niri) para el panorama completo.
+
+## Instalar y gestionar plugins
+
+`dots install` despliega los plugins por defecto mediante la convención del
+registro sin escribir interruptores, así que los usuarios existentes conservan
+las funciones. Desde la CLI:
+
+```sh
+dots plugins                  # plugins instalados y su estado
+dots plugins available        # el registro: instalados vs disponibles
+dots plugins add <id>         # descarga, despliega por convención y activa
+dots plugins add <id> --no-enable --force
+dots plugins remove <id>
+dots plugins enable <id>
+dots plugins disable <id>
+```
+
+El panel de Plugins (`SUPER + SHIFT + M`) hace lo mismo desde la UI: cada plugin
+instalado tiene un interruptor maestro y un acceso Configure cuando trae página
+de ajustes. El hub de 63 plugins y el estándar se documentan en
+[Plugins y extensiones](/es/docs/plugins).
 
 ## Verificar la instalación
 
 ```sh
 dots doctor
 dots list
+dots plugins
 command -v dots hyprland qs davincix theme-sync
 fc-match "Hack Nerd Font"
 ```
@@ -176,6 +203,8 @@ atención.
   (`dots doctor` lo señala).
 - Discrepancia de versión de xwww: ejecute `./dots update`, que reinstala la
   versión fijada cuando el binario en ejecución difiere.
+- Un plugin no aparece: compruebe `dots plugins`, verifique su `compat` con
+  `dots doctor` y recargue con `hyprctl reload` (o `dotsniri deploy` en niri).
 
 ## Desinstalación
 
@@ -193,4 +222,5 @@ gestionados; el tema de inicio de sesión tiene su propio
 
 Lea [Actualización y diagnóstico](/es/docs/updating) para mantener la instalación
 sincronizada y después [Escritorio Hyprland](/es/docs/desktop) o
-[Compositor niri](/es/docs/niri) para la superficie de configuración.
+[Compositor niri](/es/docs/niri) para la superficie de configuración, y
+[Plugins y extensiones](/es/docs/plugins) para la capa de extensión.

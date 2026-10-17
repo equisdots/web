@@ -1,7 +1,7 @@
 ---
 title: niri compositor
 description: The niri alternative compositor: KDL config, session scripts, the compositor-neutral shell and how the shared stack runs on both Hyprland and niri.
-order: 8
+order: 9
 section: desktop
 ---
 
@@ -21,12 +21,12 @@ niri support is a set of small repositories that sit beside the Hyprland ones.
 | [niri](https://github.com/equisdots/niri) | niri compositor config (KDL), session scripts, session/portal files | `~/.config/niri` |
 | [niri-meta](https://github.com/equisdots/niri-meta) | Meta installer and updater (`dotsniri`) for the niri stack | `~/.local/bin/dotsniri` |
 | [niri-shell](https://github.com/equisdots/niri-shell) | Overlay that makes the shared Quickshell shell compositor-neutral | merged into `.../quickshell` |
-| [nyx-niri](https://github.com/equisdots/nyx-niri) | Overlay that makes the shared Nyx mascot island compositor-neutral | merged into `.../quickshell/ui/nyx` |
+| [nyx-niri](https://github.com/equisdots/nyx-niri) | Overlay that makes the shared Nyx mascot island compositor-neutral | merged into `.../quickshell/ui/plugins/nyx` |
 | [niri-login](https://github.com/equisdots/niri-login) | Wayland session entry so display managers list "Niri" | `/usr/share/wayland-sessions` |
 
 `hyprland` and `niri` are the two compositor front ends; the rest of the stack
 (`shell`, `nyx`, `palettes`, `theme-sync`, `background`, `timex`, `davincix`,
-`login`) is shared by both.
+the plugin repositories and `login`) is shared by both.
 
 ## One data root, two compositors
 
@@ -143,12 +143,22 @@ Screenshots open the same equisdots overlay as Hyprland, and recording uses
 
 ## Nyx on niri
 
-The mascot island runs unchanged, with one graceful limitation: niri has **no
-IPC for the global pointer position**, so the Hyprland `hyprctl cursorpos` loop
-is stopped and the mascots idle (pupils stay centred). Window events come from
+The Nyx plugin runs unchanged, with one graceful limitation: niri has **no IPC
+for the global pointer position**, so the Hyprland `hyprctl cursorpos` loop is
+stopped and the mascots idle (pupils stay centred). Window events come from
 `niri msg --json event-stream`. Global cursor tracking needs privileged raw
 input access; it is opt-in and experimental through `NYX_CURSOR_PROVIDER` (a
 command whose stdout streams `x,y` lines). See [Nyx mascot island](/docs/nyx).
+
+## Plugins on niri
+
+`niri-meta` deploys the whole plugin standard (`plugin-api`, `plugin-sdk`, the
+`plugins` hub and the default plugin set), so the same 63 plugins, settings
+pages, panels, bar modules, MD3 theme tokens and standalone entries run on niri.
+`Super+Shift+M` opens the Plugins panel. Plugin keybind actions are covered by
+the static KDL binds in the `niri` repository, because niri reads KDL instead of
+evaluating `hypr.lua` fragments at runtime. See
+[Plugins and extensions](/docs/plugins).
 
 ## Installing niri with dotsniri
 
@@ -177,7 +187,8 @@ never replaced by a niri variant unless the niri session is selected, and
 ## Requirements
 
 niri 26.04 or newer with `xwayland-satellite`, `jq`, `python3`, and for capture
-`grim`, `slurp`, `satty` and `wl-clipboard`. `dotsniri doctor` reports what is
+`grim`, `slurp`, `satty` and `wl-clipboard`. The plugin set also wants
+`cliphist` (clipboard) and `fd` (file search). `dotsniri doctor` reports what is
 missing and `dotsniri doctor --self-test` checks the toolkit without requiring
 niri.
 
@@ -185,4 +196,5 @@ niri.
 
 - [Hyprland desktop](/docs/desktop) for the other compositor front end.
 - [Quickshell shell](/docs/shell) for the compositor-neutral UI.
+- [Plugins and extensions](/docs/plugins) for the plugin layer both sessions share.
 - [Architecture and repositories](/docs/architecture) for the full repo map.

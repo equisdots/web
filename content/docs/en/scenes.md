@@ -1,7 +1,7 @@
 ---
 title: Interactive scenes
 description: Author, run and debug xwww JavaScript scenes that react to the active palette.
-order: 9
+order: 10
 section: wallpapers
 ---
 

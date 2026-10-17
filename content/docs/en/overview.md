@@ -11,6 +11,9 @@ on **niri**, the scrollable-tiling compositor: bar, panels, widgets, settings
 editor, lock screen and the Nyx mascot are shared, and only the compositor layer
 changes. Every piece is its own repository, and a single meta installer, `dots`,
 clones, places and updates them together (`dotsniri` manages the niri stack).
+A plugin standard adds self-contained features on top: 63 plugins ship with the
+stack and the same hosts discover, toggle and update them without touching the
+core.
 
 ## What the stack provides
 
@@ -19,6 +22,8 @@ clones, places and updates them together (`dotsniri` manages the niri stack).
   autostart.
 - A Quickshell UI: bar, popups, panels, settings editor, desktop widgets,
   lock screen and the Nyx mascot island/notch with its control-center dock.
+- A plugin system: a manifest standard, runtime SDK, discovery folders, live
+  toggles, per-plugin settings pages, panels, bar modules and complete bars.
 - A base16 palette system shared by the shell, window borders, terminals,
   editors and browsers.
 - A wallpaper kernel with still images, videos, slideshow rotation and
@@ -37,15 +42,20 @@ clones, places and updates them together (`dotsniri` manages the niri stack).
 | [nyx-niri](https://github.com/equisdots/nyx-niri) | Overlay making the Nyx island compositor-neutral | merged into the shell |
 | [niri-login](https://github.com/equisdots/niri-login) | Wayland session entry so DMs list "Niri" | `/usr/share/wayland-sessions` |
 | [shell](https://github.com/equisdots/shell) | Quickshell UI (bar, panels, editor, popups) | `~/.config/hypr/scripts/quickshell` |
-| [nyx](https://github.com/equisdots/nyx) | Mascot island/notch and control-center dock | `.../quickshell/ui/nyx` |
+| [nyx](https://github.com/equisdots/nyx) | Mascot island/notch plugin and control-center dock | `.../quickshell/ui/plugins/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Color palettes (JSON set and schema) | `~/.config/hypr/scripts/quickshell/dock/palettes` |
 | [background](https://github.com/equisdots/background) | Curated wallpaper collection and scene catalog | released as `background.zip` |
 | [davincix](https://github.com/equisdots/davincix) | Wallpaper fetch/apply kernel | `~/.local/bin/davincix` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Cross-app theme regeneration | `~/.local/bin/theme-sync` |
-| [timex](https://github.com/equisdots/timex) | Time and weather engine plus calendar UI | `~/.local/bin/timex`, `.../quickshell/ui/timex` |
+| [timex](https://github.com/equisdots/timex) | Time and weather plugin: engine, calendar panel, bar island | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Terminal UI for the settings panel | `~/.local/bin/xturing` |
+| [plugins](https://github.com/equisdots/plugins) | Plugin standard, 63-plugin hub and install registry | `.../quickshell/ui/plugins/<id>` |
+| [plugin-api](https://github.com/equisdots/plugin-api) | Manifest schema, host API version and compat evaluators | `.../quickshell/plugin-api.json` |
+| [plugin-sdk](https://github.com/equisdots/plugin-sdk) | Runtime SDK: PluginHost, Settings, surfaces, Lua mod | `.../quickshell/core/sdk` |
+| [transformpath](https://github.com/equisdots/transformpath) | Plugin architecture, decisions and migration status | documentation only |
 | [login](https://github.com/equisdots/login) | Static minimal SDDM greeter | `/usr/share/sddm/themes/x` |
 | [dots](https://github.com/equisdots/dots) | Meta installer and updater | `~/.local/bin/dots` |
+| [web](https://github.com/equisdots/web) | Documentation site, previews and repository map | GitHub Pages |
 
 Managed clones live under `~/.local/share/equisdots/<repo>` (the niri stack uses
 `~/.local/share/equisdots-niri/<repo>`). `dots` and `dotsniri` copy their
@@ -54,7 +64,7 @@ payload into place; they never delete a live config on their own.
 ## How the pieces connect
 
 ```
-settings.json (bar.palette, bar, classicbar, widgets, ...)
+settings.json (bar.palette, bar, widgets, timex, plugins, ...)
       |
       +--> shell (Colors.qml) ------> bar, widgets, lock screen
       |
@@ -75,7 +85,9 @@ davincix (kernel) --> xwww (stills/scenes) or mpvpaper (videos)
 - Shell state and caches: `~/.cache/quickshell`, `~/.local/state/quickshell`.
 - Wallpapers: `~/.config/hypr/wallpapers` by default.
 - Palette files: `~/.config/hypr/scripts/quickshell/dock/palettes`.
-- Wrappers: `dots`, `davincix`, `theme-sync`, `timex`, `xturing` in
+- Plugins: managed in `~/.config/hypr/plugins`, user plugins in
+  `~/.config/hypr/plugins-user`; UI under `.../quickshell/ui/plugins`.
+- Wrappers: `dots`, `dotsniri`, `davincix`, `theme-sync`, `timex`, `xturing` in
   `~/.local/bin`.
 
 ## Requirements
@@ -94,6 +106,7 @@ niri stack) reports exactly what is missing. See
 - [niri compositor](/docs/niri) - the alternative compositor front end.
 - [Quickshell shell](/docs/shell) - bar, panels, widgets and IPC.
 - [Nyx mascot island](/docs/nyx) - species, island/notch and the widget dock.
+- [Plugins and extensions](/docs/plugins) - the standard, the 63-plugin hub and the CLI.
 - [Theming and palettes](/docs/theming) - base16 palettes and theme-sync.
 - [Wallpapers](/docs/wallpapers) - davincix, xwww and the picker.
 - [Interactive scenes](/docs/scenes) - authoring and running JS wallpapers.

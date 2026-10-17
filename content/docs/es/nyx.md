@@ -6,12 +6,13 @@ section: desktop
 ---
 
 [equisdots/nyx](https://github.com/equisdots/nyx) es la isla de mascotas y el
-notch de centro de control autocontenidos. Se despliega en el shell como
-`ui/nyx/` (el instalador `dots` hace la copia) y lo envuelve `ui/Mascots.qml`,
-que inyecta la paleta viva y las rutas. Nyx nunca importa el núcleo del shell:
-la paleta, la ruta de ajustes y los datos en vivo llegan como propiedades, y
-los únicos requisitos de ejecución son Quickshell, un compositor soportado
-(Hyprland o niri) y una Nerd Font.
+notch de centro de control autocontenidos, y el plugin #1 del estándar de
+plugins de equisdots. Se despliega en el shell como `ui/plugins/nyx/` (el
+instalador `dots` hace la copia) y lo monta el genérico `ui/PluginHosts.qml` a
+través de la entrada `host` de su manifiesto, que inyecta la paleta viva y las
+rutas. Nyx nunca importa el núcleo del shell: la paleta, la ruta de ajustes y
+los datos en vivo llegan como propiedades, y los únicos requisitos de ejecución
+son Quickshell, un compositor soportado (Hyprland o niri) y una Nerd Font.
 
 Sobre niri la misma isla corre a través del overlay
 [`nyx-niri`](https://github.com/equisdots/nyx-niri). niri **no tiene IPC para la
@@ -21,6 +22,36 @@ ventana llegan desde `niri msg --json event-stream`. El seguimiento global del
 cursor bajo niri necesita acceso privilegiado a input crudo y es opcional
 mediante `NYX_CURSOR_PROVIDER` (un comando cuyo stdout emite líneas `x,y`). Ver
 [Compositor niri](/es/docs/niri).
+
+## Integración como plugin
+
+Nyx declara un adaptador de host y su propia página de ajustes en `plugin.json`:
+
+```json
+{
+  "id": "nyx",
+  "type": "shell",
+  "toggle": "mascots.enabled",
+  "host": "host/Mascots.qml",
+  "settings": { "page": "settings/NyxPage.qml", "label": "Nyx" },
+  "provides": { "mascots": { "species": "mascots", "cards": "notch" } }
+}
+```
+
+- `host` lo monta genéricamente `ui/PluginHosts.qml`; corre dentro del árbol del
+  shell y publica rectángulos `frameObstacle` para que el marco de pantalla se
+  adapte a la isla.
+- `settings.page` aparece como **Plugins → Nyx** y edita todo el bloque de
+  mascotas. El interruptor maestro es el mismo `mascots.enabled`, así que la
+  tarjeta del plugin nunca lo duplica.
+- `provides.mascots` es la regla de extensión propia de Nyx: cualquier plugin
+  instalado puede declarar las mismas claves para añadir especies o tarjetas de
+  notch; los archivos de usuario en `~/.config/hypr/mascots/` siguen ganando por
+  `id`.
+- `defaults.json` posee los valores por defecto de mascotas; el `settings.json`
+  central solo guarda la activación del plugin.
+
+Consulte [Plugins y extensiones](/es/docs/plugins) para el estándar y la CLI.
 
 ## Qué es
 
@@ -42,7 +73,8 @@ se duermen. Abrir y cerrar ventanas (socket2 de Hyprland) dispara estados de
 
 ## Especies
 
-`mascots.species` elige el aspecto; `mixed` alterna gato, perro y ojos.
+`mascots.species` elige el aspecto: un id pinta todas las mascotas (o `mixed`), y
+un **array** asigna una mascota por id. `classic` es un alias de `flame`.
 
 | Especie | Aspecto |
 |---|---|
@@ -52,8 +84,14 @@ se duermen. Abrir y cerrar ventanas (socket2 de Hyprland) dispara estados de
 | `eyes` | Un par de ojos manga con pestañas, párpados e iris que siguen. |
 | `dots` | Un grupo de puntos de color que sigue el cursor (sin cara). |
 | `watcher` | Un reloj digital reescrito con cursor de máquina de escribir. |
+| `battery` `cpu` `memory` `wifi` `volume` `temperature` | Especies informativas sobre `InfoMascot`: glifo más valor en vivo. |
+| `github` | Octocat que abre un popover con el heatmap de contribuciones de `options.user`. |
 
-`classic` se acepta como alias de `flame`.
+Las especies se descubren en la carpeta `mascots/` del plugin y en
+`~/.config/hypr/mascots/species/`; un manifiesto de usuario con el mismo `id`
+anula el distribuido. Un archivo QML `popover` opcional hace la especie
+clicable. `customizable` y `controls` declaran las opciones que expone la página
+de ajustes (`color`, `size`, `text`).
 
 ## Isla o notch
 
@@ -69,36 +107,43 @@ se duermen. Abrir y cerrar ventanas (socket2 de Hyprland) dispara estados de
 
 ## Ajustes
 
-Todo vive bajo `mascots` en `settings.json` y se edita en vivo desde el grupo
-Theme del editor (página Theme → Mascots, con pad de posición incluido):
+Todo vive bajo `mascots` en el archivo de ajustes propio del plugin
+(`~/.config/hypr/plugins/nyx/settings.json`) y se edita en vivo desde
+**Plugins → Nyx** (la misma página se refleja en el grupo Tema):
 
 | Clave | Valores | Por defecto | Significado |
 |---|---|---|---|
-| `mascots.enabled` | bool | `false` | Interruptor maestro. |
-| `mascots.species` | `flame` `cat` `dog` `eyes` `dots` `watcher` `mixed` | `flame` | Aspecto. |
-| `mascots.count` | 1..3 | `3` | Mascotas en la isla (el ancho se adapta). |
+| `mascots.enabled` | bool | `false` | Interruptor maestro (el `toggle` del plugin). |
+| `mascots.species` | id, `mixed` o array de ids | `flame` | Aspecto; un array es una alineación. |
+| `mascots.count` | 1..8 | `3` | Mascotas en la isla (solo en modo string). |
 | `mascots.size` | 0.6..1.6 | `1.0` | Escala de la mascota. |
 | `mascots.position` | nueve anclas | `top-center` | Posición de la isla; el dock se despliega hacia el centro. |
 | `mascots.appearance` | `island` `notch` | `island` | Morfología. |
+| `mascots.notchWidth` / `notchHeight` / `notchOffset` | px | `260` / `0` / `0` | Forma del notch; altura `0` es automática. |
+| `mascots.notchReserve` | bool | `true` | Reserva la franja superior para que las ventanas maximizadas esquiven el notch. |
 | `mascots.dock.size` | `compact` `medium` `large` `wide` | `large` | Ancho del panel. |
+| `mascots.dock.width` | px | `0` | Ancho explícito (`0` usa el preset). |
+| `mascots.dock.style` | `floating` `joined` | `floating` | Suelda el dock bajo el notch o lo deja flotando. |
 | `mascots.dock.columns` / `rows` | 3..7 / 1..3 | `5` / `2` | Rejilla de widgets (página). |
 | `mascots.dock.hero` / `quick` / `search` | bool | `true` | Mostrar hero, acciones rápidas y búsqueda. |
 | `mascots.dock.favorites` | ids de widgets | `[]` | Tarjetas fijadas en la pestaña Favorites. |
 | `mascots.watcher.*` | formato, segundos, velocidad, moods, eye | — | Opciones de la especie watcher. |
 | `mascots.profiles` | objeto | `{}` | Presets con nombre de todo el bloque. |
+| `uiScale` | número | `1.0` | Escala de usuario extra. |
+| `bar.position` / `bar.thickness` | string / px | `top` / `48` | Margen de la isla bajo la barra. |
 
-El margen de la isla sigue también `bar.position` y `bar.thickness`, y
-`uiScale` aplica una escala de usuario extra.
+El margen de la isla sigue también `bar.position` y `bar.thickness`.
 
 ## API pública
 
-`MascotsOverlay` expone `enabled`, `species`, `count`, `size`, `uiScale`,
-`position`, `barPosition`, `barThickness`, `appearance`, `notchWidth`,
-`notchHeight`, `notchOffset`, `notchReserve`, `dockSize`, `dockWidth`,
-`dockStyle`, `dockColumns`, `dockRows`, `dockShowHero`, `dockShowQuick`,
-`dockShowSearch`, `quickActions`, `quickHandler`, `stats`, `favorites`, las
-opciones `watcher*`, `palette`, `settingsPath`, `widgetStatePath`,
-`dockWidgetName`, `widgetRectProvider`, `widgetList` y `widgetLauncher`.
+`MascotsOverlay` expone `enabled`, `species` (string o array),
+`mascotCatalog`, `count`, `size`, `uiScale`, `position`, `barPosition`,
+`barThickness`, `appearance`, `notchWidth`, `notchHeight`, `notchOffset`,
+`notchReserve`, `dockSize`, `dockWidth`, `dockStyle`, `dockColumns`, `dockRows`,
+`dockShowHero`, `dockShowQuick`, `dockShowSearch`, `quickActions`,
+`quickHandler`, `stats`, `favorites`, las opciones `watcher*`, `palette`,
+`settingsPath`, `widgetStatePath`, `dockWidgetName`, `widgetRectProvider`,
+`widgetList` y `widgetLauncher`.
 
 El objeto de paleta necesita `base`, `surface1`, `text`, `crust`, `red`,
 `yellow`, `green`, `blue`, `mauve` y `glassOn`; incluye un fallback a
@@ -127,6 +172,7 @@ Item {
 
 ## Páginas relacionadas
 
-- [Shell Quickshell](/es/docs/shell) para el wrapper y el catálogo de widgets.
+- [Plugins y extensiones](/es/docs/plugins) para el manifiesto y la CLI.
+- [Shell Quickshell](/es/docs/shell) para el adaptador de host y el catálogo de widgets.
 - [Temas y paletas](/es/docs/theming) para el objeto de paleta que consume Nyx.
 - [Arquitectura y repositorios](/es/docs/architecture) para el esquema de instalación.

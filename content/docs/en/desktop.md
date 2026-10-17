@@ -30,6 +30,7 @@ covers the Hyprland session.
 | `windowrules.lua` | Floating, centering, size, opacity and workspace rules. |
 | `workspaces.lua` | Workspace rules pinned by EDID description and scratchpads. |
 | `autostart.lua` | Session startup commands (`hl.on("hyprland.start", ...)`). |
+| `plugins.lua` | Plugin loader: evaluates enabled `hypr.lua` fragments with an injected `mod` SDK. |
 | `config/window-effects.lua` | Widget-generated decoration overrides, loaded last. |
 | `config/gaps.lua` | Widget-generated gaps/border overrides, loaded last. |
 
@@ -60,6 +61,7 @@ Essential bindings, all defined in `config/hypr/keybinds.lua`:
 | `SUPER + Page Up/Down` | Previous / next workspace |
 | `SUPER + W` | Wallpaper picker |
 | `SUPER + SHIFT + D` | Settings panel (bar editor) |
+| `SUPER + SHIFT + M` | Plugins panel |
 | `SUPER + SHIFT + X` | Launch xturing |
 | `SUPER + L` | Lock screen |
 | `SUPER + Escape` | Exit Hyprland |
@@ -77,6 +79,12 @@ hl.bind("ALT + F4", hl.dsp.window.kill())
 
 The full list is in the repository's `docs/quick-reference.md`, and the
 settings panel can regenerate `config/user-keybinds.lua` for custom entries.
+
+Plugin-provided keybinds are evaluated by `plugins.lua` after the core modules
+and before the user overrides. A plugin bind can be re-keyed or muted from the
+Plugins → Keybinds editor; the override lives in the plugin's own settings file
+and never silently removes a core shortcut. See
+[Plugins and extensions](/docs/plugins).
 
 ## Multi-monitor
 

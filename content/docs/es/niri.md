@@ -1,7 +1,7 @@
 ---
 title: Compositor niri
 description: El compositor alternativo niri: configuración KDL, scripts de sesión, el shell neutral al compositor y cómo el stack compartido corre en Hyprland y niri.
-order: 8
+order: 9
 section: desktop
 ---
 
@@ -23,12 +23,12 @@ los de Hyprland.
 | [niri](https://github.com/equisdots/niri) | Config del compositor niri (KDL), scripts de sesión, ficheros de sesión/portal | `~/.config/niri` |
 | [niri-meta](https://github.com/equisdots/niri-meta) | Meta instalador y actualizador (`dotsniri`) del stack niri | `~/.local/bin/dotsniri` |
 | [niri-shell](https://github.com/equisdots/niri-shell) | Overlay que hace neutral al compositor el shell Quickshell compartido | se fusiona en `.../quickshell` |
-| [nyx-niri](https://github.com/equisdots/nyx-niri) | Overlay que hace neutral al compositor la isla de mascotas Nyx compartida | se fusiona en `.../quickshell/ui/nyx` |
+| [nyx-niri](https://github.com/equisdots/nyx-niri) | Overlay que hace neutral al compositor la isla de mascotas Nyx compartida | se fusiona en `.../quickshell/ui/plugins/nyx` |
 | [niri-login](https://github.com/equisdots/niri-login) | Entrada de sesión Wayland para que los gestores de sesión listen "Niri" | `/usr/share/wayland-sessions` |
 
 `hyprland` y `niri` son los dos frontends de compositor; el resto del stack
 (`shell`, `nyx`, `palettes`, `theme-sync`, `background`, `timex`, `davincix`,
-`login`) es compartido por ambos.
+los repositorios de plugins y `login`) es compartido por ambos.
 
 ## Una raíz de datos, dos compositores
 
@@ -149,13 +149,23 @@ usa `gpu-screen-recorder` a través de `niri_record.sh`.
 
 ## Nyx en niri
 
-La isla de mascotas corre sin cambios, con una limitación asumida: niri **no
-tiene IPC para la posición global del puntero**, así que el bucle `hyprctl
-cursorpos` de Hyprland se detiene y las mascotas quedan inactivas (las pupilas
-al centro). Los eventos de ventana llegan desde `niri msg --json event-stream`.
-El seguimiento global del cursor necesita acceso privilegiado a input crudo; es
-opcional y experimental mediante `NYX_CURSOR_PROVIDER` (un comando cuyo stdout
-emite líneas `x,y`). Ver [Isla de mascotas Nyx](/es/docs/nyx).
+El plugin Nyx corre sin cambios, con una limitación asumida: niri **no tiene IPC
+para la posición global del puntero**, así que el bucle `hyprctl cursorpos` de
+Hyprland se detiene y las mascotas quedan inactivas (las pupilas al centro). Los
+eventos de ventana llegan desde `niri msg --json event-stream`. El seguimiento
+global del cursor necesita acceso privilegiado a input crudo; es opcional y
+experimental mediante `NYX_CURSOR_PROVIDER` (un comando cuyo stdout emite líneas
+`x,y`). Ver [Isla de mascotas Nyx](/es/docs/nyx).
+
+## Plugins en niri
+
+`niri-meta` despliega todo el estándar de plugins (`plugin-api`, `plugin-sdk`,
+el hub `plugins` y el conjunto de plugins por defecto), así que los mismos 63
+plugins, páginas de ajustes, paneles, módulos de barra, tokens MD3 y entradas
+independientes corren en niri. `Super+Shift+M` abre el panel de Plugins. Las
+acciones de atajos de plugins se cubren con los binds KDL estáticos del
+repositorio `niri`, porque niri lee KDL en vez de evaluar fragmentos `hypr.lua`
+en ejecución. Ver [Plugins y extensiones](/es/docs/plugins).
 
 ## Instalar niri con dotsniri
 
@@ -185,11 +195,14 @@ shell.
 ## Requisitos
 
 niri 26.04 o superior con `xwayland-satellite`, `jq`, `python3` y, para captura,
-`grim`, `slurp`, `satty` y `wl-clipboard`. `dotsniri doctor` reporta lo que
-falta y `dotsniri doctor --self-test` comprueba el toolkit sin requerir niri.
+`grim`, `slurp`, `satty` y `wl-clipboard`. El conjunto de plugins también quiere
+`cliphist` (portapapeles) y `fd` (búsqueda de archivos). `dotsniri doctor`
+reporta lo que falta y `dotsniri doctor --self-test` comprueba el toolkit sin
+requerir niri.
 
 ## Páginas relacionadas
 
 - [Escritorio Hyprland](/es/docs/desktop) para el otro frontend de compositor.
 - [Shell Quickshell](/es/docs/shell) para la interfaz neutral al compositor.
+- [Plugins y extensiones](/es/docs/plugins) para la capa de plugins compartida.
 - [Arquitectura y repositorios](/es/docs/architecture) para el mapa completo de repos.
