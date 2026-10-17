@@ -1,8 +1,9 @@
 # equisdots · web
 
-Official website of the [equisdots](https://github.com/equisdots) desktop: landing page,
-wiki-style documentation (English and Spanish) and a gallery of real captures
-and clips.
+Official website of the [equisdots](https://github.com/equisdots) desktop: a
+landing page with an isometric stack map and an illustrated catalog of all 22
+repositories, wiki-style documentation (English and Spanish) and a gallery of
+real captures and clips.
 
 ## Stack
 
@@ -47,6 +48,7 @@ scripts/build-search-index.mjs
 scripts/build-previews.sh  regenerates public/previews from raw captures
 src/app/                   routes: /, /docs, /previews and their /es counterparts
 src/components/            Navbar, Footer, previews, widget illustrations
+src/components/landing/    hero, stack and flow diagrams, repo illustrations, sections
 src/components/docs/       wiki shell, sidebar, search dialog, table of contents
 src/components/previews/   stills lightbox and clip cards
 src/lib/                   base path, i18n dictionaries, docs loader, repo catalog, previews manifest
@@ -67,7 +69,26 @@ section: start   # start | desktop | wallpapers | more
 
 `src/lib/docs.ts` reads the folder at build time; new pages appear in the
 sidebar and the index automatically, in both languages (add the file to
-`content/docs/en/` and `content/docs/es/`).
+`content/docs/en/` and `content/docs/es/`). The current set covers the
+compositors, the shell, Nyx, the plugin standard and 63-plugin hub, theming,
+wallpapers, scenes, tools, architecture and contributing.
+
+## Stack map, flows and repository catalog
+
+The landing page has two data-driven sections:
+
+- **Stack map** (`src/components/landing/StackDiagram.tsx`): an accessible
+  inline-SVG isometric diagram with five layers and the plugin side rail. The
+  copy lives under `stack` in `src/lib/i18n.ts`.
+- **Flows** (`src/components/landing/FlowsSection.tsx` + `IsoFlow.tsx`): four
+  isometric flow diagrams for the palette, wallpaper, plugin and compositor paths.
+  Nodes carry an accent, a glyph and a legend entry; edges are SVG markers.
+- **Repository catalog** (`RepoList.tsx` + `RepoArt.tsx`): every repository is
+  grouped by layer and gets a simplified 3D illustration, a role, a description
+  and its payload location. Add or edit one entry in `src/lib/repos.ts`.
+
+No 3D library is used: the diagrams are SVG and CSS, so they stay static,
+theme-aware, responsive and dependency-free.
 
 ## Previews
 
@@ -109,7 +130,11 @@ variables in `src/app/globals.css`:
 The toggle stores the choice in `localStorage` and an inline script applies it
 before the first paint. The visual language follows the flat, content-led
 direction shared with the X Linux docs: hairline borders, generous spacing,
-restrained rounding and color used for state rather than decoration.
+restrained rounding and color used for state rather than decoration. The stack
+map and the repository illustrations add a restrained isometric layer (blueprint
+grid, accent-tinted slabs and one floating plugin cube) without introducing
+motion or 3D runtime dependencies; all animation is CSS and respects
+`prefers-reduced-motion`.
 
 ## Deploy
 

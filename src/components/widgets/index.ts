@@ -1,5 +1,7 @@
 export { BarMock } from "./BarMock";
+export { NyxMock } from "./NyxMock";
 export { PaletteMock } from "./PaletteMock";
+export { PluginsMock } from "./PluginsMock";
 export { TimexMock } from "./TimexMock";
 export { SysMonMock } from "./SysMonMock";
 export { DavincixMock } from "./DavincixMock";

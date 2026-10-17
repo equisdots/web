@@ -1,7 +1,7 @@
 ---
 title: "Herramientas: timex, xturing, login"
 description: Referencia del motor de hora y clima timex, la interfaz de ajustes de terminal xturing y el tema de inicio de sesión SDDM estático.
-order: 10
+order: 11
 section: more
 ---
 
@@ -40,11 +40,12 @@ El motor ejecuta exactamente el proveedor seleccionado; no hay alternativas
 silenciosas. Si al proveedor le falta una ciudad o una clave, la caché recibe
 un estado de error explícito (`Select a provider` ["seleccione un proveedor"],
 `Set a city` ["establezca una ciudad"], `Set the API key` ["establezca la clave
-de API"], `Unknown provider` ["proveedor desconocido"]). La interfaz QML vive
-en `ui/` (`TimexPopup.qml` para el emergente de calendario vinculado a
-`SUPER + S`, `TimexTab.qml` para la pestaña de ajustes), y el antiguo
-`calendar/weather.sh` del shell es ahora un shim fino sobre la CLI, así que los
-llamadores de barra y calendario no cambiaron.
+de API"], `Unknown provider` ["proveedor desconocido"]). timex se despliega como
+plugin: el motor, el panel de calendario (`ui/TimexPopup.qml`, vinculado a
+`SUPER + S`), la isla de barra (`bar/Weather.qml`) y la página de ajustes
+(`settings/TimexPage.qml`) viven en `.../quickshell/ui/plugins/timex/`. La isla
+consulta el motor directamente y el panel se exporta como
+`provides.panels.calendar`; ver [Plugins y extensiones](/es/docs/plugins).
 
 ### Proveedores
 
@@ -62,8 +63,8 @@ documento JSON normalizado, más una línea de catálogo en `core/timex.sh`.
 - `settings.json -> timex`: `{ provider, city, unit }` más las claves de diseño
   de la interfaz (`forecastEnabled`, `forecastPosition` `below`/`above`,
   `forecastSize`, `forecastGap`, `forecastHours`, `forecastShowTime/Icon/Temp`,
-  `forecastOrder` y `clockScale`). Sin secretos; los valores predeterminados
-  viven en la sección timex de `core/Personalization.js` del shell.
+  `forecastOrder` y `clockScale`). Sin secretos; el plugin posee sus valores
+  predeterminados y los expone en la página de ajustes de Timex.
 - Claves de API: `~/.local/state/quickshell/timex/keys.conf` (modo 600),
   escritas con `timex keys set`.
 - Caché: `~/.cache/quickshell/timex/weather.json`, con el contrato estable
@@ -96,12 +97,11 @@ xturing --help
 
 ### Páginas
 
-25 páginas repartidas en seis grupos de navegación:
+24 páginas repartidas en seis grupos de navegación:
 
-- Shell: General, Timex, Teclado, Monitores, Arranque.
-- Barra: Motor, Posición, Estilo, Zonas, Barra clásica, Módulos, Espacios de
-  trabajo.
-- Tema: Paleta, Animaciones, Sombras, Cristal, Mascotas.
+- Shell: General, Teclado, Monitores, Arranque.
+- Barra: General, Posición, Estilo, Zonas, Módulos, Espacios de trabajo.
+- Tema: Apariencia, Paleta, Animaciones, Sombras, Marco, Cristal.
 - Comportamiento: Lanzador, Notificaciones.
 - Widgets: Emergentes (las secciones de `Personalization.js`).
 - Sistema: Hyprland, Entrada, GPU, Inactividad, Acerca de.
@@ -144,7 +144,6 @@ se traducen a una TUI; el archivo de ajustes y su formato son idénticos:
 
 - Zonas: no hay drag and drop; `Shift + Left/Right` mueven un módulo dentro y
   entre zonas, Enter lo activa o desactiva.
-- Barra clásica: agrupar y desagrupar con `g` / `u` en vez de arrastrar.
 - Monitores: los campos Position X/Y sustituyen al lienzo de arrastre.
 - Paleta: los colores se editan como `#rrggbb`; Nueva paleta clona los 8
   colores base de la paleta activa.
@@ -157,11 +156,10 @@ se traducen a una TUI; el archivo de ajustes y su formato son idénticos:
 ```
 src/
   settings.rs   lectura/escritura atómica + tests
-  catalog.rs    definición basada en datos de las 25 páginas y sus controles
+  catalog.rs    definición basada en datos de las 24 páginas y sus controles
   app.rs        estado, navegación, edición, páginas especiales, efectos
   ui.rs         renderizado ratatui (rail, contenido, selector, formularios)
   palette.rs    index.json, edición de paletas con backup, crear/borrar
-  classic.rs    valores por defecto de ClassicBar, mirrorBar, normalize
   monitors.rs   hyprctl monitors, aplicar/reset con lua + display-config
   actions.rs    spawn/capture (con modo dry), notify-send
 ```

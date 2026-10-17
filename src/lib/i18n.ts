@@ -3,6 +3,12 @@ import type { ClipGroupId, ShotKind } from "./previews";
 export const LOCALES = ["en", "es"] as const;
 export type Locale = (typeof LOCALES)[number];
 
+type FlowCopy = {
+  title: string;
+  note: string;
+  nodes: Record<string, { label: string; note: string }>;
+};
+
 export type Dict = {
   nav: { home: string; docs: string; previews: string; github: string };
   theme: { toDark: string; toLight: string };
@@ -21,21 +27,47 @@ export type Dict = {
     paletteNote: string;
   };
   home: {
-    labels: { highlights: string; widgets: string; repos: string; cta: string };
+    labels: { highlights: string; stack: string; flows: string; widgets: string; repos: string; cta: string };
     table: { repo: string; purpose: string };
     highlightsTitle: string;
     highlightsSubtitle: string;
+    stackTitle: string;
+    stackSubtitle: string;
+    flowsTitle: string;
+    flowsSubtitle: string;
     widgetsTitle: string;
     widgetsSubtitle: string;
     reposTitle: string;
     reposSubtitle: string;
+    repoGroups: Record<
+      "install" | "interface" | "compositor" | "engines" | "data" | "plugins" | "site",
+      string
+    >;
     ctaTitle: string;
     ctaText: string;
+  };
+  stack: {
+    diagram: string;
+    plugins: string;
+    layers: {
+      id: "interface" | "compositor" | "engines" | "data" | "install";
+      title: string;
+      note: string;
+      repos: string;
+    }[];
+  };
+  flows: {
+    palette: FlowCopy;
+    wallpaper: FlowCopy;
+    plugins: FlowCopy;
+    compositor: FlowCopy;
   };
   highlights: { title: string; body: string }[];
   widgets: {
     bar: string;
+    nyx: string;
     palette: string;
+    plugins: string;
     timex: string;
     sysmon: string;
     davincix: string;
@@ -45,7 +77,9 @@ export type Dict = {
   };
   widgetNotes: {
     bar: string;
+    nyx: string;
     palette: string;
+    plugins: string;
     timex: string;
     sysmon: string;
     davincix: string;
@@ -103,7 +137,7 @@ const en: Dict = {
     title: "equisdots",
     dots: "dots",
     subtitle:
-      "The X desktop: an Arch-based stack with Hyprland in the Lua era and a niri port, a Quickshell shell, a live palette engine and a wallpaper kernel with interactive scenes.",
+      "The X desktop: an Arch-based stack with Hyprland in the Lua era and a niri port, a compositor-neutral Quickshell shell, a 63-plugin standard, a live palette engine and a wallpaper kernel with interactive scenes.",
     install: "Install with one command",
     copy: "Copy",
     copied: "Copied",
@@ -113,20 +147,119 @@ const en: Dict = {
     paletteNote: "This site uses two palettes from the collection: X (dark) and Catppuccin Latte (light).",
   },
   home: {
-    labels: { highlights: "Highlights", widgets: "Widgets", repos: "Repositories", cta: "Get started" },
+    labels: { highlights: "Highlights", stack: "Stack", flows: "Flows", widgets: "Widgets", repos: "Repositories", cta: "Get started" },
     table: { repo: "repo", purpose: "purpose" },
     highlightsTitle: "What makes it different",
     highlightsSubtitle: "Small repositories, one command, one palette across the whole desktop.",
+    stackTitle: "One desktop, built in layers",
+    stackSubtitle:
+      "Five layers with a single contract each: install, data, engines, compositor and interface. The plugin system sits beside them and extends every surface without forking the core.",
+    flowsTitle: "How the pieces move",
+    flowsSubtitle:
+      "Four paths explain the desktop: one palette recolors everything, one kernel drives every wallpaper, one manifest extends every surface, and one shell runs on both compositors.",
     widgetsTitle: "The widgets, illustrated",
     widgetsSubtitle: "Web recreations of the shell surfaces: bar, panels, pickers and desktop widgets.",
-    reposTitle: "Repositories",
-    reposSubtitle: "Each piece lives in its own repository and ships with its own documentation.",
+    reposTitle: "Every repository, illustrated",
+    reposSubtitle:
+      "All 22 repositories of the organization, grouped by the layer they own. Each card links to its source and shows where its payload lands.",
+    repoGroups: {
+      install: "Install and update",
+      interface: "Interface and session",
+      compositor: "Compositors",
+      engines: "Engines and tools",
+      data: "Data and content",
+      plugins: "Plugin system",
+      site: "Site and community",
+    },
     ctaTitle: "Start with the documentation",
-    ctaText: "Installation, updates, Hyprland configuration, wallpapers, scenes and theming, in English and Spanish.",
+    ctaText: "Installation, updates, compositor configuration, plugins, wallpapers, scenes and theming, in English and Spanish.",
+  },
+  stack: {
+    diagram: "Isometric stack map",
+    plugins: "side rail · plugin system",
+    layers: [
+      {
+        id: "interface",
+        title: "Interface",
+        note: "One Quickshell tree for both sessions: bar, panels, editor, lock screen and the Nyx island.",
+        repos: "shell · nyx · overlays",
+      },
+      {
+        id: "compositor",
+        title: "Compositor",
+        note: "Lua Hyprland and KDL niri behind a runtime-selected backend, with reversible overlays.",
+        repos: "hyprland · niri",
+      },
+      {
+        id: "engines",
+        title: "Engines",
+        note: "Wallpapers, cross-app theming, time and weather, and a complete terminal settings frontend.",
+        repos: "davincix · theme-sync · timex · xturing",
+      },
+      {
+        id: "data",
+        title: "Data and content",
+        note: "One settings file, one palette store and the wallpaper plus scene collection.",
+        repos: "palettes · background",
+      },
+      {
+        id: "install",
+        title: "Install and session",
+        note: "Two independent meta installers, static login themes and the Wayland session entry.",
+        repos: "dots · dotsniri · login",
+      },
+    ],
+  },
+  flows: {
+    palette: {
+      title: "One palette, every surface",
+      note: "settings.json selects a slug; the palette store feeds the shell, window borders, theme-sync and running scenes.",
+      nodes: {
+        settings: { label: "settings.json", note: "bar.palette" },
+        palettes: { label: "palettes/*.json", note: "base16 + roles" },
+        shell: { label: "shell + borders", note: "bar, panels, frames" },
+        theme: { label: "theme-sync", note: "kitty, nvim, gtk…" },
+        scenes: { label: "xwww scenes", note: "palette provider" },
+      },
+    },
+    wallpaper: {
+      title: "One kernel, every wallpaper",
+      note: "davincix resolves a file, URL or scene directory, picks xwww or mpvpaper, and refreshes the lock-screen cache.",
+      nodes: {
+        davincix: { label: "davincix", note: "file · url · scene" },
+        xwww: { label: "xwww", note: "still + JS scene" },
+        mpvpaper: { label: "mpvpaper", note: "video" },
+        surface: { label: "layer surface", note: "the screen" },
+        lock: { label: "lock · SDDM", note: "current_wallpaper.png" },
+      },
+    },
+    plugins: {
+      title: "One manifest, every surface",
+      note: "A plugin.json is discovered, compatibility-checked and mounted by the generic hosts; the plugin owns its UI.",
+      nodes: {
+        manifest: { label: "plugin.json", note: "id + provides" },
+        scan: { label: "scan folders", note: "user wins" },
+        compat: { label: "enable · compat", note: "api 1.0.0" },
+        mount: { label: "generic hosts", note: "PluginHosts" },
+        surfaces: { label: "UI surfaces", note: "panels · bars · settings" },
+      },
+    },
+    compositor: {
+      title: "One shell, two compositors",
+      note: "The session selects the backend at runtime; the bar, panels, widgets and Nyx consume the same adapter surface on Hyprland and niri.",
+      nodes: {
+        session: { label: "session", note: "XDG_CURRENT_DESKTOP" },
+        adapter: { label: "Compositor.qml", note: "runtime backend" },
+        hyprland: { label: "Hyprland", note: "Lua · hyprctl" },
+        niri: { label: "niri", note: "KDL · niri msg" },
+        shell: { label: "shared shell", note: "same widgets" },
+      },
+    },
   },
   highlights: [
     { title: "Hyprland, Lua era", body: "Compositor configuration written against the Lua API (0.55+), split into reusable modules for keybinds, rules, animations and colors." },
     { title: "niri, too", body: "The same desktop also runs on niri: the shell, palettes, widgets and the Nyx mascot are shared, and a separate dotsniri meta manages the niri stack." },
+    { title: "63 plugins, one standard", body: "Self-contained features declare plugin.json, ship their own settings pages, bar modules and panels, and are discovered by folder. dots installs, toggles and updates them without touching the core." },
     { title: "Live palette engine", body: "base16 palettes with semantic roles: switching one recolors the bar, window borders, widgets and running scenes without a reload." },
     { title: "Interactive scenes", body: "JavaScript wallpapers rendered by the xwww engine: procedural art that reacts to the palette and the clock." },
     { title: "Quickshell shell", body: "Bar with zones, a full settings editor, panels, popups and floating desktop widgets with a visual redactor." },
@@ -135,7 +268,9 @@ const en: Dict = {
   ],
   widgets: {
     bar: "Bar islands",
+    nyx: "Nyx island",
     palette: "Palette switcher",
+    plugins: "Plugins panel",
     timex: "Calendar and weather",
     sysmon: "System monitor",
     davincix: "Wallpaper picker",
@@ -145,7 +280,9 @@ const en: Dict = {
   },
   widgetNotes: {
     bar: "Floating islands for workspaces, clock and status; palette-tinted, blur-aware.",
+    nyx: "Mascot island that unfolds into a control center: species, live stats and quick actions.",
     palette: "Switch the whole desktop palette without opening the settings editor.",
+    plugins: "63 plugins, each with its own switch, settings page and keybind surface.",
     timex: "Clock, month grid and forecast in one popup, fed by the local weather cache.",
     sysmon: "CPU, memory, disks and GPU with per-core detail.",
     davincix: "Stills, video and interactive scenes with reveal transitions.",
@@ -170,7 +307,7 @@ const en: Dict = {
     eyebrow: "Real desktop",
     title: "Previews",
     subtitle:
-      "Real captures and short clips of the equisdots desktop: Hyprland tiling, the Quickshell shell and settings editor, palettes, scenes and widgets.",
+      "Real captures and short clips of the equisdots desktop: Hyprland tiling, the Quickshell shell and settings editor, palettes, plugins, scenes and widgets.",
     stats: { shots: "captures", clips: "clips" },
     sections: {
       desktop: {
@@ -205,7 +342,7 @@ const en: Dict = {
       },
       "settings-bar-engine": {
         title: "Bar engine",
-        note: "Pick an engine (Bar, ClassicBar) and preview its modules and zones live.",
+        note: "Master switch, position, zones and modules, configured live in the settings panel.",
       },
       "settings-bar-position": {
         title: "Bar position",
@@ -273,7 +410,7 @@ const es: Dict = {
     title: "equisdots",
     dots: "dots",
     subtitle:
-      "El escritorio X: un stack sobre Arch con Hyprland en la era Lua y un port a niri, un shell Quickshell, un motor de paletas en vivo y un kernel de fondos con escenas interactivas.",
+      "El escritorio X: un stack sobre Arch con Hyprland en la era Lua y un port a niri, un shell Quickshell neutral al compositor, un estándar de 63 plugins, un motor de paletas en vivo y un kernel de fondos con escenas interactivas.",
     install: "Instala con un solo comando",
     copy: "Copiar",
     copied: "Copiado",
@@ -283,20 +420,119 @@ const es: Dict = {
     paletteNote: "Este sitio usa dos paletas de la colección: X (oscura) y Catppuccin Latte (clara).",
   },
   home: {
-    labels: { highlights: "Claves", widgets: "Widgets", repos: "Repositorios", cta: "Empieza" },
+    labels: { highlights: "Claves", stack: "Stack", flows: "Flujos", widgets: "Widgets", repos: "Repositorios", cta: "Empieza" },
     table: { repo: "repo", purpose: "propósito" },
     highlightsTitle: "Qué lo hace diferente",
     highlightsSubtitle: "Repositorios pequeños, un comando, una paleta en todo el escritorio.",
+    stackTitle: "Un escritorio, construido por capas",
+    stackSubtitle:
+      "Cinco capas con un contrato claro cada una: instalación, datos, motores, compositor e interfaz. El sistema de plugins se sienta al lado y extiende cada superficie sin bifurcar el núcleo.",
+    flowsTitle: "Cómo se mueven las piezas",
+    flowsSubtitle:
+      "Cuatro recorridos explican el escritorio: una paleta lo recolorea todo, un kernel gobierna cada fondo, un manifiesto extiende cada superficie y un shell corre en ambos compositores.",
     widgetsTitle: "Los widgets, ilustrados",
     widgetsSubtitle: "Recreaciones web de las superficies del shell: barra, paneles, selectores y widgets de escritorio.",
-    reposTitle: "Repositorios",
-    reposSubtitle: "Cada pieza vive en su propio repositorio y trae su propia documentación.",
+    reposTitle: "Todos los repositorios, ilustrados",
+    reposSubtitle:
+      "Los 22 repositorios de la organización, agrupados por la capa que poseen. Cada tarjeta enlaza a su código y muestra dónde aterriza su payload.",
+    repoGroups: {
+      install: "Instalación y actualización",
+      interface: "Interfaz y sesión",
+      compositor: "Compositores",
+      engines: "Motores y herramientas",
+      data: "Datos y contenido",
+      plugins: "Sistema de plugins",
+      site: "Sitio y comunidad",
+    },
     ctaTitle: "Empieza por la documentación",
-    ctaText: "Instalación, actualizaciones, configuración de Hyprland, fondos, escenas y temas, en inglés y español.",
+    ctaText: "Instalación, actualizaciones, configuración de los compositores, plugins, fondos, escenas y temas, en inglés y español.",
+  },
+  stack: {
+    diagram: "Mapa isométrico del stack",
+    plugins: "riel lateral · sistema de plugins",
+    layers: [
+      {
+        id: "interface",
+        title: "Interfaz",
+        note: "Un único árbol Quickshell para ambas sesiones: barra, paneles, editor, bloqueo e isla Nyx.",
+        repos: "shell · nyx · overlays",
+      },
+      {
+        id: "compositor",
+        title: "Compositor",
+        note: "Hyprland en Lua y niri en KDL tras un backend elegido en ejecución, con overlays reversibles.",
+        repos: "hyprland · niri",
+      },
+      {
+        id: "engines",
+        title: "Motores",
+        note: "Fondos, temas entre aplicaciones, hora y clima, y un frontend completo de ajustes en terminal.",
+        repos: "davincix · theme-sync · timex · xturing",
+      },
+      {
+        id: "data",
+        title: "Datos y contenido",
+        note: "Un único settings.json, un único almacén de paletas y la colección de fondos y escenas.",
+        repos: "palettes · background",
+      },
+      {
+        id: "install",
+        title: "Instalación y sesión",
+        note: "Dos meta instaladores independientes, temas de login estáticos y la entrada de sesión Wayland.",
+        repos: "dots · dotsniri · login",
+      },
+    ],
+  },
+  flows: {
+    palette: {
+      title: "Una paleta, todas las superficies",
+      note: "settings.json elige un slug; el almacén de paletas alimenta el shell, los bordes de ventana, theme-sync y las escenas activas.",
+      nodes: {
+        settings: { label: "settings.json", note: "bar.palette" },
+        palettes: { label: "palettes/*.json", note: "base16 + roles" },
+        shell: { label: "shell + bordes", note: "barra, paneles, marcos" },
+        theme: { label: "theme-sync", note: "kitty, nvim, gtk…" },
+        scenes: { label: "escenas xwww", note: "proveedor de paleta" },
+      },
+    },
+    wallpaper: {
+      title: "Un kernel, cada fondo",
+      note: "davincix resuelve un archivo, URL o directorio de escena, elige xwww o mpvpaper y refresca la caché de bloqueo.",
+      nodes: {
+        davincix: { label: "davincix", note: "archivo · url · escena" },
+        xwww: { label: "xwww", note: "imagen + escena JS" },
+        mpvpaper: { label: "mpvpaper", note: "vídeo" },
+        surface: { label: "superficie", note: "la pantalla" },
+        lock: { label: "bloqueo · SDDM", note: "current_wallpaper.png" },
+      },
+    },
+    plugins: {
+      title: "Un manifiesto, todas las superficies",
+      note: "Un plugin.json se descubre, se comprueba su compatibilidad y lo montan hosts genéricos; el plugin posee su UI.",
+      nodes: {
+        manifest: { label: "plugin.json", note: "id + provides" },
+        scan: { label: "escanear carpetas", note: "gana el usuario" },
+        compat: { label: "activar · compat", note: "api 1.0.0" },
+        mount: { label: "hosts genéricos", note: "PluginHosts" },
+        surfaces: { label: "superficies UI", note: "paneles · barras · ajustes" },
+      },
+    },
+    compositor: {
+      title: "Un shell, dos compositores",
+      note: "La sesión elige el backend en ejecución; barra, paneles, widgets y Nyx consumen la misma superficie del adaptador en Hyprland y niri.",
+      nodes: {
+        session: { label: "sesión", note: "XDG_CURRENT_DESKTOP" },
+        adapter: { label: "Compositor.qml", note: "backend en ejecución" },
+        hyprland: { label: "Hyprland", note: "Lua · hyprctl" },
+        niri: { label: "niri", note: "KDL · niri msg" },
+        shell: { label: "shell compartido", note: "mismos widgets" },
+      },
+    },
   },
   highlights: [
     { title: "Hyprland, era Lua", body: "Configuración del compositor escrita contra la API Lua (0.55+), dividida en módulos reutilizables para atajos, reglas, animaciones y colores." },
     { title: "niri, también", body: "El mismo escritorio corre también sobre niri: el shell, las paletas, los widgets y la mascota Nyx son compartidos, y un meta aparte, dotsniri, gestiona el stack de niri." },
+    { title: "63 plugins, un estándar", body: "Funciones autocontenidas declaran plugin.json, traen su propia página de ajustes, módulos de barra y paneles, y se descubren por carpeta. dots las instala, activa y actualiza sin tocar el núcleo." },
     { title: "Motor de paletas en vivo", body: "Paletas base16 con roles semánticos: cambiar una recolorea la barra, los bordes de ventana, los widgets y las escenas activas sin recargar." },
     { title: "Escenas interactivas", body: "Fondos en JavaScript renderizados por el motor de xwww: arte procedural que reacciona a la paleta y al reloj." },
     { title: "Shell Quickshell", body: "Barra con zonas, editor de ajustes completo, paneles, popups y widgets flotantes de escritorio con redactor visual." },
@@ -305,7 +541,9 @@ const es: Dict = {
   ],
   widgets: {
     bar: "Islas de la barra",
+    nyx: "Isla Nyx",
     palette: "Selector de paletas",
+    plugins: "Panel de plugins",
     timex: "Calendario y clima",
     sysmon: "Monitor del sistema",
     davincix: "Selector de fondos",
@@ -315,7 +553,9 @@ const es: Dict = {
   },
   widgetNotes: {
     bar: "Islas flotantes para espacios, reloj y estado; tintadas con la paleta y compatibles con blur.",
+    nyx: "Isla de mascotas que se despliega en un centro de control: especies, datos en vivo y acciones rápidas.",
     palette: "Cambia la paleta de todo el escritorio sin abrir el editor de ajustes.",
+    plugins: "63 plugins, cada uno con su interruptor, página de ajustes y superficie de atajos.",
     timex: "Reloj, rejilla mensual y previsión en un popup, alimentado por la caché local.",
     sysmon: "CPU, memoria, discos y GPU con detalle por núcleo.",
     davincix: "Imágenes, vídeo y escenas interactivas con transiciones de entrada.",
@@ -340,7 +580,7 @@ const es: Dict = {
     eyebrow: "Escritorio real",
     title: "Previews",
     subtitle:
-      "Capturas y clips cortos del escritorio equisdots: tiling de Hyprland, shell y editor de ajustes de Quickshell, paletas, escenas y widgets.",
+      "Capturas y clips cortos del escritorio equisdots: tiling de Hyprland, shell y editor de ajustes de Quickshell, paletas, plugins, escenas y widgets.",
     stats: { shots: "capturas", clips: "clips" },
     sections: {
       desktop: {
@@ -375,7 +615,7 @@ const es: Dict = {
       },
       "settings-bar-engine": {
         title: "Motor de la barra",
-        note: "Elige un motor (Bar, ClassicBar) y previsualiza módulos y zonas en vivo.",
+        note: "Interruptor maestro, posición, zonas y módulos, configurados en vivo desde el panel.",
       },
       "settings-bar-position": {
         title: "Posición de la barra",

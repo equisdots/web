@@ -6,10 +6,11 @@ section: desktop
 ---
 
 [equisdots/nyx](https://github.com/equisdots/nyx) is the self-contained
-mascot island and control-center notch. It is deployed into the shell as
-`ui/nyx/` (the dots installer handles the copy) and wrapped by
-`ui/Mascots.qml`, which injects the live palette and paths. Nyx never imports
-the shell core: the palette, the settings path and live data arrive as
+mascot island and control-center notch, and plugin #1 of the equisdots plugin
+standard. It is deployed into the shell as `ui/plugins/nyx/` (the dots installer
+handles the copy) and mounted by the generic `ui/PluginHosts.qml` through its
+manifest `host` entry, which injects the live palette and paths. Nyx never
+imports the shell core: the palette, the settings path and live data arrive as
 properties, and the only runtime requirements are Quickshell, a supported
 compositor (Hyprland or niri) and a Nerd Font.
 
@@ -20,6 +21,35 @@ window events come from `niri msg --json event-stream`. Global cursor tracking
 under niri needs privileged raw input access and is opt-in through
 `NYX_CURSOR_PROVIDER` (a command whose stdout streams `x,y` lines). See
 [niri compositor](/docs/niri).
+
+## Plugin integration
+
+Nyx declares a host adapter and its own settings page in `plugin.json`:
+
+```json
+{
+  "id": "nyx",
+  "type": "shell",
+  "toggle": "mascots.enabled",
+  "host": "host/Mascots.qml",
+  "settings": { "page": "settings/NyxPage.qml", "label": "Nyx" },
+  "provides": { "mascots": { "species": "mascots", "cards": "notch" } }
+}
+```
+
+- `host` is mounted generically by `ui/PluginHosts.qml`; it runs inside the
+  shell tree and publishes `frameObstacle` rects so the screen frame hugs the
+  island.
+- `settings.page` appears as **Plugins → Nyx** and edits the whole mascots
+  block. The master switch is the same `mascots.enabled`, so the plugin card
+  never duplicates it.
+- `provides.mascots` is Nyx's own extension rule: any installed plugin may
+  declare the same keys to add species or notch cards; user files under
+  `~/.config/hypr/mascots/` still win on `id`.
+- `defaults.json` owns the mascots defaults; the core `settings.json` keeps
+  only plugin enablement.
+
+See [Plugins and extensions](/docs/plugins) for the standard and the CLI.
 
 ## What it is
 
@@ -41,7 +71,8 @@ moods: angry, surprised, happy or sleepy.
 
 ## Species
 
-`mascots.species` picks the look; `mixed` alternates cat, dog and eyes.
+`mascots.species` picks the look: one id paints every mascot (or `mixed`), and
+an **array** gives one mascot per id. `classic` is an alias of `flame`.
 
 | Species | Look |
 |---|---|
@@ -51,8 +82,14 @@ moods: angry, surprised, happy or sleepy.
 | `eyes` | A pair of manga eyes with lash, lids and tracking irises. |
 | `dots` | A cluster of colored dots that trails the cursor (no face). |
 | `watcher` | A digital clock retyped with a typewriter cursor. |
+| `battery` `cpu` `memory` `wifi` `volume` `temperature` | Info species built on `InfoMascot`: glyph plus live value. |
+| `github` | Octocat that opens a contribution heatmap popover for `options.user`. |
 
-`classic` is accepted as an alias of `flame`.
+Species are discovered from the plugin's `mascots/` folder and the user folder
+`~/.config/hypr/mascots/species/`; a user manifest with the same `id`
+overrides the shipped one. An optional `popover` QML file makes a species
+clickable. `customizable` and `controls` declare the options the settings page
+exposes (`color`, `size`, `text`).
 
 ## Island or notch
 
@@ -68,36 +105,43 @@ moods: angry, surprised, happy or sleepy.
 
 ## Settings
 
-Everything lives under `mascots` in `settings.json` and is edited live from
-the editor's Theme group (page Theme → Mascots, position pad included):
+Everything lives under `mascots` in the plugin's own settings file
+(`~/.config/hypr/plugins/nyx/settings.json`) and is edited live from
+**Plugins → Nyx** (the same page is mirrored in the Theme group):
 
 | Key | Values | Default | Meaning |
 |---|---|---|---|
-| `mascots.enabled` | bool | `false` | Master switch. |
-| `mascots.species` | `flame` `cat` `dog` `eyes` `dots` `watcher` `mixed` | `flame` | Look. |
-| `mascots.count` | 1..3 | `3` | Mascots in the island (width adapts). |
+| `mascots.enabled` | bool | `false` | Master switch (the plugin's `toggle`). |
+| `mascots.species` | species id, `mixed`, or an array of ids | `flame` | Look; an array is a lineup. |
+| `mascots.count` | 1..8 | `3` | Mascots in the island (string mode only). |
 | `mascots.size` | 0.6..1.6 | `1.0` | Mascot scale. |
 | `mascots.position` | nine anchors | `top-center` | Island position; the dock unfolds toward the screen centre. |
 | `mascots.appearance` | `island` `notch` | `island` | Morphology. |
+| `mascots.notchWidth` / `notchHeight` / `notchOffset` | px | `260` / `0` / `0` | Notch shape; height `0` is automatic. |
+| `mascots.notchReserve` | bool | `true` | Reserve the top strip so maximized windows clear the notch. |
 | `mascots.dock.size` | `compact` `medium` `large` `wide` | `large` | Panel width preset. |
+| `mascots.dock.width` | px | `0` | Explicit width (`0` uses the preset). |
+| `mascots.dock.style` | `floating` `joined` | `floating` | Weld the dock under the notch or float it. |
 | `mascots.dock.columns` / `rows` | 3..7 / 1..3 | `5` / `2` | Widget grid (page size). |
 | `mascots.dock.hero` / `quick` / `search` | bool | `true` | Show hero, quick actions and search. |
 | `mascots.dock.favorites` | widget ids | `[]` | Tiles pinned to the Favorites tab. |
 | `mascots.watcher.*` | format, seconds, speed, moods, eye | — | Watcher-species options. |
 | `mascots.profiles` | object | `{}` | Named presets of the whole mascots block. |
+| `uiScale` | number | `1.0` | Extra user scale. |
+| `bar.position` / `bar.thickness` | string / px | `top` / `48` | Island margin below the bar band. |
 
-The island margin also follows `bar.position` and `bar.thickness`, and
-`uiScale` applies an extra user scale on top.
+The island margin also follows `bar.position` and `bar.thickness`.
 
 ## Public API
 
-`MascotsOverlay` exposes `enabled`, `species`, `count`, `size`, `uiScale`,
-`position`, `barPosition`, `barThickness`, `appearance`, `notchWidth`,
-`notchHeight`, `notchOffset`, `notchReserve`, `dockSize`, `dockWidth`,
-`dockStyle`, `dockColumns`, `dockRows`, `dockShowHero`, `dockShowQuick`,
-`dockShowSearch`, `quickActions`, `quickHandler`, `stats`, `favorites`, the
-`watcher*` options, `palette`, `settingsPath`, `widgetStatePath`,
-`dockWidgetName`, `widgetRectProvider`, `widgetList` and `widgetLauncher`.
+`MascotsOverlay` exposes `enabled`, `species` (string or array),
+`mascotCatalog`, `count`, `size`, `uiScale`, `position`, `barPosition`,
+`barThickness`, `appearance`, `notchWidth`, `notchHeight`, `notchOffset`,
+`notchReserve`, `dockSize`, `dockWidth`, `dockStyle`, `dockColumns`,
+`dockRows`, `dockShowHero`, `dockShowQuick`, `dockShowSearch`, `quickActions`,
+`quickHandler`, `stats`, `favorites`, the `watcher*` options, `palette`,
+`settingsPath`, `widgetStatePath`, `dockWidgetName`, `widgetRectProvider`,
+`widgetList` and `widgetLauncher`.
 
 The palette object needs `base`, `surface1`, `text`, `crust`, `red`, `yellow`,
 `green`, `blue`, `mauve` and `glassOn`; a Catppuccin-Mocha fallback is built
@@ -126,6 +170,7 @@ Item {
 
 ## Related pages
 
-- [Quickshell shell](/docs/shell) for the wrapper and the widget catalog.
+- [Plugins and extensions](/docs/plugins) for the manifest and plugin CLI.
+- [Quickshell shell](/docs/shell) for the host adapter and the widget catalog.
 - [Theming and palettes](/docs/theming) for the palette object Nyx consumes.
 - [Architecture and repositories](/docs/architecture) for the install layout.

@@ -1,7 +1,7 @@
 ---
 title: Architecture and repositories
 description: How the equisdots repositories fit together, the shared contracts they rely on and the decisions behind them.
-order: 11
+order: 12
 section: more
 ---
 
@@ -22,13 +22,18 @@ the invariants the pieces rely on.
 | [nyx-niri](https://github.com/equisdots/nyx-niri) | Nyx overlay (compositor-neutral) | merged into the shell |
 | [niri-login](https://github.com/equisdots/niri-login) | Wayland session entry | `/usr/share/wayland-sessions` |
 | [shell](https://github.com/equisdots/shell) | Quickshell UI | `~/.config/hypr/scripts/quickshell` |
-| [nyx](https://github.com/equisdots/nyx) | Mascot island/notch and control-center dock | `.../quickshell/ui/nyx` |
+| [nyx](https://github.com/equisdots/nyx) | Mascot island/notch plugin | `.../quickshell/ui/plugins/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Palette data and schema | `.../quickshell/dock/palettes` |
 | [background](https://github.com/equisdots/background) | Curated wallpapers and scene catalog | release asset `background.zip` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Cross-app theming engine | `~/.local/bin/theme-sync` |
 | [davincix](https://github.com/equisdots/davincix) | Wallpaper kernel | `~/.local/bin/davincix` |
-| [timex](https://github.com/equisdots/timex) | Weather/time engine and UI | `~/.local/bin/timex`, `.../quickshell/ui/timex` |
+| [timex](https://github.com/equisdots/timex) | Weather/time plugin (engine, calendar, bar island) | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Terminal settings UI | `~/.local/bin/xturing` |
+| [plugins](https://github.com/equisdots/plugins) | Standard, 63-plugin hub, install registry | `.../quickshell/ui/plugins/<id>` |
+| [plugin-api](https://github.com/equisdots/plugin-api) | Manifest schema, API version, compat evaluators | `.../quickshell/plugin-api.json` |
+| [plugin-sdk](https://github.com/equisdots/plugin-sdk) | PluginHost, Settings, surfaces, Lua mod | `.../quickshell/core/sdk` |
+| [transformpath](https://github.com/equisdots/transformpath) | Plugin architecture and decision log | documentation only |
+| [web](https://github.com/equisdots/web) | Documentation and previews site | GitHub Pages |
 | [login](https://github.com/equisdots/login) | SDDM greeter | `/usr/share/sddm/themes/x` |
 
 Managed clones live under `~/.local/share/equisdots/<repo>` (the niri stack uses
@@ -36,8 +41,8 @@ Managed clones live under `~/.local/share/equisdots/<repo>` (the niri stack uses
 cloned engines, so `dots update` changes behavior without touching the wrapper.
 
 `hyprland` and `niri` are the two compositor front ends; `shell`, `nyx`,
-`palettes`, `theme-sync`, `background`, `timex`, `davincix` and `login` are
-shared by both.
+`palettes`, `theme-sync`, `background`, `timex`, `davincix`, the plugin
+repositories and `login` are shared by both.
 
 ## One shell, two compositors
 
@@ -76,13 +81,37 @@ The two meta installers are independent: `dots` owns the Hyprland stack
 conditional and reversible: a shared file is only replaced by its niri variant
 while the niri session is selected. See [niri compositor](/docs/niri).
 
+## Plugin system
+
+The plugin layer is split into four contracts, so hosts and plugins never
+import each other's internals:
+
+| Repository | Contract |
+|---|---|
+| [plugin-api](https://github.com/equisdots/plugin-api) | `plugin.json` schema, host API version and compat evaluators |
+| [plugin-sdk](https://github.com/equisdots/plugin-sdk) | `PluginHost`, reactive `Settings`, surfaces, Lua `mod` |
+| [plugins](https://github.com/equisdots/plugins) | Standard, 63-plugin hub, registry and smoke tests |
+| [transformpath](https://github.com/equisdots/transformpath) | Architecture notes, decisions and migration status |
+
+Hosts discover plugins by folder (`~/.config/hypr/plugins` and
+`plugins-user`), resolve the manifest, and mount only enabled, compatible
+plugins. A managed plugin deploys twice: the whole repository into
+`.../quickshell/ui/plugins/<id>/` (the UI face) and the runtime subset
+(`plugin.json`, `hypr.lua`, `scripts/`) into `~/.config/hypr/plugins/<id>/`.
+The shell mounts generic hosts, panels, bar modules and complete bars; the
+Hyprland loader evaluates `hypr.lua` fragments under `pcall`. niri consumes the
+same plugins through static KDL binds and the compositor-neutral shell.
+
+See [Plugins and extensions](/docs/plugins) for the manifest, lifecycle and CLI.
+
 ## Configuration flow
 
 ```
-settings.json  (single source of truth: bar, classicbar, widgets, timex, ...)
+settings.json  (single source of truth: bar, widgets, timex, plugins, ...)
    |  read/write atomically (tmp + mv), watched by the shell
    |
    +--> shell Config.qml -----------> live UI updates
+   +--> plugins scan -----------------> enabled/config/enabled defaults
    +--> xturing --------------------- terminal edits
    +--> hyprland colors.lua ---------> border defaults at load
    +--> theme-sync ------------------> active palette for every target
@@ -165,6 +194,9 @@ See [Updating and diagnosing](/docs/updating) for the command details.
   behind `core/Compositor.qml`; the shell, palettes and Nyx are shared, the
   shared data root stays at `~/.config/hypr`, and niri-specific code ships as
   reversible overlays (`niri-shell`, `nyx-niri`).
+- **Plugins are a first-class layer**: the manifest is the only contract, hosts
+  know no plugin ids, extension points are generic (`provides`), and a failing
+  plugin is isolated instead of aborting the session.
 - **No CI**: each repository ships a local check script, run before pushing.
 
 ## Development checks
@@ -178,6 +210,9 @@ See [Updating and diagnosing](/docs/updating) for the command details.
 | palettes | `scripts/check.sh` | Schema and `index.json` consistency |
 | theme-sync | `scripts/check.sh` | `compileall` plus CLI smoke test |
 | xturing | `scripts/check.sh` | `cargo fmt`, clippy and tests |
+| plugins | `tests/smoke.sh` | Manifests, qmldir, scan, ids and registry integrity |
+| plugin-api | evaluator fixtures | Bash and Lua semver parity |
+| plugin-sdk | `qmllint` + Lua tests | Host kit and `mod` API |
 
 ## External dependencies
 

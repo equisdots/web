@@ -31,6 +31,7 @@ ese frontend. Esta página cubre la sesión de Hyprland.
 | `windowrules.lua` | Reglas de flotación, centrado, tamaño, opacidad y espacios de trabajo. |
 | `workspaces.lua` | Reglas de espacios de trabajo fijadas por descripción EDID y scratchpads. |
 | `autostart.lua` | Comandos de inicio de la sesión (`hl.on("hyprland.start", ...)`). |
+| `plugins.lua` | Cargador de plugins: evalúa los fragmentos `hypr.lua` activos con un SDK `mod` inyectado. |
 | `config/window-effects.lua` | Anulaciones de decoración generadas por widgets, cargadas al final. |
 | `config/gaps.lua` | Anulaciones de gaps/bordes generadas por widgets, cargadas al final. |
 
@@ -62,6 +63,7 @@ Enlaces esenciales, todos definidos en `config/hypr/keybinds.lua`:
 | `SUPER + Page Up/Down` | Espacio de trabajo anterior / siguiente |
 | `SUPER + W` | Selector de fondos de pantalla |
 | `SUPER + SHIFT + D` | Panel de ajustes (editor de barra) |
+| `SUPER + SHIFT + M` | Panel de plugins |
 | `SUPER + SHIFT + X` | Lanzar xturing |
 | `SUPER + L` | Pantalla de bloqueo |
 | `SUPER + Escape` | Salir de Hyprland |
@@ -80,6 +82,12 @@ hl.bind("ALT + F4", hl.dsp.window.kill())
 La lista completa está en `docs/quick-reference.md` del repositorio, y el panel
 de ajustes puede regenerar `config/user-keybinds.lua` para entradas
 personalizadas.
+
+Los atajos que aportan los plugins los evalúa `plugins.lua` después de los
+módulos del núcleo y antes de las anulaciones del usuario. Un atajo de plugin se
+puede reasignar o silenciar desde Plugins → Keybinds; la anulación vive en el
+archivo de ajustes del plugin y nunca elimina en silencio un atajo del núcleo.
+Ver [Plugins y extensiones](/es/docs/plugins).
 
 ## Multimonitor
 

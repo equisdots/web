@@ -17,6 +17,11 @@ widgets nunca ramifican por compositor; consumen la misma superficie del
 adaptador. Bajo niri el shell compartido se completa con el overlay
 `niri-shell` (ver [Arquitectura](/es/docs/architecture)).
 
+También está **guiado por plugins**: hosts genéricos montan los plugins activos,
+sus paneles, módulos de barra y barras completas sin conocer ids de plugins. Nyx,
+timex, screenshots y el editor de atajos son las primeras superficies; ver
+[Plugins y extensiones](/es/docs/plugins).
+
 `Shell.qml` es la entrada principal: monta la ventana maestra, la barra, la
 capa flotante y los widgets de escritorio. `Lock.qml` es la entrada alternativa
 para el bloqueo de sesión PAM (`WlSessionLock`), lanzada por `lock.sh`; ambas
@@ -33,8 +38,9 @@ Shell.qml
     Theme, Cava, SysData, WidgetSync, compositors/, scripts/watchers/
   ui/
     Main.qml       master window, widget stack, morph, IPC handler
-    bar/           host, zones engine, classic engine, modules, popups
-    timex/         calendar/clock UI (engine lives in equisdots/timex)
+    PluginHosts.qml punto de montaje genérico de hosts y barras de plugin
+    bar/           host, motor de zonas, módulos, popups
+    plugins/       páginas de ajustes dinámicas de plugins (p_<id>)
     panels/        clipboard, wallpaper, file search, system and tools
     widgets/       floating desktop widgets and their redactor
 ```
@@ -49,31 +55,33 @@ externas (xturing, ediciones manuales del JSON) se apliquen en vivo.
 
 ## La barra
 
-El host de la barra (`ui/bar/Bar.qml`) ejecuta dos motores intercambiables en
-cualquier borde de pantalla (`top`, `bottom`, `left`, `right`), conmutados en
-vivo mediante `settings.json -> barEngine`:
+El host de la barra (`ui/bar/Bar.qml`) ejecuta un único motor de zonas en
+cualquier borde de pantalla (`top`, `bottom`, `left`, `right`). Las islas se
+agrupan en zonas basadas en datos (`start`, `center`, `end`) con arrastrar y
+soltar de módulos, fondos por zona y modo unificado. `settings.json ->
+bar.enabled` es el interruptor maestro: apagado desmapea todas las ventanas de
+barra y libera el borde reservado, en vivo. Las barras completas también pueden
+venir de plugins (`provides.bar.provider`) y convivir con sus propios
+interruptores.
 
-- `bar` (predeterminado): islas agrupadas en zonas basadas en datos (`start`,
-  `center`, `end`) con arrastrar y soltar de módulos, fondos por zona y modo
-  unificado.
-- `classic`: secciones izquierda/centro/derecha, ocultación automática y
-  estilos de píldora distintos.
-
-Ambos motores comparten la paleta y los 18 módulos: help, search, settings,
+La barra del núcleo comparte la paleta y 18 módulos: help, search, settings,
 update, recording, time, date, media, workspaces, tray, keyboard, wifi,
 bluetooth, sysmon, volume, battery, weather y focus. `weather` y `focus` se
 distribuyen desactivados para que las actualizaciones nunca cambien un diseño
-por sí solas.
+por sí solas. Los módulos pueden venir de plugins
+(`provides.bar.modules.<id>`): el indicador de grabación, el clima y sysmon son
+los primeros casos, y el hueco del núcleo conserva el diseño y la configuración
+del usuario.
 
 ### Personalizar la barra y sus módulos
 
 Cada módulo de `ui/bar/modules/` es una isla construida sobre el componente
 compartido `ModulePill`: el módulo declara qué muestra y la píldora se encarga
 del fondo, el borde, la escala al pasar, la animación de entrada y los clics.
-La zona (o el motor classic) inyecta siempre las mismas siete propiedades —
-`bar`, `colors`, `zoneReady`, `slotIndex`, `effectiveBorderWidth`,
-`effectiveBorderColor` y `unified` — y `ModulePill` añade los ayudantes de
-orientación y la configuración normalizada del módulo.
+La zona inyecta siempre las mismas siete propiedades — `bar`, `colors`,
+`zoneReady`, `slotIndex`, `effectiveBorderWidth`, `effectiveBorderColor` y
+`unified` — y `ModulePill` añade los ayudantes de orientación y la configuración
+normalizada del módulo.
 
 Los valores por módulo viven bajo `bar.modules.<id>` y todos los campos son
 opcionales:
@@ -97,8 +105,8 @@ Opciones clave bajo `bar` en `settings.json`:
 
 ```json
 {
-  "barEngine": "bar",
   "bar": {
+    "enabled": true,
     "position": "top",
     "palette": "x",
     "thickness": 48,
@@ -133,23 +141,27 @@ Todos los emergentes se despachan mediante `qs_manager.sh`. Atajos principales:
 | `SUPER + Y` / `SUPER + O` | Notas rápidas / lector RSS |
 | `SUPER + '` | Búsqueda de archivos |
 | `SUPER + SHIFT + S` / `D` | Panel de ajustes (editor de barra) |
+| `SUPER + SHIFT + M` | Panel de plugins |
 | `SUPER + SHIFT + W` | Editor de widgets de escritorio |
 | `SUPER + SHIFT + P` | Widget de paleta |
 
 El panel de ajustes se basa en datos de `core/EditorNav.js` con los grupos
-Shell, Barra, Tema, Comportamiento y Sistema. El estado de plegado y el orden
-de las páginas persisten en `settings.editor`. El sistema de notificaciones
-tiene sus propias opciones (`settings.notifications`), y las sombras, el cristal
-y las mascotas se configuran desde el grupo Tema.
+Shell, Barra, Tema, Comportamiento, Widgets, Sistema y Plugins. El estado de
+plegado y el orden de las páginas persisten en `settings.editor`. El grupo
+Plugins lista los plugins instalados, sus interruptores maestros y una página de
+configuración por plugin que declare `settings.page`. El sistema de
+notificaciones tiene sus propias opciones (`settings.notifications`), y las
+sombras, el cristal y las mascotas se configuran desde el grupo Tema.
 
 ## Ventanas, sombras y cristal
 
 `Shell.qml` monta `ui/Main.qml` (ventana maestra, pila de widgets, morph, IPC),
 `ui/bar/Bar.qml` (el host de la barra), `ui/Floating.qml` (notificaciones y
-superficies tipo OSD), `ui/Mascots.qml` (el wrapper de la isla Nyx, véase
-[Isla de mascotas Nyx](/es/docs/nyx)), `ui/widgets/Widgets.qml` (un cargador
-de widgets por pantalla) y `ui/ScreenshotOverlay.qml`; `Lock.qml` es la entrada
-alternativa de bloqueo de sesión PAM.
+superficies tipo OSD), `ui/PluginHosts.qml` (hosts genéricos de plugins,
+incluida la isla Nyx; véase [Isla de mascotas Nyx](/es/docs/nyx)),
+`ui/widgets/Widgets.qml` (un cargador de widgets por pantalla) y el overlay del
+plugin de capturas; `Lock.qml` es la entrada alternativa de bloqueo de sesión
+PAM.
 
 Hyprland no decora las superficies layer-shell, así que las sombras de los
 emergentes las dibuja QML en `Main.qml` y siguen la caja animada (posición,

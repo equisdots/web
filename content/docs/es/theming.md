@@ -1,7 +1,7 @@
 ---
 title: Temas y paletas
 description: El sistema de paletas base16, la edición de paletas en vivo, los bordes de ventana y la propagación de temas entre aplicaciones con theme-sync.
-order: 7
+order: 8
 section: desktop
 ---
 

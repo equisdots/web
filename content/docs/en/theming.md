@@ -1,7 +1,7 @@
 ---
 title: Theming and palettes
 description: The base16 palette system, live palette editing, window borders and cross-app theme propagation with theme-sync.
-order: 7
+order: 8
 section: desktop
 ---
 

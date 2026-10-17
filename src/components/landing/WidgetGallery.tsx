@@ -4,7 +4,9 @@ import {
   BarMock,
   DavincixMock,
   MusicMock,
+  NyxMock,
   PaletteMock,
+  PluginsMock,
   SysMonMock,
   TerminalMock,
   TimexMock,
@@ -16,7 +18,9 @@ type WidgetKey = keyof Dict["widgets"];
 
 const ITEMS: { key: WidgetKey; Component: ComponentType<{ className?: string }> }[] = [
   { key: "bar", Component: BarMock },
+  { key: "nyx", Component: NyxMock },
   { key: "palette", Component: PaletteMock },
+  { key: "plugins", Component: PluginsMock },
   { key: "timex", Component: TimexMock },
   { key: "sysmon", Component: SysMonMock },
   { key: "davincix", Component: DavincixMock },
@@ -32,7 +36,7 @@ export function WidgetGallery({ locale }: { locale: Locale }) {
     <section className="border-t border-border">
       <div className="container-page py-16">
         <SectionHeader
-          index="02"
+          index="04"
           label={dict.home.labels.widgets}
           title={dict.home.widgetsTitle}
           subtitle={dict.home.widgetsSubtitle}

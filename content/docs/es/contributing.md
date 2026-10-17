@@ -1,7 +1,7 @@
 ---
 title: Contribución y seguridad
 description: Dónde notificar problemas, cómo se revisan las pull requests, las comprobaciones locales que hay que ejecutar y la política de seguridad.
-order: 12
+order: 13
 section: more
 ---
 
@@ -17,7 +17,7 @@ Abra el issue en el repositorio que posee el comportamiento:
 
 | Tema | Repositorio |
 |---|---|
-| Instalación, actualizaciones, paquetes, tema de inicio de sesión | [dots](https://github.com/equisdots/dots) |
+| Instalación, actualizaciones, paquetes, tema de inicio de sesión, `dots plugins` | [dots](https://github.com/equisdots/dots) |
 | Configuración del compositor, atajos de teclado, scripts | [hyprland](https://github.com/equisdots/hyprland) |
 | Configuración del compositor niri, scripts, sesión/portales | [niri](https://github.com/equisdots/niri) |
 | Instalación/actualización del stack niri, overlays, entrada de sesión | [niri-meta](https://github.com/equisdots/niri-meta) |
@@ -27,6 +27,10 @@ Abra el issue en el repositorio que posee el comportamiento:
 | Fondos de pantalla, escenas, selector | [davincix](https://github.com/equisdots/davincix), [background](https://github.com/equisdots/background) |
 | Colores y temas | [palettes](https://github.com/equisdots/palettes), [theme-sync](https://github.com/equisdots/theme-sync) |
 | Hora, clima, calendario | [timex](https://github.com/equisdots/timex) |
+| Estándar de plugins, hub, registro y plugins convertidos | [plugins](https://github.com/equisdots/plugins) |
+| Esquema del manifiesto, versión de API, compatibilidad | [plugin-api](https://github.com/equisdots/plugin-api) |
+| PluginHost, Settings, superficies, Lua `mod` | [plugin-sdk](https://github.com/equisdots/plugin-sdk) |
+| Arquitectura y migración de plugins | [transformpath](https://github.com/equisdots/transformpath) |
 | Interfaz de ajustes de terminal | [xturing](https://github.com/equisdots/xturing) |
 | Motor de escenas y demonio de fondos de pantalla | [x-ports/xwww](https://github.com/x-ports/xwww) |
 
@@ -59,6 +63,9 @@ componente allí. Los canales de soporte y el código de conducta viven en
 | palettes | `scripts/check.sh` |
 | theme-sync | `scripts/check.sh` |
 | xturing | `scripts/check.sh` |
+| plugins | `tests/smoke.sh` |
+| plugin-api | fixtures de evaluadores de compatibilidad |
+| plugin-sdk | `qmllint` + pruebas Lua |
 
 - Shell: `qmllint` sobre cada archivo `.qml` y `node --check` sobre los módulos
   JS.
@@ -72,6 +79,11 @@ componente allí. Los canales de soporte y el código de conducta viven en
 - theme-sync: `compileall` y una prueba de humo de la CLI (`--list`,
   `--dry-run`).
 - xturing: `cargo fmt --check`, clippy con `-D warnings` y las pruebas.
+- plugins: el harness de humo comprueba manifiestos, imports `qmldir`,
+  resolución del escaneo, ids duplicados y consistencia del registro.
+- plugin-api: los evaluadores semver de bash y Lua deben coincidir en los
+  fixtures compartidos.
+- plugin-sdk: valide el kit QML de host y ejecute las pruebas del `mod` Lua.
 
 ## Guías de estilo
 
@@ -83,6 +95,10 @@ componente allí. Los canales de soporte y el código de conducta viven en
 - Para las escenas de xwww, permanezca dentro del sandbox documentado: solo
   activos locales, sin temporizadores, sin red y redibujado dirigido por
   cambios.
+- Para los plugins, mantenga la función autocontenida: el manifiesto es el
+  único contrato, el plugin posee su UI, ajustes, valores por defecto y scripts,
+  y los hosts nunca deben conocer ids de plugins. No copie repositorios de
+  plugins externos al hub; referéncielos por `source`.
 
 ## Política de seguridad
 
@@ -101,8 +117,8 @@ sistema de notificación privada de GitHub:
 
 La pila se ejecuta en la sesión del usuario e instala piezas del sistema:
 paquetes, el tema SDDM y `/etc/pam.d/quickshell`. Los informes sobre el shell,
-los scripts de Hyprland, los instaladores, el motor de fondos de pantalla o el
-entorno de ejecución de escenas son bienvenidos. Las escenas ejecutan código
+los scripts de Hyprland, los instaladores, el cargador de plugins, el motor de
+fondos de pantalla o el entorno de ejecución de escenas son bienvenidos. Las escenas ejecutan código
 escrito por el usuario en el cliente xwww por diseño; el sandbox en tiempo de
 ejecución (límites de memoria y pila, tiempo de espera por fotograma, sin E/S,
 solo activos locales) está documentado en

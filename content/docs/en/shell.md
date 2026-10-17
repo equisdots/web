@@ -17,6 +17,11 @@ compositor; they consume the same adapter surface. Under niri the shared shell
 is completed by the `niri-shell` overlay (see
 [Architecture](/docs/architecture)).
 
+It is also **plugin-driven**: generic hosts mount enabled plugins, their panels,
+bar modules and complete bars without knowing plugin ids. Nyx, timex,
+screenshots and the keybind editor are the first surfaces; see
+[Plugins and extensions](/docs/plugins).
+
 `Shell.qml` is the main entry: it mounts the master window, the bar, the
 floating layer and the desktop widgets. `Lock.qml` is the alternate entry for
 the PAM session lock (`WlSessionLock`), launched by `lock.sh`; both import the
@@ -33,8 +38,9 @@ Shell.qml
     Theme, Cava, SysData, WidgetSync, compositors/, scripts/watchers/
   ui/
     Main.qml       master window, widget stack, morph, IPC handler
-    bar/           host, zones engine, classic engine, modules, popups
-    timex/         calendar/clock UI (engine lives in equisdots/timex)
+    PluginHosts.qml generic mount point for plugin hosts and complete bars
+    bar/           host, zones engine, modules, popups
+    plugins/       dynamic plugin settings pages (p_<id>)
     panels/        clipboard, wallpaper, file search, system and tools
     widgets/       floating desktop widgets and their redactor
 ```
@@ -49,28 +55,28 @@ manual JSON edits) apply live.
 
 ## The bar
 
-The bar host (`ui/bar/Bar.qml`) runs two interchangeable engines on any screen
-edge (`top`, `bottom`, `left`, `right`), switched live through
-`settings.json -> barEngine`:
+The bar host (`ui/bar/Bar.qml`) runs a single zones engine on any screen edge
+(`top`, `bottom`, `left`, `right`). Islands are grouped into data-driven zones
+(`start`, `center`, `end`) with module drag and drop, per-zone backgrounds and
+unify mode. `settings.json -> bar.enabled` is the master switch: off unmaps
+every bar window and releases the reserved edge, live. Complete bars can also
+ship as plugins (`provides.bar.provider`) and coexist on their own switches.
 
-- `bar` (default): islands grouped into data-driven zones (`start`, `center`,
-  `end`) with module drag and drop, per-zone backgrounds and unify mode.
-- `classic`: left/center/right sections, autohide and distinct pill styles.
-
-Both engines share the palette and the 18 modules: help, search, settings,
-update, recording, time, date, media, workspaces, tray, keyboard, wifi,
-bluetooth, sysmon, volume, battery, weather and focus. `weather` and `focus`
-ship disabled so upgrades never change a layout on their own.
+The core bar shares the palette and 18 modules: help, search, settings, update,
+recording, time, date, media, workspaces, tray, keyboard, wifi, bluetooth,
+sysmon, volume, battery, weather and focus. `weather` and `focus` ship disabled
+so upgrades never change a layout on their own. Modules may be supplied by
+plugins (`provides.bar.modules.<id>`): the recording indicator, weather and
+sysmon are the first cases, and the core slot keeps the layout and user config.
 
 ### Customizing the bar and its modules
 
 Every module in `ui/bar/modules/` is one island pill built on the shared
 `ModulePill` component: it declares what to show, and the pill handles the
-background, border, hover scale, entrance animation and clicks. The zone (or
-the classic engine) always injects the same seven properties — `bar`,
-`colors`, `zoneReady`, `slotIndex`, `effectiveBorderWidth`,
-`effectiveBorderColor` and `unified` — and `ModulePill` adds the orientation
-helpers plus the normalized per-module config.
+background, border, hover scale, entrance animation and clicks. The zone always
+injects the same seven properties — `bar`, `colors`, `zoneReady`, `slotIndex`,
+`effectiveBorderWidth`, `effectiveBorderColor` and `unified` — and `ModulePill`
+adds the orientation helpers plus the normalized per-module config.
 
 Per-module values live under `bar.modules.<id>` and every field is optional:
 
@@ -93,8 +99,8 @@ Key options under `bar` in `settings.json`:
 
 ```json
 {
-  "barEngine": "bar",
   "bar": {
+    "enabled": true,
     "position": "top",
     "palette": "x",
     "thickness": 48,
@@ -129,12 +135,15 @@ All popups dispatch through `qs_manager.sh`. Main shortcuts:
 | `SUPER + Y` / `SUPER + O` | Quick notes / RSS reader |
 | `SUPER + '` | File search |
 | `SUPER + SHIFT + S` / `D` | Settings panel (bar editor) |
+| `SUPER + SHIFT + M` | Plugins panel |
 | `SUPER + SHIFT + W` | Desktop widget redactor |
 | `SUPER + SHIFT + P` | Palette widget |
 
 The settings panel is data-driven from `core/EditorNav.js` with groups Shell,
-Bar, Theme, Behavior and System. Collapse state and page order persist under
-`settings.editor`. The notification system has its own options
+Bar, Theme, Behavior, Widgets, System and Plugins. Collapse state and page order
+persist under `settings.editor`. The Plugins group lists installed plugins,
+their master switches and one configuration page per plugin that ships
+`settings.page`. The notification system has its own options
 (`settings.notifications`), and shadows, glass and mascots are configured from
 the Theme group.
 
@@ -142,10 +151,10 @@ the Theme group.
 
 `Shell.qml` mounts `ui/Main.qml` (master window, widget stack, morph, IPC),
 `ui/bar/Bar.qml` (the bar host), `ui/Floating.qml` (notifications and
-OSD-like surfaces), `ui/Mascots.qml` (the Nyx island wrapper, see
-[Nyx mascot island](/docs/nyx)), `ui/widgets/Widgets.qml` (one widget loader
-per screen) and `ui/ScreenshotOverlay.qml`; `Lock.qml` is the alternate PAM
-session-lock entry.
+OSD-like surfaces), `ui/PluginHosts.qml` (generic plugin hosts, including the
+Nyx island; see [Nyx mascot island](/docs/nyx)), `ui/widgets/Widgets.qml` (one
+widget loader per screen) and the screenshots plugin overlay; `Lock.qml` is the
+alternate PAM session-lock entry.
 
 Neither Hyprland nor niri decorates layer-shell surfaces, so popup shadows are
 drawn in QML by `Main.qml` and follow the animated box (position, size, morph and

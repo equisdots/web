@@ -1,7 +1,7 @@
 ---
 title: Arquitectura y repositorios
 description: Cómo encajan los repositorios de equisdots, los contratos compartidos en los que se apoyan y las decisiones que hay detrás.
-order: 11
+order: 12
 section: more
 ---
 
@@ -23,13 +23,18 @@ las piezas.
 | [nyx-niri](https://github.com/equisdots/nyx-niri) | Overlay de Nyx (neutral al compositor) | se fusiona en el shell |
 | [niri-login](https://github.com/equisdots/niri-login) | Entrada de sesión Wayland | `/usr/share/wayland-sessions` |
 | [shell](https://github.com/equisdots/shell) | Interfaz Quickshell | `~/.config/hypr/scripts/quickshell` |
-| [nyx](https://github.com/equisdots/nyx) | Isla/notch de mascotas y dock de centro de control | `.../quickshell/ui/nyx` |
+| [nyx](https://github.com/equisdots/nyx) | Plugin de isla/notch de mascotas | `.../quickshell/ui/plugins/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Datos de paletas y esquema | `.../quickshell/dock/palettes` |
 | [background](https://github.com/equisdots/background) | Fondos curados y catálogo de escenas | asset de release `background.zip` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Motor de temas entre aplicaciones | `~/.local/bin/theme-sync` |
 | [davincix](https://github.com/equisdots/davincix) | Núcleo de fondos de pantalla | `~/.local/bin/davincix` |
-| [timex](https://github.com/equisdots/timex) | Motor de clima/hora e interfaz | `~/.local/bin/timex`, `.../quickshell/ui/timex` |
+| [timex](https://github.com/equisdots/timex) | Plugin de clima/hora (motor, calendario, isla de barra) | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Interfaz de ajustes de terminal | `~/.local/bin/xturing` |
+| [plugins](https://github.com/equisdots/plugins) | Estándar, hub de 63 plugins y registro | `.../quickshell/ui/plugins/<id>` |
+| [plugin-api](https://github.com/equisdots/plugin-api) | Esquema, versión de API y evaluadores de compatibilidad | `.../quickshell/plugin-api.json` |
+| [plugin-sdk](https://github.com/equisdots/plugin-sdk) | PluginHost, Settings, superficies, Lua mod | `.../quickshell/core/sdk` |
+| [transformpath](https://github.com/equisdots/transformpath) | Arquitectura y registro de decisiones de plugins | solo documentación |
+| [web](https://github.com/equisdots/web) | Sitio de documentación y previews | GitHub Pages |
 | [login](https://github.com/equisdots/login) | Pantalla de inicio de sesión SDDM | `/usr/share/sddm/themes/x` |
 
 Los clones gestionados viven en `~/.local/share/equisdots/<repo>` (el stack de
@@ -38,8 +43,8 @@ niri usa `~/.local/share/equisdots-niri/<repo>`). Los wrappers de
 comportamiento sin tocar el wrapper.
 
 `hyprland` y `niri` son los dos frontends de compositor; `shell`, `nyx`,
-`palettes`, `theme-sync`, `background`, `timex`, `davincix` y `login` son
-compartidos por ambos.
+`palettes`, `theme-sync`, `background`, `timex`, `davincix`, los repositorios de
+plugins y `login` son compartidos por ambos.
 
 ## Un shell, dos compositores
 
@@ -81,13 +86,39 @@ condicionales y reversibles: un archivo compartido solo se reemplaza por su
 variante niri mientras se selecciona la sesión niri. Ver
 [Compositor niri](/es/docs/niri).
 
+## Sistema de plugins
+
+La capa de plugins se divide en cuatro contratos, de modo que hosts y plugins
+nunca importan las interioridades del otro:
+
+| Repositorio | Contrato |
+|---|---|
+| [plugin-api](https://github.com/equisdots/plugin-api) | Esquema de `plugin.json`, versión de API y evaluadores de compatibilidad |
+| [plugin-sdk](https://github.com/equisdots/plugin-sdk) | `PluginHost`, `Settings` reactivos, superficies, Lua `mod` |
+| [plugins](https://github.com/equisdots/plugins) | Estándar, hub de 63 plugins, registro y pruebas de humo |
+| [transformpath](https://github.com/equisdots/transformpath) | Arquitectura, decisiones y estado de la migración |
+
+Los hosts descubren plugins por carpeta (`~/.config/hypr/plugins` y
+`plugins-user`), resuelven el manifiesto y montan solo los activos y
+compatibles. Un plugin gestionado se despliega dos veces: el repositorio
+completo en `.../quickshell/ui/plugins/<id>/` (la cara UI) y el subconjunto
+runtime (`plugin.json`, `hypr.lua`, `scripts/`) en
+`~/.config/hypr/plugins/<id>/`. El shell monta hosts, paneles, módulos de barra
+y barras completas genéricas; el cargador de Hyprland evalúa los fragmentos
+`hypr.lua` bajo `pcall`. niri consume los mismos plugins mediante binds KDL
+estáticos y el shell neutral al compositor.
+
+Consulte [Plugins y extensiones](/es/docs/plugins) para el manifiesto, el ciclo
+de vida y la CLI.
+
 ## Flujo de configuración
 
 ```
-settings.json  (single source of truth: bar, classicbar, widgets, timex, ...)
+settings.json  (single source of truth: bar, widgets, timex, plugins, ...)
    |  read/write atomically (tmp + mv), watched by the shell
    |
    +--> shell Config.qml -----------> live UI updates
+   +--> plugins scan -----------------> enabled/config/defaults
    +--> xturing --------------------- terminal edits
    +--> hyprland colors.lua ---------> border defaults at load
    +--> theme-sync ------------------> active palette for every target
@@ -176,6 +207,9 @@ comandos.
   compartidos, la raíz de datos compartida se queda en `~/.config/hypr`, y el
   código específico de niri se distribuye como overlays reversibles
   (`niri-shell`, `nyx-niri`).
+- **Los plugins son una capa de primera clase**: el manifiesto es el único
+  contrato, los hosts no conocen ids de plugins, los puntos de extensión son
+  genéricos (`provides`) y un plugin roto se aísla en vez de abortar la sesión.
 - **Sin CI**: cada repositorio incluye un script de comprobación local, que se
   ejecuta antes de hacer push.
 
@@ -190,6 +224,9 @@ comandos.
 | palettes | `scripts/check.sh` | Consistencia del esquema y de `index.json` |
 | theme-sync | `scripts/check.sh` | `compileall` más una prueba de humo de la CLI |
 | xturing | `scripts/check.sh` | `cargo fmt`, clippy y pruebas |
+| plugins | `tests/smoke.sh` | Manifiestos, qmldir, escaneo, ids y registro |
+| plugin-api | fixtures de evaluadores | Paridad semver entre bash y Lua |
+| plugin-sdk | `qmllint` + pruebas Lua | Kit de host y API `mod` |
 
 ## Dependencias externas
 
