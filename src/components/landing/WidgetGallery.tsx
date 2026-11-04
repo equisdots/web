@@ -2,7 +2,7 @@ import type { ComponentType } from "react";
 import { SectionHeader } from "./SectionHeader";
 import {
   BarMock,
-  DavincixMock,
+  DavinciMock,
   MusicMock,
   NyxMock,
   PaletteMock,
@@ -23,7 +23,7 @@ const ITEMS: { key: WidgetKey; Component: ComponentType<{ className?: string }> 
   { key: "plugins", Component: PluginsMock },
   { key: "timex", Component: TimexMock },
   { key: "sysmon", Component: SysMonMock },
-  { key: "davinci", Component: DavincixMock },
+  { key: "davinci", Component: DavinciMock },
   { key: "music", Component: MusicMock },
   { key: "terminal", Component: TerminalMock },
   { key: "desktop", Component: WidgetsMock },

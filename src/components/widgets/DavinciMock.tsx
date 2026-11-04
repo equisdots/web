@@ -11,7 +11,7 @@ const TILES = [
 
 const FILTERS = ["All", "Vid", "Fav"];
 
-export function DavincixMock({ className }: MockProps) {
+export function DavinciMock({ className }: MockProps) {
   return (
     <div className={`relative overflow-hidden rounded-2xl border border-border bg-surface ${className ?? ""}`}>
       <div className="p-4 font-sans">
