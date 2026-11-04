@@ -79,7 +79,7 @@ installer:
 places the payload:
 
 - Hyprland config to `~/.config/hypr`, plus rofi, dunst and cava configs.
-- Quickshell shell, the Nyx mascot island, palettes, theme-sync, davincix,
+- Quickshell shell, the Nyx mascot island, palettes, theme-sync, davinci,
   timex and xturing.
 - The plugin standard (`plugin-api`, `plugin-sdk`, the `plugins` hub) and the
   default plugin set: screenshots, timex, RSS reader, clipboard, quicknotes,
@@ -163,7 +163,7 @@ settings page. The 63-plugin hub and the standard are documented in
 dots doctor
 dots list
 dots plugins
-command -v dots hyprland qs davincix theme-sync
+command -v dots hyprland qs davinci theme-sync
 fc-match "Hack Nerd Font"
 ```
 
@@ -186,7 +186,7 @@ should end without missing items. Every `!` line names what needs attention.
 - System phase failed: the payload is still installed. Inspect
   `ls -t /tmp/hyprland-install-*.log | head -1` and retry `./dots system`.
 - Glyphs render as boxes: the Hack Nerd Font is missing; rerun `./dots system`.
-- `dots` or `davincix` not found: `~/.local/bin` is not in `PATH` (`dots doctor` flags this).
+- `dots` or `davinci` not found: `~/.local/bin` is not in `PATH` (`dots doctor` flags this).
 - xwww version mismatch: run `./dots update`, which reinstalls the pinned
   release when the running binary differs.
 - A plugin does not appear: check `dots plugins`, verify its `compat` with

@@ -25,7 +25,7 @@ niri support is a set of small repositories that sit beside the Hyprland ones.
 | [niri-login](https://github.com/equisdots/niri-login) | Wayland session entry so display managers list "Niri" | `/usr/share/wayland-sessions` |
 
 `hyprland` and `niri` are the two compositor front ends; the rest of the stack
-(`shell`, `nyx`, `palettes`, `theme-sync`, `background`, `timex`, `davincix`,
+(`shell`, `nyx`, `palettes`, `theme-sync`, `background`, `timex`, `davinci`,
 the plugin repositories and `login`) is shared by both.
 
 ## One data root, two compositors

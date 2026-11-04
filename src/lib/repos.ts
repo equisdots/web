@@ -181,8 +181,8 @@ export const REPOS: Repo[] = [
     install: "/usr/share/wayland-sessions/niri.desktop",
   },
   {
-    name: "davincix",
-    url: "https://github.com/equisdots/davincix",
+    name: "davinci",
+    url: "https://github.com/equisdots/davinci",
     group: "engines",
     visual: "wallpaper",
     accent: "c4",
@@ -191,7 +191,7 @@ export const REPOS: Repo[] = [
       en: "Headless wallpaper kernel: stills, video, slideshow, search providers and interactive scenes.",
       es: "Kernel de fondos sin interfaz: imágenes, vídeo, presentación, buscadores y escenas interactivas.",
     },
-    install: "~/.local/bin/davincix",
+    install: "~/.local/bin/davinci",
   },
   {
     name: "theme-sync",

@@ -1,11 +1,11 @@
 ---
 title: Wallpapers
-description: The davincix wallpaper kernel, xwww and mpvpaper, the Quickshell picker, search providers and slideshow.
+description: The davinci wallpaper kernel, xwww and mpvpaper, the Quickshell picker, search providers and slideshow.
 order: 8
 section: wallpapers
 ---
 
-Wallpapers are managed by [equisdots/davincix](https://github.com/equisdots/davincix),
+Wallpapers are managed by [equisdots/davinci](https://github.com/equisdots/davinci),
 a headless kernel that applies, thumbnails, searches and rotates wallpapers.
 The Quickshell picker is only a frontend: the UI decides what to apply, the
 kernel decides how.
@@ -17,7 +17,7 @@ kernel decides how.
 | `xwww` / `xwww-daemon` | Applies still images and interactive scenes. |
 | `mpvpaper` | Applies video wallpapers. |
 | ImageMagick, ffmpeg, ffprobe | Thumbnails, webp conversion and video posters. |
-| `davincix` | CLI kernel: listing, applying, state, search, slideshow. |
+| `davinci` | CLI kernel: listing, applying, state, search, slideshow. |
 | Quickshell picker | `SUPER + W`, card grid with filters and transitions. |
 
 The daemon is started from Hyprland's `autostart.lua` (or niri's
@@ -36,25 +36,25 @@ containing `scene.js` is an interactive scene; its thumbnail is named
 ## CLI
 
 ```sh
-davincix set <file|url|scene-dir> [--video] [--monitors all|A,B] \
+davinci set <file|url|scene-dir> [--video] [--monitors all|A,B] \
          [--transition name] [--thumb <poster>] [--notify] [--dry-run]
-davincix set ~/.config/hypr/wallpapers/astro-palette --transition decrypt
-davincix fetch --name <n> --map <f> --dest <f>
+davinci set ~/.config/hypr/wallpapers/astro-palette --transition decrypt
+davinci fetch --name <n> --map <f> --dest <f>
 
-davincix current
-davincix current --thumb-name
-davincix thumbs
-davincix search "mountains" --source wallhaven
-davincix search --continue "mountains"
-davincix search --clear
-davincix stop
-davincix rm ~/.config/hypr/wallpapers/nord.png
-davincix import ~/Downloads/*.jpg
-davincix slideshow start|stop|status [interval]
-davincix keys list
-davincix keys set PIXABAY_KEY <value>
-davincix paths
-davincix --version
+davinci current
+davinci current --thumb-name
+davinci thumbs
+davinci search "mountains" --source wallhaven
+davinci search --continue "mountains"
+davinci search --clear
+davinci stop
+davinci rm ~/.config/hypr/wallpapers/nord.png
+davinci import ~/Downloads/*.jpg
+davinci slideshow start|stop|status [interval]
+davinci keys list
+davinci keys set PIXABAY_KEY <value>
+davinci paths
+davinci --version
 ```
 
 `set` accepts a file, an URL or a scene directory and resolves the target
@@ -62,29 +62,29 @@ itself; `--monitors`, `--thumb`, `--notify` and `--dry-run` refine the apply.
 `--transition` accepts the xwww set (`fade`, `wipe`, `glitch`, `decrypt`, and
 more) plus `random`; empty means random. `fetch` is the downloader the picker
 calls after picking a search result, and `keys` manages the provider keys in
-`keys.conf`. The picker resolves the CLI through `$DAVINCIX_CLI`, then a
-sibling `../kernel/davincix.sh`, so other frontends only need the path.
+`keys.conf`. The picker resolves the CLI through `$DAVINCI_CLI`, then a
+sibling `../kernel/davinci.sh`, so other frontends only need the path.
 
 ## Environment overrides
 
 | Variable | Default | Use |
 |---|---|---|
-| `DAVINCIX_WALLPAPER_DIR` | `$WALLPAPER_DIR` or `~/.config/hypr/wallpapers` | Source directory. |
-| `DAVINCIX_CACHE_DIR` | `~/.cache/quickshell/wallpaper_picker` | Thumbs, current wallpaper, search. |
-| `DAVINCIX_STATE_DIR` | `~/.local/state/quickshell/wallpaper_picker` | Persistent flags and `current_scene`. |
-| `DAVINCIX_RUN_DIR` | `$XDG_RUNTIME_DIR/quickshell/wallpaper_picker` | Control files, locks and PIDs. |
-| `DAVINCIX_LOG_DIR` | `$XDG_RUNTIME_DIR/quickshell/logs` | Kernel logs. |
-| `DAVINCIX_XWWW` | `~/.local/bin/xwww`, then `PATH` | Client binary. |
-| `DAVINCIX_XWWW_DAEMON` | `~/.local/bin/xwww-daemon`, then `PATH` | Daemon binary. |
-| `DAVINCIX_CLI` | — | Explicit path to `davincix.sh` consumed by the picker. |
+| `DAVINCI_WALLPAPER_DIR` | `$WALLPAPER_DIR` or `~/.config/hypr/wallpapers` | Source directory. |
+| `DAVINCI_CACHE_DIR` | `~/.cache/quickshell/wallpaper_picker` | Thumbs, current wallpaper, search. |
+| `DAVINCI_STATE_DIR` | `~/.local/state/quickshell/wallpaper_picker` | Persistent flags and `current_scene`. |
+| `DAVINCI_RUN_DIR` | `$XDG_RUNTIME_DIR/quickshell/wallpaper_picker` | Control files, locks and PIDs. |
+| `DAVINCI_LOG_DIR` | `$XDG_RUNTIME_DIR/quickshell/logs` | Kernel logs. |
+| `DAVINCI_XWWW` | `~/.local/bin/xwww`, then `PATH` | Client binary. |
+| `DAVINCI_XWWW_DAEMON` | `~/.local/bin/xwww-daemon`, then `PATH` | Daemon binary. |
+| `DAVINCI_CLI` | — | Explicit path to `davinci.sh` consumed by the picker. |
 
 ## The picker
 
-Open with `SUPER + W`. The picker shows thumbnails from davincix, a transition
+Open with `SUPER + W`. The picker shows thumbnails from davinci, a transition
 selector and filter controls. Cards carry a `JS` badge for scenes and a play
 badge for videos. Applying works with a click or `Return`; `Delete` moves the
-selected entry to the trash through `davincix rm`. The active wallpaper is
-pre-selected when the picker opens (`davincix current --thumb-name`).
+selected entry to the trash through `davinci rm`. The active wallpaper is
+pre-selected when the picker opens (`davinci current --thumb-name`).
 
 ## Search
 
@@ -97,7 +97,7 @@ Search downloads go through provider scripts under `providers/`:
 | `pexels` | optional `PEXELS_KEY` | Stock videos; best mp4 >= 1920x1080. |
 | `pixabay` | `PIXABAY_KEY` | Stock videos; best variant >= 1920x1080. |
 
-Keys live in `$DAVINCIX_STATE_DIR/keys.conf` or the environment. Results are
+Keys live in `$DAVINCI_STATE_DIR/keys.conf` or the environment. Results are
 filtered to at least 1920x1080 and validated (`content-type` plus mime) before
 being kept. Pagination keeps a per-provider cursor under
 `search_cursors/<source>`, and the active provider is persisted in
@@ -105,7 +105,7 @@ being kept. Pagination keeps a per-provider cursor under
 
 ## Slideshow
 
-`davincix slideshow start [interval]` runs a detached daemon that rotates
+`davinci slideshow start [interval]` runs a detached daemon that rotates
 still images with a random transition and never repeats the previous one. The
 state lives in `slideshow.pid` and `slideshow_enabled` under the run/state
 directories. Scenes are skipped by the slideshow.
@@ -142,11 +142,11 @@ assets, never tracked in git:
 
 - Wallpaper does not change: check that `xwww-daemon` runs and that
   `xwww --version` matches the pinned release (`dots doctor` reports this).
-- `davincix: xwww not found`: the kernel resolves `DAVINCIX_XWWW`, then
+- `davinci: xwww not found`: the kernel resolves `DAVINCI_XWWW`, then
   `~/.local/bin/xwww`, then `PATH`; a session may not include
   `~/.local/bin`.
 - Video wallpaper fails: `mpvpaper` must be installed (`dots system`).
-- Missing or stale thumbnails: run `davincix thumbs`.
+- Missing or stale thumbnails: run `davinci thumbs`.
 - Scene appears as a plain folder: it needs a `scene.js` file; see
   [Interactive scenes](/docs/scenes).
 

@@ -24,7 +24,7 @@ Abra el issue en el repositorio que posee el comportamiento:
 | Overlays de shell y Nyx neutrales al compositor | [niri-shell](https://github.com/equisdots/niri-shell), [nyx-niri](https://github.com/equisdots/nyx-niri) |
 | Barra, paneles, widgets, editor | [shell](https://github.com/equisdots/shell) |
 | Mascotas, isla/notch, dock | [nyx](https://github.com/equisdots/nyx) |
-| Fondos de pantalla, escenas, selector | [davincix](https://github.com/equisdots/davincix), [background](https://github.com/equisdots/background) |
+| Fondos de pantalla, escenas, selector | [davinci](https://github.com/equisdots/davinci), [background](https://github.com/equisdots/background) |
 | Colores y temas | [palettes](https://github.com/equisdots/palettes), [theme-sync](https://github.com/equisdots/theme-sync) |
 | Hora, clima, calendario | [timex](https://github.com/equisdots/timex) |
 | Estándar de plugins, hub, registro y plugins convertidos | [plugins](https://github.com/equisdots/plugins) |

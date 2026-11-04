@@ -130,7 +130,7 @@ All popups dispatch through `qs_manager.sh`. Main shortcuts:
 | `SUPER + C` / `V` / `B` / `N` | Clipboard / volume / battery / network |
 | `SUPER + S` / `Z` | Calendar (timex) / display scale |
 | `SUPER + M` / `SUPER + P` | Music / idle |
-| `SUPER + W` | Wallpaper picker (davincix) |
+| `SUPER + W` | Wallpaper picker (davinci) |
 | `SUPER + I` / `SUPER + U` | System monitor / updater |
 | `SUPER + Y` / `SUPER + O` | Quick notes / RSS reader |
 | `SUPER + '` | File search |
@@ -219,5 +219,5 @@ executable, and glyphs must exist in the Hack Nerd Font.
 ## Related pages
 
 - [Theming and palettes](/docs/theming) for `Colors.qml` and palettes.
-- [Wallpapers](/docs/wallpapers) for the picker and davincix.
+- [Wallpapers](/docs/wallpapers) for the picker and davinci.
 - [Architecture and repositories](/docs/architecture) for the install layout.

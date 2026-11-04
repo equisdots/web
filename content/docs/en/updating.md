@@ -61,7 +61,7 @@ replaced by its niri variant while the niri session is selected, and
 
 ## What dots update does
 
-For every repository in the org (`dots`, `palettes`, `theme-sync`, `davincix`,
+For every repository in the org (`dots`, `palettes`, `theme-sync`, `davinci`,
 `shell`, `nyx`, `hyprland`, `timex`, `xturing`, `login`, plus the plugin
 standard and the default plugin sources):
 

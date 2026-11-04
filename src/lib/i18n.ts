@@ -70,7 +70,7 @@ export type Dict = {
     plugins: string;
     timex: string;
     sysmon: string;
-    davincix: string;
+    davinci: string;
     music: string;
     terminal: string;
     desktop: string;
@@ -82,7 +82,7 @@ export type Dict = {
     plugins: string;
     timex: string;
     sysmon: string;
-    davincix: string;
+    davinci: string;
     music: string;
     terminal: string;
     desktop: string;
@@ -194,7 +194,7 @@ const en: Dict = {
         id: "engines",
         title: "Engines",
         note: "Wallpapers, cross-app theming, time and weather, and a complete terminal settings frontend.",
-        repos: "davincix · theme-sync · timex · xturing",
+        repos: "davinci · theme-sync · timex · xturing",
       },
       {
         id: "data",
@@ -224,9 +224,9 @@ const en: Dict = {
     },
     wallpaper: {
       title: "One kernel, every wallpaper",
-      note: "davincix resolves a file, URL or scene directory, picks xwww or mpvpaper, and refreshes the lock-screen cache.",
+      note: "davinci resolves a file, URL or scene directory, picks xwww or mpvpaper, and refreshes the lock-screen cache.",
       nodes: {
-        davincix: { label: "davincix", note: "file · url · scene" },
+        davinci: { label: "davinci", note: "file · url · scene" },
         xwww: { label: "xwww", note: "still + JS scene" },
         mpvpaper: { label: "mpvpaper", note: "video" },
         surface: { label: "layer surface", note: "the screen" },
@@ -273,7 +273,7 @@ const en: Dict = {
     plugins: "Plugins panel",
     timex: "Calendar and weather",
     sysmon: "System monitor",
-    davincix: "Wallpaper picker",
+    davinci: "Wallpaper picker",
     music: "Music player",
     terminal: "Terminal settings",
     desktop: "Desktop widgets",
@@ -285,7 +285,7 @@ const en: Dict = {
     plugins: "63 plugins, each with its own switch, settings page and keybind surface.",
     timex: "Clock, month grid and forecast in one popup, fed by the local weather cache.",
     sysmon: "CPU, memory, disks and GPU with per-core detail.",
-    davincix: "Stills, video and interactive scenes with reveal transitions.",
+    davinci: "Stills, video and interactive scenes with reveal transitions.",
     music: "Album art, progress and a live spectrum fed by the shared Cava instance.",
     terminal: "The whole settings panel in a ratatui TUI, keyboard and mouse friendly.",
     desktop: "Clock, weather and visualizer cards placed anywhere, edited with the redactor.",
@@ -467,7 +467,7 @@ const es: Dict = {
         id: "engines",
         title: "Motores",
         note: "Fondos, temas entre aplicaciones, hora y clima, y un frontend completo de ajustes en terminal.",
-        repos: "davincix · theme-sync · timex · xturing",
+        repos: "davinci · theme-sync · timex · xturing",
       },
       {
         id: "data",
@@ -497,9 +497,9 @@ const es: Dict = {
     },
     wallpaper: {
       title: "Un kernel, cada fondo",
-      note: "davincix resuelve un archivo, URL o directorio de escena, elige xwww o mpvpaper y refresca la caché de bloqueo.",
+      note: "davinci resuelve un archivo, URL o directorio de escena, elige xwww o mpvpaper y refresca la caché de bloqueo.",
       nodes: {
-        davincix: { label: "davincix", note: "archivo · url · escena" },
+        davinci: { label: "davinci", note: "archivo · url · escena" },
         xwww: { label: "xwww", note: "imagen + escena JS" },
         mpvpaper: { label: "mpvpaper", note: "vídeo" },
         surface: { label: "superficie", note: "la pantalla" },
@@ -546,7 +546,7 @@ const es: Dict = {
     plugins: "Panel de plugins",
     timex: "Calendario y clima",
     sysmon: "Monitor del sistema",
-    davincix: "Selector de fondos",
+    davinci: "Selector de fondos",
     music: "Reproductor de música",
     terminal: "Ajustes en terminal",
     desktop: "Widgets de escritorio",
@@ -558,7 +558,7 @@ const es: Dict = {
     plugins: "63 plugins, cada uno con su interruptor, página de ajustes y superficie de atajos.",
     timex: "Reloj, rejilla mensual y previsión en un popup, alimentado por la caché local.",
     sysmon: "CPU, memoria, discos y GPU con detalle por núcleo.",
-    davincix: "Imágenes, vídeo y escenas interactivas con transiciones de entrada.",
+    davinci: "Imágenes, vídeo y escenas interactivas con transiciones de entrada.",
     music: "Carátula, progreso y espectro en vivo desde la instancia compartida de Cava.",
     terminal: "Todo el panel de ajustes en una TUI ratatui, manejable con teclado y ratón.",
     desktop: "Tarjetas de reloj, clima y visualizador colocables en cualquier sitio, editadas con el redactor.",

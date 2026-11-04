@@ -27,7 +27,7 @@ los de Hyprland.
 | [niri-login](https://github.com/equisdots/niri-login) | Entrada de sesión Wayland para que los gestores de sesión listen "Niri" | `/usr/share/wayland-sessions` |
 
 `hyprland` y `niri` son los dos frontends de compositor; el resto del stack
-(`shell`, `nyx`, `palettes`, `theme-sync`, `background`, `timex`, `davincix`,
+(`shell`, `nyx`, `palettes`, `theme-sync`, `background`, `timex`, `davinci`,
 los repositorios de plugins y `login`) es compartido por ambos.
 
 ## Una raíz de datos, dos compositores

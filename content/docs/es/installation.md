@@ -85,7 +85,7 @@ carga útil:
 
 - Configuración de Hyprland en `~/.config/hypr`, más las configuraciones de
   rofi, dunst y cava.
-- Shell Quickshell, la isla de mascotas Nyx, paletas, theme-sync, davincix,
+- Shell Quickshell, la isla de mascotas Nyx, paletas, theme-sync, davinci,
   timex y xturing.
 - El estándar de plugins (`plugin-api`, `plugin-sdk`, el hub `plugins`) y el
   conjunto por defecto: screenshots, timex, lector RSS, portapapeles,
@@ -173,7 +173,7 @@ de ajustes. El hub de 63 plugins y el estándar se documentan en
 dots doctor
 dots list
 dots plugins
-command -v dots hyprland qs davincix theme-sync
+command -v dots hyprland qs davinci theme-sync
 fc-match "Hack Nerd Font"
 ```
 
@@ -199,7 +199,7 @@ atención.
   `ls -t /tmp/hyprland-install-*.log | head -1` y reintente `./dots system`.
 - Los glifos se ven como cajas: falta la Hack Nerd Font; vuelva a ejecutar
   `./dots system`.
-- No se encuentra `dots` o `davincix`: `~/.local/bin` no está en `PATH`
+- No se encuentra `dots` o `davinci`: `~/.local/bin` no está en `PATH`
   (`dots doctor` lo señala).
 - Discrepancia de versión de xwww: ejecute `./dots update`, que reinstala la
   versión fijada cuando el binario en ejecución difiere.

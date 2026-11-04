@@ -45,7 +45,7 @@ core.
 | [nyx](https://github.com/equisdots/nyx) | Mascot island/notch plugin and control-center dock | `.../quickshell/ui/plugins/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Color palettes (JSON set and schema) | `~/.config/hypr/scripts/quickshell/dock/palettes` |
 | [background](https://github.com/equisdots/background) | Curated wallpaper collection and scene catalog | released as `background.zip` |
-| [davincix](https://github.com/equisdots/davincix) | Wallpaper fetch/apply kernel | `~/.local/bin/davincix` |
+| [davinci](https://github.com/equisdots/davinci) | Wallpaper fetch/apply kernel | `~/.local/bin/davinci` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Cross-app theme regeneration | `~/.local/bin/theme-sync` |
 | [timex](https://github.com/equisdots/timex) | Time and weather plugin: engine, calendar panel, bar island | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Terminal UI for the settings panel | `~/.local/bin/xturing` |
@@ -75,7 +75,7 @@ settings.json (bar.palette, bar, widgets, timex, plugins, ...)
       |
       +--> xwww scenes -------------> wallpaper follows the palette
 
-davincix (kernel) --> xwww (stills/scenes) or mpvpaper (videos)
+davinci (kernel) --> xwww (stills/scenes) or mpvpaper (videos)
                   --> current_wallpaper.png for lock and SDDM
 ```
 
@@ -87,7 +87,7 @@ davincix (kernel) --> xwww (stills/scenes) or mpvpaper (videos)
 - Palette files: `~/.config/hypr/scripts/quickshell/dock/palettes`.
 - Plugins: managed in `~/.config/hypr/plugins`, user plugins in
   `~/.config/hypr/plugins-user`; UI under `.../quickshell/ui/plugins`.
-- Wrappers: `dots`, `dotsniri`, `davincix`, `theme-sync`, `timex`, `xturing` in
+- Wrappers: `dots`, `dotsniri`, `davinci`, `theme-sync`, `timex`, `xturing` in
   `~/.local/bin`.
 
 ## Requirements
@@ -108,7 +108,7 @@ niri stack) reports exactly what is missing. See
 - [Nyx mascot island](/docs/nyx) - species, island/notch and the widget dock.
 - [Plugins and extensions](/docs/plugins) - the standard, the 63-plugin hub and the CLI.
 - [Theming and palettes](/docs/theming) - base16 palettes and theme-sync.
-- [Wallpapers](/docs/wallpapers) - davincix, xwww and the picker.
+- [Wallpapers](/docs/wallpapers) - davinci, xwww and the picker.
 - [Interactive scenes](/docs/scenes) - authoring and running JS wallpapers.
 - [Tools: timex, xturing, login](/docs/tools) - the side tools.
 - [Architecture and repositories](/docs/architecture) - contracts and data flow.
