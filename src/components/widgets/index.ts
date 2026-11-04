@@ -4,7 +4,7 @@ export { PaletteMock } from "./PaletteMock";
 export { PluginsMock } from "./PluginsMock";
 export { TimexMock } from "./TimexMock";
 export { SysMonMock } from "./SysMonMock";
-export { DavincixMock } from "./DavincixMock";
+export { DavinciMock } from "./DavinciMock";
 export { MusicMock } from "./MusicMock";
 export { TerminalMock } from "./TerminalMock";
 export { WidgetsMock } from "./WidgetsMock";
