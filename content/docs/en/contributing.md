@@ -23,7 +23,7 @@ Open the issue in the repository that owns the behavior:
 | Compositor-neutral shell and Nyx overlays | [niri-shell](https://github.com/equisdots/niri-shell), [nyx-niri](https://github.com/equisdots/nyx-niri) |
 | Bar, panels, widgets, editor | [shell](https://github.com/equisdots/shell) |
 | Mascots, island/notch, dock | [nyx](https://github.com/equisdots/nyx) |
-| Wallpapers, scenes, picker | [davincix](https://github.com/equisdots/davincix), [background](https://github.com/equisdots/background) |
+| Wallpapers, scenes, picker | [davinci](https://github.com/equisdots/davinci), [background](https://github.com/equisdots/background) |
 | Colors and theming | [palettes](https://github.com/equisdots/palettes), [theme-sync](https://github.com/equisdots/theme-sync) |
 | Time, weather, calendar | [timex](https://github.com/equisdots/timex) |
 | Plugin standard, hub, registry, converted plugins | [plugins](https://github.com/equisdots/plugins) |

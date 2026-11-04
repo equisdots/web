@@ -27,7 +27,7 @@ las piezas.
 | [palettes](https://github.com/equisdots/palettes) | Datos de paletas y esquema | `.../quickshell/dock/palettes` |
 | [background](https://github.com/equisdots/background) | Fondos curados y catálogo de escenas | asset de release `background.zip` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Motor de temas entre aplicaciones | `~/.local/bin/theme-sync` |
-| [davincix](https://github.com/equisdots/davincix) | Núcleo de fondos de pantalla | `~/.local/bin/davincix` |
+| [davinci](https://github.com/equisdots/davinci) | Núcleo de fondos de pantalla | `~/.local/bin/davinci` |
 | [timex](https://github.com/equisdots/timex) | Plugin de clima/hora (motor, calendario, isla de barra) | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Interfaz de ajustes de terminal | `~/.local/bin/xturing` |
 | [plugins](https://github.com/equisdots/plugins) | Estándar, hub de 63 plugins y registro | `.../quickshell/ui/plugins/<id>` |
@@ -43,7 +43,7 @@ niri usa `~/.local/share/equisdots-niri/<repo>`). Los wrappers de
 comportamiento sin tocar el wrapper.
 
 `hyprland` y `niri` son los dos frontends de compositor; `shell`, `nyx`,
-`palettes`, `theme-sync`, `background`, `timex`, `davincix`, los repositorios de
+`palettes`, `theme-sync`, `background`, `timex`, `davinci`, los repositorios de
 plugins y `login` son compartidos por ambos.
 
 ## Un shell, dos compositores
@@ -123,7 +123,7 @@ settings.json  (single source of truth: bar, widgets, timex, plugins, ...)
    +--> hyprland colors.lua ---------> border defaults at load
    +--> theme-sync ------------------> active palette for every target
    +--> timex -----------------------> provider, city, unit
-   +--> davincix --------------------> slideshow and wallpaper options
+   +--> davinci --------------------> slideshow and wallpaper options
 ```
 
 Las escrituras son atómicas para que los vigilantes de archivos sigan
@@ -156,7 +156,7 @@ de paleta concuerda con el resto del escritorio por construcción. Consulte
 ## Flujo de fondos de pantalla
 
 ```
-davincix (kernel CLI)
+davinci (kernel CLI)
    +--> xwww img ......... still images
    +--> xwww scene run ... interactive scenes (JS, palette-driven)
    +--> mpvpaper ......... video wallpapers

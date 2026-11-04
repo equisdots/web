@@ -26,7 +26,7 @@ the invariants the pieces rely on.
 | [palettes](https://github.com/equisdots/palettes) | Palette data and schema | `.../quickshell/dock/palettes` |
 | [background](https://github.com/equisdots/background) | Curated wallpapers and scene catalog | release asset `background.zip` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Cross-app theming engine | `~/.local/bin/theme-sync` |
-| [davincix](https://github.com/equisdots/davincix) | Wallpaper kernel | `~/.local/bin/davincix` |
+| [davinci](https://github.com/equisdots/davinci) | Wallpaper kernel | `~/.local/bin/davinci` |
 | [timex](https://github.com/equisdots/timex) | Weather/time plugin (engine, calendar, bar island) | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Terminal settings UI | `~/.local/bin/xturing` |
 | [plugins](https://github.com/equisdots/plugins) | Standard, 63-plugin hub, install registry | `.../quickshell/ui/plugins/<id>` |
@@ -41,7 +41,7 @@ Managed clones live under `~/.local/share/equisdots/<repo>` (the niri stack uses
 cloned engines, so `dots update` changes behavior without touching the wrapper.
 
 `hyprland` and `niri` are the two compositor front ends; `shell`, `nyx`,
-`palettes`, `theme-sync`, `background`, `timex`, `davincix`, the plugin
+`palettes`, `theme-sync`, `background`, `timex`, `davinci`, the plugin
 repositories and `login` are shared by both.
 
 ## One shell, two compositors
@@ -116,7 +116,7 @@ settings.json  (single source of truth: bar, widgets, timex, plugins, ...)
    +--> hyprland colors.lua ---------> border defaults at load
    +--> theme-sync ------------------> active palette for every target
    +--> timex -----------------------> provider, city, unit
-   +--> davincix --------------------> slideshow and wallpaper options
+   +--> davinci --------------------> slideshow and wallpaper options
 ```
 
 Writes are atomic so file watchers keep working: `dots` merges `settings.json`
@@ -148,7 +148,7 @@ agrees with the rest of the desktop by construction. See
 ## Wallpaper flow
 
 ```
-davincix (kernel CLI)
+davinci (kernel CLI)
    +--> xwww img ......... still images
    +--> xwww scene run ... interactive scenes (JS, palette-driven)
    +--> mpvpaper ......... video wallpapers

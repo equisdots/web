@@ -64,21 +64,21 @@ muestras de paleta en la posición medida sobre el arte original 3840x2160
 | `kepler-veil` | Órbita de Kepler excéntrica con la cuña barrida. |
 | `complex-veil` | Raíces n-ésimas de la unidad en el plano de Argand. |
 
-## Integración con davincix
+## Integración con davinci
 
-`davincix` detecta cualquier directorio con `scene.js` y lo aplica como
+`davinci` detecta cualquier directorio con `scene.js` y lo aplica como
 cualquier otro fondo de pantalla:
 
 ```sh
-davincix set ~/.config/hypr/wallpapers/astro-palette
-davincix set ~/.config/hypr/wallpapers/astro-palette --transition decrypt
-DAVINCIX_SCENE_FPS=30 davincix set ~/.config/hypr/wallpapers/matrix-rain
+davinci set ~/.config/hypr/wallpapers/astro-palette
+davinci set ~/.config/hypr/wallpapers/astro-palette --transition decrypt
+DAVINCI_SCENE_FPS=30 davinci set ~/.config/hypr/wallpapers/matrix-rain
 ```
 
 - Las escenas siguen `settings.json -> bar.palette` en aproximadamente un
   segundo.
 - La tasa de fotogramas es de 15 fps por defecto; anúlela con
-  `DAVINCIX_SCENE_FPS`.
+  `DAVINCI_SCENE_FPS`.
 - `current_scene` almacena el directorio activo e `init.sh` lo vuelve a aplicar
   al iniciar la sesión; aplicar una imagen o un vídeo detiene la escena.
 - El selector muestra las escenas con una insignia `JS` y la portada
@@ -99,7 +99,7 @@ xwww scene run    scene.js --fps 15 --palette equisdots      # live
 | `--fps` | `10` | Fotogramas renderizados y enviados por segundo. |
 | `--size` | `2560x1440` | Tamaño del canvas para `render`. |
 | `--palette` | archivo xwww, luego equisdots | `xwww[:path]`, `equisdots[:slug]`, `file:<path>`, `command:<cmd>`. |
-| `--timeout-ms` | `100` | Presupuesto de JavaScript por fotograma (davincix usa 2000). |
+| `--timeout-ms` | `100` | Presupuesto de JavaScript por fotograma (davinci usa 2000). |
 | `--asset <path>` | directorio de la escena | Directorio adicional cuyas imágenes puede cargar la escena. Repetible. |
 | `--palette-fade` | `800` | Fundido cruzado en milisegundos al cambiar la paleta (`0` lo desactiva). |
 | `--transition-type` | `none` | Transición de entrada para el primer fotograma. |
@@ -184,7 +184,7 @@ Todas las llamadas son métodos del objeto global `canvas`. Los colores aceptan
   dibujos únicos.
 - Prefiera `canvas.remap` y los activos de imagen al trabajo por píxel.
 - Límites duros: un fotograma síncrono a la vez, un presupuesto de
-  `--timeout-ms` (100 ms por defecto, 2000 ms con davincix) y 32 MB de memoria
+  `--timeout-ms` (100 ms por defecto, 2000 ms con davinci) y 32 MB de memoria
   JavaScript con una pila de 1 MB.
 
 ## Publicar una escena
@@ -196,8 +196,8 @@ contribuir con una:
 1. Añada el directorio con `scene.js` y `base.jpg`.
 2. Añada una fila al catálogo en `docs/interactive-scenes.md`.
 3. Añada una entrada a `CHANGELOG.md` bajo la sección fechada actual.
-4. Regenere miniaturas y pruebe la transición en local: `davincix thumbs` y
-   `davincix set <dir> --transition decrypt`.
+4. Regenere miniaturas y pruebe la transición en local: `davinci thumbs` y
+   `davinci set <dir> --transition decrypt`.
 5. Abra un pull request; envíe solo arte propio o explícitamente
    redistribuible.
 
@@ -205,7 +205,7 @@ contribuir con una:
 
 - La salida de `log(...)` va a
   `$XDG_RUNTIME_DIR/quickshell/logs/xwww_debug.log` cuando se ejecuta bajo
-  davincix.
+  davinci.
 - `xwww scene check scene.js` informa de errores de sintaxis;
   `xwww scene render scene.js -o out.png --size 1920x1080` es más rápido para
   iterar.
@@ -214,7 +214,7 @@ contribuir con una:
   directorios permitidos: use un activo local o `--asset`), `exceeded the frame
   budget` (se superó el presupuesto del fotograma: mueva el trabajo a `setup`).
 - Edite la copia bajo el directorio de fondos de pantalla: es la que ejecuta
-  davincix.
+  davinci.
 
 ## Siguientes pasos
 

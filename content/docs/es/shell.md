@@ -136,7 +136,7 @@ Todos los emergentes se despachan mediante `qs_manager.sh`. Atajos principales:
 | `SUPER + C` / `V` / `B` / `N` | Portapapeles / volumen / batería / red |
 | `SUPER + S` / `Z` | Calendario (timex) / escala de pantalla |
 | `SUPER + M` / `SUPER + P` | Música / inactividad |
-| `SUPER + W` | Selector de fondos (davincix) |
+| `SUPER + W` | Selector de fondos (davinci) |
 | `SUPER + I` / `SUPER + U` | Monitor del sistema / actualizador |
 | `SUPER + Y` / `SUPER + O` | Notas rápidas / lector RSS |
 | `SUPER + '` | Búsqueda de archivos |
@@ -228,6 +228,6 @@ y los glifos deben existir en la Hack Nerd Font.
 ## Páginas relacionadas
 
 - [Temas y paletas](/es/docs/theming) para `Colors.qml` y las paletas.
-- [Fondos de pantalla](/es/docs/wallpapers) para el selector y davincix.
+- [Fondos de pantalla](/es/docs/wallpapers) para el selector y davinci.
 - [Arquitectura y repositorios](/es/docs/architecture) para el diseño de la
   instalación.

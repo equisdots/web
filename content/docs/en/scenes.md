@@ -61,19 +61,19 @@ at the position measured on the original 3840x2160 artwork
 | `kepler-veil` | Eccentric Kepler orbit with the swept wedge. |
 | `complex-veil` | n-th roots of unity on the Argand plane. |
 
-## Integration with davincix
+## Integration with davinci
 
-`davincix` detects any directory with `scene.js` and applies it like any other
+`davinci` detects any directory with `scene.js` and applies it like any other
 wallpaper:
 
 ```sh
-davincix set ~/.config/hypr/wallpapers/astro-palette
-davincix set ~/.config/hypr/wallpapers/astro-palette --transition decrypt
-DAVINCIX_SCENE_FPS=30 davincix set ~/.config/hypr/wallpapers/matrix-rain
+davinci set ~/.config/hypr/wallpapers/astro-palette
+davinci set ~/.config/hypr/wallpapers/astro-palette --transition decrypt
+DAVINCI_SCENE_FPS=30 davinci set ~/.config/hypr/wallpapers/matrix-rain
 ```
 
 - Scenes follow `settings.json -> bar.palette` within about a second.
-- The frame rate defaults to 15 fps; override it with `DAVINCIX_SCENE_FPS`.
+- The frame rate defaults to 15 fps; override it with `DAVINCI_SCENE_FPS`.
 - `current_scene` stores the active directory and `init.sh` re-applies it on
   session start; applying an image or video stops the scene.
 - The picker shows scenes with a `JS` badge and the `base.jpg` cover.
@@ -94,7 +94,7 @@ xwww scene run    scene.js --fps 15 --palette equisdots      # live
 | `--fps` | `10` | Frames rendered and pushed per second. |
 | `--size` | `2560x1440` | Canvas size for `render`. |
 | `--palette` | xwww file, then equisdots | `xwww[:path]`, `equisdots[:slug]`, `file:<path>`, `command:<cmd>`. |
-| `--timeout-ms` | `100` | Per-frame JavaScript budget (davincix uses 2000). |
+| `--timeout-ms` | `100` | Per-frame JavaScript budget (davinci uses 2000). |
 | `--asset <path>` | scene directory | Extra directory whose images the scene may load. Repeatable. |
 | `--palette-fade` | `800` | Crossfade in milliseconds on palette change (`0` disables). |
 | `--transition-type` | `none` | Entry transition for the first frame. |
@@ -173,7 +173,7 @@ All calls are methods of the global `canvas` object. Colors accept `#rgb`,
 - Text is cached per glyph, family and color, but keep unique draws low.
 - Prefer `canvas.remap` and image assets over per-pixel work.
 - Hard limits: one synchronous frame at a time, a `--timeout-ms` budget
-  (100 ms by default, 2000 ms under davincix) and 32 MB of JavaScript memory
+  (100 ms by default, 2000 ms under davinci) and 32 MB of JavaScript memory
   with a 1 MB stack.
 
 ## Publishing a scene
@@ -186,20 +186,20 @@ one:
 2. Add a row to the catalog in `docs/interactive-scenes.md`.
 3. Add an entry to `CHANGELOG.md` under the current dated section.
 4. Regenerate thumbnails and test the transition locally:
-   `davincix thumbs` and `davincix set <dir> --transition decrypt`.
+   `davinci thumbs` and `davinci set <dir> --transition decrypt`.
 5. Open a pull request; only submit artwork you own or that is explicitly
    redistributable.
 
 ## Debugging
 
 - `log(...)` output goes to `$XDG_RUNTIME_DIR/quickshell/logs/xwww_debug.log`
-  when running under davincix.
+  when running under davinci.
 - `xwww scene check scene.js` reports syntax errors; `xwww scene render
   scene.js -o out.png --size 1920x1080` is faster to iterate on.
 - Common errors: `invalid color` (use hex or RGB arrays), `asset outside the
   allowed directories` (use a local asset or `--asset`), `exceeded the frame
   budget` (move work to `setup`).
-- Edit the copy under the wallpaper directory: that is the one davincix runs.
+- Edit the copy under the wallpaper directory: that is the one davinci runs.
 
 ## Next steps
 

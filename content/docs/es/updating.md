@@ -63,7 +63,7 @@ solo se reemplaza por su variante niri mientras se selecciona la sesión niri, y
 ## Qué hace dots update
 
 Para cada repositorio de la organización (`dots`, `palettes`, `theme-sync`,
-`davincix`, `shell`, `nyx`, `hyprland`, `timex`, `xturing`, `login`, además del
+`davinci`, `shell`, `nyx`, `hyprland`, `timex`, `xturing`, `login`, además del
 estándar de plugins y las fuentes de los plugins por defecto):
 
 1. Descarga `origin/main` con profundidad 1 y restablece por la fuerza el clon

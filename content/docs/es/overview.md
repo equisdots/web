@@ -48,7 +48,7 @@ hosts los descubren, activan y actualizan sin tocar el núcleo.
 | [nyx](https://github.com/equisdots/nyx) | Plugin de isla/notch de mascotas y dock de centro de control | `.../quickshell/ui/plugins/nyx` |
 | [palettes](https://github.com/equisdots/palettes) | Paletas de color (conjunto JSON y esquema) | `~/.config/hypr/scripts/quickshell/dock/palettes` |
 | [background](https://github.com/equisdots/background) | Colección curada de fondos y catálogo de escenas | publicado como `background.zip` |
-| [davincix](https://github.com/equisdots/davincix) | Núcleo de descarga y aplicación de fondos | `~/.local/bin/davincix` |
+| [davinci](https://github.com/equisdots/davinci) | Núcleo de descarga y aplicación de fondos | `~/.local/bin/davinci` |
 | [theme-sync](https://github.com/equisdots/theme-sync) | Regeneración de temas entre aplicaciones | `~/.local/bin/theme-sync` |
 | [timex](https://github.com/equisdots/timex) | Plugin de hora y clima: motor, panel de calendario e isla de barra | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Interfaz de terminal para el panel de ajustes | `~/.local/bin/xturing` |
@@ -78,7 +78,7 @@ settings.json (bar.palette, bar, widgets, timex, plugins, ...)
       |
       +--> xwww scenes -------------> wallpaper follows the palette
 
-davincix (kernel) --> xwww (stills/scenes) or mpvpaper (videos)
+davinci (kernel) --> xwww (stills/scenes) or mpvpaper (videos)
                   --> current_wallpaper.png for lock and SDDM
 ```
 
@@ -90,7 +90,7 @@ davincix (kernel) --> xwww (stills/scenes) or mpvpaper (videos)
 - Archivos de paleta: `~/.config/hypr/scripts/quickshell/dock/palettes`.
 - Plugins: gestionados en `~/.config/hypr/plugins`, de usuario en
   `~/.config/hypr/plugins-user`; UI bajo `.../quickshell/ui/plugins`.
-- Wrappers: `dots`, `dotsniri`, `davincix`, `theme-sync`, `timex`, `xturing` en
+- Wrappers: `dots`, `dotsniri`, `davinci`, `theme-sync`, `timex`, `xturing` en
   `~/.local/bin`.
 
 ## Requisitos
@@ -112,7 +112,7 @@ doctor` para el stack niri) informa exactamente de lo que falta. Consulte
 - [Isla de mascotas Nyx](/es/docs/nyx) - especies, isla/notch y el dock.
 - [Plugins y extensiones](/es/docs/plugins) - el estándar, el hub de 63 plugins y la CLI.
 - [Temas y paletas](/es/docs/theming) - paletas base16 y theme-sync.
-- [Fondos de pantalla](/es/docs/wallpapers) - davincix, xwww y el selector.
+- [Fondos de pantalla](/es/docs/wallpapers) - davinci, xwww y el selector.
 - [Escenas interactivas](/es/docs/scenes) - creación y ejecución de fondos JS.
 - [Herramientas: timex, xturing, login](/es/docs/tools) - las herramientas
   auxiliares.

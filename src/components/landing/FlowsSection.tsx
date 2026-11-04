@@ -24,7 +24,7 @@ export function FlowsSection({ locale }: { locale: Locale }) {
   ];
 
   const wallpaperNodes: FlowNode[] = [
-    { id: "davincix", x: 62, y: 170, accent: "c4", glyph: "wallpaper", ...node(copy.wallpaper.nodes, "davincix") },
+    { id: "davinci", x: 62, y: 170, accent: "c4", glyph: "wallpaper", ...node(copy.wallpaper.nodes, "davinci") },
     { id: "xwww", x: 195, y: 95, accent: "c6", glyph: "scene", ...node(copy.wallpaper.nodes, "xwww") },
     { id: "mpvpaper", x: 195, y: 240, accent: "c1", glyph: "video", ...node(copy.wallpaper.nodes, "mpvpaper") },
     { id: "surface", x: 330, y: 115, accent: "c2", glyph: "screen", ...node(copy.wallpaper.nodes, "surface") },
@@ -32,11 +32,11 @@ export function FlowsSection({ locale }: { locale: Locale }) {
   ];
 
   const wallpaperEdges: FlowEdge[] = [
-    { from: "davincix", to: "xwww", accent: "c6" },
-    { from: "davincix", to: "mpvpaper", accent: "c1" },
+    { from: "davinci", to: "xwww", accent: "c6" },
+    { from: "davinci", to: "mpvpaper", accent: "c1" },
     { from: "xwww", to: "surface", accent: "c2" },
     { from: "mpvpaper", to: "surface", accent: "c2" },
-    { from: "davincix", to: "lock", accent: "c3", dashed: true },
+    { from: "davinci", to: "lock", accent: "c3", dashed: true },
   ];
 
   const pluginNodes: FlowNode[] = [

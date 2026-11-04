@@ -12,7 +12,7 @@ const COLUMNS: { key: "project" | "resources" | "more"; repos: { name: string; h
       { name: "dots", href: "https://github.com/equisdots/dots" },
       { name: "hyprland", href: "https://github.com/equisdots/hyprland" },
       { name: "shell", href: "https://github.com/equisdots/shell" },
-      { name: "davincix", href: "https://github.com/equisdots/davincix" },
+      { name: "davinci", href: "https://github.com/equisdots/davinci" },
     ],
   },
   {
