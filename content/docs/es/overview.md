@@ -12,7 +12,7 @@ barra, paneles, widgets, editor de ajustes, pantalla de bloqueo y la mascota Nyx
 son compartidos, y solo cambia la capa del compositor. Cada pieza es su propio
 repositorio, y un único meta instalador, `dots`, los clona, coloca y actualiza en
 conjunto (`dotsniri` gestiona el stack de niri). Un estándar de plugins añade
-funciones autocontenidas encima: 63 plugins acompañan al stack y los mismos
+funciones autocontenidas encima: 69 plugins acompañan al stack y los mismos
 hosts los descubren, activan y actualizan sin tocar el núcleo.
 
 ## Qué proporciona la pila
@@ -52,10 +52,12 @@ hosts los descubren, activan y actualizan sin tocar el núcleo.
 | [theme-sync](https://github.com/equisdots/theme-sync) | Regeneración de temas entre aplicaciones | `~/.local/bin/theme-sync` |
 | [timex](https://github.com/equisdots/timex) | Plugin de hora y clima: motor, panel de calendario e isla de barra | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Interfaz de terminal para el panel de ajustes | `~/.local/bin/xturing` |
-| [plugins](https://github.com/equisdots/plugins) | Estándar de plugins, hub de 63 plugins y registro de instalación | `.../quickshell/ui/plugins/<id>` |
+| [plugins](https://github.com/equisdots/plugins) | Estándar de plugins, hub de 69 plugins y registro de instalación | `.../quickshell/ui/plugins/<id>` |
 | [plugin-api](https://github.com/equisdots/plugin-api) | Esquema del manifiesto, versión de API y evaluadores de compatibilidad | `.../quickshell/plugin-api.json` |
 | [plugin-sdk](https://github.com/equisdots/plugin-sdk) | SDK de ejecución: PluginHost, Settings, superficies, Lua mod | `.../quickshell/core/sdk` |
+| [plugins-niri](https://github.com/equisdots/plugins-niri) | Variantes nativas de niri para plugins (captura y grabación) | se fusiona en el stack niri |
 | [transformpath](https://github.com/equisdots/transformpath) | Arquitectura, decisiones y estado de la migración de plugins | solo documentación |
+| [context](https://github.com/equisdots/context) | Contexto profundo para IA de cada repositorio | solo documentación |
 | [login](https://github.com/equisdots/login) | Pantalla de inicio de sesión SDDM mínima y estática | `/usr/share/sddm/themes/x` |
 | [dots](https://github.com/equisdots/dots) | Meta instalador y actualizador | `~/.local/bin/dots` |
 | [web](https://github.com/equisdots/web) | Sitio de documentación, previews y mapa de repositorios | GitHub Pages |
@@ -95,7 +97,7 @@ davinci (kernel) --> xwww (stills/scenes) or mpvpaper (videos)
 
 ## Requisitos
 
-Una derivada de Arch Linux, Hyprland 0.55 o posterior (la configuración es Lua)
+Una derivada de Arch Linux, Hyprland 0.57 o posterior (la configuración es solo Lua)
 **o** niri 26.04 o posterior, `git`, `rsync`, `jq`, `quickshell` (`qs`),
 `xwww-daemon`, `mpvpaper` y la Hack Nerd Font. `dots doctor` (y `dotsniri
 doctor` para el stack niri) informa exactamente de lo que falta. Consulte
@@ -110,7 +112,8 @@ doctor` para el stack niri) informa exactamente de lo que falta. Consulte
 - [Compositor niri](/es/docs/niri) - el frontend de compositor alternativo.
 - [Shell Quickshell](/es/docs/shell) - barra, paneles, widgets e IPC.
 - [Isla de mascotas Nyx](/es/docs/nyx) - especies, isla/notch y el dock.
-- [Plugins y extensiones](/es/docs/plugins) - el estándar, el hub de 63 plugins y la CLI.
+- [Sistema de diseño](/es/docs/design) - tokens, cristal, marco, sombras y controles de efectos.
+- [Plugins y extensiones](/es/docs/plugins) - el estándar, el hub de 69 plugins y la CLI.
 - [Temas y paletas](/es/docs/theming) - paletas base16 y theme-sync.
 - [Fondos de pantalla](/es/docs/wallpapers) - davinci, xwww y el selector.
 - [Escenas interactivas](/es/docs/scenes) - creación y ejecución de fondos JS.

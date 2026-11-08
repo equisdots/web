@@ -228,6 +228,7 @@ y los glifos deben existir en la Hack Nerd Font.
 ## Páginas relacionadas
 
 - [Temas y paletas](/es/docs/theming) para `Colors.qml` y las paletas.
+- [Sistema de diseño](/es/docs/design) para cristal, marco, sombras y el kit compartido.
 - [Fondos de pantalla](/es/docs/wallpapers) para el selector y davinci.
 - [Arquitectura y repositorios](/es/docs/architecture) para el diseño de la
   instalación.

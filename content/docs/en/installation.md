@@ -14,7 +14,7 @@ palettes, engines) from every repository.
 
 - Arch Linux or a derivative (EndeavourOS, Manjaro, CachyOS, Garuda).
 - Linux 6.x or newer recommended, 4 GB RAM minimum, 8 GB recommended.
-- Hyprland 0.55 or newer (the configuration is Lua), or niri 26.04 or newer for
+- Hyprland 0.57 or newer (the configuration is Lua-only), or niri 26.04 or newer for
   the niri session.
 - `git`, `rsync`, `jq`, Quickshell (`qs`), `xwww-daemon`, `mpvpaper` and the
   Hack Nerd Font. The default plugin set also uses `cliphist` and `fd`.
@@ -154,7 +154,7 @@ dots plugins disable <id>
 
 The Plugins panel (`SUPER + SHIFT + M`) does the same from the UI: every
 installed plugin has a master switch, and a Configure shortcut when it ships a
-settings page. The 63-plugin hub and the standard are documented in
+settings page. The 69-plugin hub and the standard are documented in
 [Plugins and extensions](/docs/plugins).
 
 ## Verify the installation

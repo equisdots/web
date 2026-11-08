@@ -1,7 +1,7 @@
 ---
 title: Fondos de pantalla
 description: El núcleo de fondos davinci, xwww y mpvpaper, el selector de Quickshell, los proveedores de búsqueda y la presentación de diapositivas.
-order: 8
+order: 12
 section: wallpapers
 ---
 

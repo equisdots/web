@@ -27,7 +27,16 @@ export type Dict = {
     paletteNote: string;
   };
   home: {
-    labels: { highlights: string; stack: string; flows: string; widgets: string; repos: string; cta: string };
+    labels: {
+      highlights: string;
+      stack: string;
+      flows: string;
+      design: string;
+      widgets: string;
+      plugins: string;
+      repos: string;
+      cta: string;
+    };
     table: { repo: string; purpose: string };
     highlightsTitle: string;
     highlightsSubtitle: string;
@@ -35,10 +44,22 @@ export type Dict = {
     stackSubtitle: string;
     flowsTitle: string;
     flowsSubtitle: string;
+    designTitle: string;
+    designSubtitle: string;
     widgetsTitle: string;
     widgetsSubtitle: string;
+    pluginsTitle: string;
+    pluginsSubtitle: string;
     reposTitle: string;
     reposSubtitle: string;
+    stats: {
+      repos: string;
+      plugins: string;
+      palettes: string;
+      scenes: string;
+      modules: string;
+      compositors: string;
+    };
     repoGroups: Record<
       "install" | "interface" | "compositor" | "engines" | "data" | "plugins" | "site",
       string
@@ -49,12 +70,30 @@ export type Dict = {
   stack: {
     diagram: string;
     plugins: string;
+    interactiveHint: string;
     layers: {
       id: "interface" | "compositor" | "engines" | "data" | "install";
       title: string;
       note: string;
       repos: string;
     }[];
+  };
+  design: {
+    gemLabel: string;
+    gemHint: string;
+    tokensLabel: string;
+    tokensNote: string;
+    notes: { title: string; body: string; tag: string }[];
+  };
+  plugins: {
+    search: string;
+    filterLabel: string;
+    countLabel: string;
+    all: string;
+    empty: string;
+    hint: string;
+    groups: Record<"defaults" | "tools" | "shells" | "widgets" | "modules", string>;
+    origins: Record<"hub" | "repo" | "sample", string>;
   };
   flows: {
     palette: FlowCopy;
@@ -137,7 +176,7 @@ const en: Dict = {
     title: "equisdots",
     dots: "dots",
     subtitle:
-      "The X desktop: an Arch-based stack with Hyprland in the Lua era and a niri port, a compositor-neutral Quickshell shell, a 63-plugin standard, a live palette engine and a wallpaper kernel with interactive scenes.",
+      "The X desktop: an Arch-based stack with Hyprland 0.57+ in the Lua era and a niri port, a compositor-neutral Quickshell shell, a 69-plugin standard, a live palette engine and a wallpaper kernel with interactive scenes.",
     install: "Install with one command",
     copy: "Copy",
     copied: "Copied",
@@ -147,7 +186,16 @@ const en: Dict = {
     paletteNote: "This site uses two palettes from the collection: X (dark) and Catppuccin Latte (light).",
   },
   home: {
-    labels: { highlights: "Highlights", stack: "Stack", flows: "Flows", widgets: "Widgets", repos: "Repositories", cta: "Get started" },
+    labels: {
+      highlights: "Highlights",
+      stack: "Stack",
+      flows: "Flows",
+      design: "Design",
+      widgets: "Widgets",
+      plugins: "Plugins",
+      repos: "Repositories",
+      cta: "Get started",
+    },
     table: { repo: "repo", purpose: "purpose" },
     highlightsTitle: "What makes it different",
     highlightsSubtitle: "Small repositories, one command, one palette across the whole desktop.",
@@ -157,11 +205,25 @@ const en: Dict = {
     flowsTitle: "How the pieces move",
     flowsSubtitle:
       "Four paths explain the desktop: one palette recolors everything, one kernel drives every wallpaper, one manifest extends every surface, and one shell runs on both compositors.",
+    designTitle: "A design system that survives two compositors",
+    designSubtitle:
+      "Hairline borders, glass, a screen frame, host-drawn shadows and palette roles. Every surface is drawn by the shell, so the same design language works on Hyprland and niri without a compositor plugin.",
     widgetsTitle: "The widgets, illustrated",
     widgetsSubtitle: "Web recreations of the shell surfaces: bar, panels, pickers and desktop widgets.",
+    pluginsTitle: "Sixty-nine plugins, one standard",
+    pluginsSubtitle:
+      "Every plugin is a folder with a manifest. Search the current set, group it by what it owns, and open the docs for the contracts behind discovery, enablement and extension points.",
     reposTitle: "Every repository, illustrated",
     reposSubtitle:
-      "All 22 repositories of the organization, grouped by the layer they own. Each card links to its source and shows where its payload lands.",
+      "All 24 repositories of the organization, grouped by the layer they own. Each card links to its source and shows where its payload lands.",
+    stats: {
+      repos: "repositories",
+      plugins: "plugins",
+      palettes: "palettes",
+      scenes: "scenes",
+      modules: "bar modules",
+      compositors: "compositors",
+    },
     repoGroups: {
       install: "Install and update",
       interface: "Interface and session",
@@ -177,6 +239,7 @@ const en: Dict = {
   stack: {
     diagram: "Isometric stack map",
     plugins: "side rail · plugin system",
+    interactiveHint: "hover a layer",
     layers: [
       {
         id: "interface",
@@ -209,6 +272,55 @@ const en: Dict = {
         repos: "dots · dotsniri · login",
       },
     ],
+  },
+  design: {
+    gemLabel: "Palette prism",
+    gemHint: "pick a swatch",
+    tokensLabel: "Derived roles",
+    tokensNote:
+      "Base16 slots plus semantic roles feed the shell, window borders, theme-sync targets and running scenes. Selecting a swatch above recolors the material in real time; the rest of the site follows the same token set.",
+    notes: [
+      {
+        title: "Glass and translucency",
+        tag: "settings.glass",
+        body: "Shell backgrounds become translucent and the compositor blur shows through: a layer rule on Hyprland, ext-background-effect on niri.",
+      },
+      {
+        title: "Screen frame",
+        tag: "settings.frame",
+        body: "A bezel hugs all four edges, reserves space so tiled windows never cross it, and morphs around the bar and plugin hosts.",
+      },
+      {
+        title: "Host-drawn shadows",
+        tag: "settings.shadows",
+        body: "Popups and islands carry configurable shadows drawn in QML, following the animated box instead of depending on compositor decorations.",
+      },
+      {
+        title: "Liquid surfaces",
+        tag: "LiquidGlass",
+        body: "Panels and plugin surfaces share a glass kit with palette-tinted highlights, so third-party UI matches the core without copying it.",
+      },
+    ],
+  },
+  plugins: {
+    search: "Search plugins",
+    filterLabel: "Filter by category",
+    countLabel: "plugins",
+    all: "All",
+    empty: "No plugin matches that search.",
+    hint: "Counts reflect the hub registry: 67 plugins in equisdots/plugins plus Nyx and timex in their own repositories. The niri stack ships native variants for capture through plugins-niri.",
+    groups: {
+      defaults: "Defaults",
+      tools: "Tools",
+      shells: "Bars",
+      widgets: "Widgets",
+      modules: "Modules",
+    },
+    origins: {
+      hub: "hub",
+      repo: "repo",
+      sample: "sample",
+    },
   },
   flows: {
     palette: {
@@ -257,9 +369,9 @@ const en: Dict = {
     },
   },
   highlights: [
-    { title: "Hyprland, Lua era", body: "Compositor configuration written against the Lua API (0.55+), split into reusable modules for keybinds, rules, animations and colors." },
+    { title: "Hyprland 0.57, Lua era", body: "Compositor configuration written against the Lua-only API (0.57+), split into reusable modules for keybinds, rules, animations and colors." },
     { title: "niri, too", body: "The same desktop also runs on niri: the shell, palettes, widgets and the Nyx mascot are shared, and a separate dotsniri meta manages the niri stack." },
-    { title: "63 plugins, one standard", body: "Self-contained features declare plugin.json, ship their own settings pages, bar modules and panels, and are discovered by folder. dots installs, toggles and updates them without touching the core." },
+    { title: "69 plugins, one standard", body: "Self-contained features declare plugin.json, ship their own settings pages, bar modules, panels and complete bars, and are discovered by folder. dots installs, toggles and updates them without touching the core." },
     { title: "Live palette engine", body: "base16 palettes with semantic roles: switching one recolors the bar, window borders, widgets and running scenes without a reload." },
     { title: "Interactive scenes", body: "JavaScript wallpapers rendered by the xwww engine: procedural art that reacts to the palette and the clock." },
     { title: "Quickshell shell", body: "Bar with zones, a full settings editor, panels, popups and floating desktop widgets with a visual redactor." },
@@ -282,7 +394,7 @@ const en: Dict = {
     bar: "Floating islands for workspaces, clock and status; palette-tinted, blur-aware.",
     nyx: "Mascot island that unfolds into a control center: species, live stats and quick actions.",
     palette: "Switch the whole desktop palette without opening the settings editor.",
-    plugins: "63 plugins, each with its own switch, settings page and keybind surface.",
+    plugins: "69 plugins, each with its own switch, settings page and keybind surface.",
     timex: "Clock, month grid and forecast in one popup, fed by the local weather cache.",
     sysmon: "CPU, memory, disks and GPU with per-core detail.",
     davinci: "Stills, video and interactive scenes with reveal transitions.",
@@ -410,7 +522,7 @@ const es: Dict = {
     title: "equisdots",
     dots: "dots",
     subtitle:
-      "El escritorio X: un stack sobre Arch con Hyprland en la era Lua y un port a niri, un shell Quickshell neutral al compositor, un estándar de 63 plugins, un motor de paletas en vivo y un kernel de fondos con escenas interactivas.",
+      "El escritorio X: un stack sobre Arch con Hyprland 0.57+ en la era Lua y un port a niri, un shell Quickshell neutral al compositor, un estándar de 69 plugins, un motor de paletas en vivo y un kernel de fondos con escenas interactivas.",
     install: "Instala con un solo comando",
     copy: "Copiar",
     copied: "Copiado",
@@ -420,7 +532,16 @@ const es: Dict = {
     paletteNote: "Este sitio usa dos paletas de la colección: X (oscura) y Catppuccin Latte (clara).",
   },
   home: {
-    labels: { highlights: "Claves", stack: "Stack", flows: "Flujos", widgets: "Widgets", repos: "Repositorios", cta: "Empieza" },
+    labels: {
+      highlights: "Claves",
+      stack: "Stack",
+      flows: "Flujos",
+      design: "Diseño",
+      widgets: "Widgets",
+      plugins: "Plugins",
+      repos: "Repositorios",
+      cta: "Empieza",
+    },
     table: { repo: "repo", purpose: "propósito" },
     highlightsTitle: "Qué lo hace diferente",
     highlightsSubtitle: "Repositorios pequeños, un comando, una paleta en todo el escritorio.",
@@ -430,11 +551,25 @@ const es: Dict = {
     flowsTitle: "Cómo se mueven las piezas",
     flowsSubtitle:
       "Cuatro recorridos explican el escritorio: una paleta lo recolorea todo, un kernel gobierna cada fondo, un manifiesto extiende cada superficie y un shell corre en ambos compositores.",
+    designTitle: "Un sistema de diseño que sobrevive a dos compositores",
+    designSubtitle:
+      "Bordes de un píxel, cristal, un marco de pantalla, sombras dibujadas por el host y roles de paleta. Cada superficie la dibuja el shell, así que el mismo lenguaje funciona en Hyprland y niri sin un plugin del compositor.",
     widgetsTitle: "Los widgets, ilustrados",
     widgetsSubtitle: "Recreaciones web de las superficies del shell: barra, paneles, selectores y widgets de escritorio.",
+    pluginsTitle: "Sesenta y nueve plugins, un estándar",
+    pluginsSubtitle:
+      "Cada plugin es una carpeta con un manifiesto. Busca el conjunto actual, agrúpalo por lo que posee y abre la documentación de los contratos de descubrimiento, activación y puntos de extensión.",
     reposTitle: "Todos los repositorios, ilustrados",
     reposSubtitle:
-      "Los 22 repositorios de la organización, agrupados por la capa que poseen. Cada tarjeta enlaza a su código y muestra dónde aterriza su payload.",
+      "Los 24 repositorios de la organización, agrupados por la capa que poseen. Cada tarjeta enlaza a su código y muestra dónde aterriza su payload.",
+    stats: {
+      repos: "repositorios",
+      plugins: "plugins",
+      palettes: "paletas",
+      scenes: "escenas",
+      modules: "módulos de barra",
+      compositors: "compositores",
+    },
     repoGroups: {
       install: "Instalación y actualización",
       interface: "Interfaz y sesión",
@@ -450,6 +585,7 @@ const es: Dict = {
   stack: {
     diagram: "Mapa isométrico del stack",
     plugins: "riel lateral · sistema de plugins",
+    interactiveHint: "pasa el ratón por una capa",
     layers: [
       {
         id: "interface",
@@ -482,6 +618,55 @@ const es: Dict = {
         repos: "dots · dotsniri · login",
       },
     ],
+  },
+  design: {
+    gemLabel: "Prisma de paletas",
+    gemHint: "elige una muestra",
+    tokensLabel: "Roles derivados",
+    tokensNote:
+      "Los slots base16 y los roles semánticos alimentan el shell, los bordes de ventana, los objetivos de theme-sync y las escenas activas. Elegir una muestra arriba recolorea el material en tiempo real; el resto del sitio sigue el mismo conjunto de tokens.",
+    notes: [
+      {
+        title: "Cristal y translucidez",
+        tag: "settings.glass",
+        body: "Los fondos del shell se vuelven translúcidos y el blur del compositor se ve a través: una layer rule en Hyprland, ext-background-effect en niri.",
+      },
+      {
+        title: "Marco de pantalla",
+        tag: "settings.frame",
+        body: "Un bisel abraza los cuatro bordes, reserva espacio para que las ventanas en mosaico no lo crucen y se adapta a la barra y a los hosts de plugins.",
+      },
+      {
+        title: "Sombras del host",
+        tag: "settings.shadows",
+        body: "Los popups e islas llevan sombras configurables dibujadas en QML, siguiendo la caja animada en lugar de depender de las decoraciones del compositor.",
+      },
+      {
+        title: "Superficies líquidas",
+        tag: "LiquidGlass",
+        body: "Los paneles y las superficies de plugins comparten un kit de cristal con brillos tintados por la paleta, así la UI de terceros encaja sin copiar el núcleo.",
+      },
+    ],
+  },
+  plugins: {
+    search: "Buscar plugins",
+    filterLabel: "Filtrar por categoría",
+    countLabel: "plugins",
+    all: "Todos",
+    empty: "Ningún plugin coincide con esa búsqueda.",
+    hint: "Los recuentos reflejan el registro del hub: 67 plugins en equisdots/plugins más Nyx y timex en sus propios repositorios. El stack de niri incluye variantes nativas de captura mediante plugins-niri.",
+    groups: {
+      defaults: "Por defecto",
+      tools: "Herramientas",
+      shells: "Barras",
+      widgets: "Widgets",
+      modules: "Módulos",
+    },
+    origins: {
+      hub: "hub",
+      repo: "repo",
+      sample: "ejemplo",
+    },
   },
   flows: {
     palette: {
@@ -530,9 +715,9 @@ const es: Dict = {
     },
   },
   highlights: [
-    { title: "Hyprland, era Lua", body: "Configuración del compositor escrita contra la API Lua (0.55+), dividida en módulos reutilizables para atajos, reglas, animaciones y colores." },
+    { title: "Hyprland 0.57, era Lua", body: "Configuración del compositor escrita contra la API Lua exclusiva (0.57+), dividida en módulos reutilizables para atajos, reglas, animaciones y colores." },
     { title: "niri, también", body: "El mismo escritorio corre también sobre niri: el shell, las paletas, los widgets y la mascota Nyx son compartidos, y un meta aparte, dotsniri, gestiona el stack de niri." },
-    { title: "63 plugins, un estándar", body: "Funciones autocontenidas declaran plugin.json, traen su propia página de ajustes, módulos de barra y paneles, y se descubren por carpeta. dots las instala, activa y actualiza sin tocar el núcleo." },
+    { title: "69 plugins, un estándar", body: "Funciones autocontenidas declaran plugin.json, traen su propia página de ajustes, módulos de barra, paneles y barras completas, y se descubren por carpeta. dots las instala, activa y actualiza sin tocar el núcleo." },
     { title: "Motor de paletas en vivo", body: "Paletas base16 con roles semánticos: cambiar una recolorea la barra, los bordes de ventana, los widgets y las escenas activas sin recargar." },
     { title: "Escenas interactivas", body: "Fondos en JavaScript renderizados por el motor de xwww: arte procedural que reacciona a la paleta y al reloj." },
     { title: "Shell Quickshell", body: "Barra con zonas, editor de ajustes completo, paneles, popups y widgets flotantes de escritorio con redactor visual." },
@@ -555,7 +740,7 @@ const es: Dict = {
     bar: "Islas flotantes para espacios, reloj y estado; tintadas con la paleta y compatibles con blur.",
     nyx: "Isla de mascotas que se despliega en un centro de control: especies, datos en vivo y acciones rápidas.",
     palette: "Cambia la paleta de todo el escritorio sin abrir el editor de ajustes.",
-    plugins: "63 plugins, cada uno con su interruptor, página de ajustes y superficie de atajos.",
+    plugins: "69 plugins, cada uno con su interruptor, página de ajustes y superficie de atajos.",
     timex: "Reloj, rejilla mensual y previsión en un popup, alimentado por la caché local.",
     sysmon: "CPU, memoria, discos y GPU con detalle por núcleo.",
     davinci: "Imágenes, vídeo y escenas interactivas con transiciones de entrada.",

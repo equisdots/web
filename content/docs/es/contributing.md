@@ -1,7 +1,7 @@
 ---
 title: Contribución y seguridad
 description: Dónde notificar problemas, cómo se revisan las pull requests, las comprobaciones locales que hay que ejecutar y la política de seguridad.
-order: 13
+order: 15
 section: more
 ---
 
@@ -28,6 +28,7 @@ Abra el issue en el repositorio que posee el comportamiento:
 | Colores y temas | [palettes](https://github.com/equisdots/palettes), [theme-sync](https://github.com/equisdots/theme-sync) |
 | Hora, clima, calendario | [timex](https://github.com/equisdots/timex) |
 | Estándar de plugins, hub, registro y plugins convertidos | [plugins](https://github.com/equisdots/plugins) |
+| Variantes nativas de niri para plugins | [plugins-niri](https://github.com/equisdots/plugins-niri) |
 | Esquema del manifiesto, versión de API, compatibilidad | [plugin-api](https://github.com/equisdots/plugin-api) |
 | PluginHost, Settings, superficies, Lua `mod` | [plugin-sdk](https://github.com/equisdots/plugin-sdk) |
 | Arquitectura y migración de plugins | [transformpath](https://github.com/equisdots/transformpath) |

@@ -1,7 +1,7 @@
 ---
 title: "Herramientas: timex, xturing, login"
 description: Referencia del motor de hora y clima timex, la interfaz de ajustes de terminal xturing y el tema de inicio de sesión SDDM estático.
-order: 11
+order: 13
 section: more
 ---
 

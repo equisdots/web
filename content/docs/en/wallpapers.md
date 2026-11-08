@@ -1,7 +1,7 @@
 ---
 title: Wallpapers
 description: The davinci wallpaper kernel, xwww and mpvpaper, the Quickshell picker, search providers and slideshow.
-order: 8
+order: 12
 section: wallpapers
 ---
 

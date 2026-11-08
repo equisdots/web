@@ -1,7 +1,7 @@
 ---
 title: Compositor niri
 description: El compositor alternativo niri: configuración KDL, scripts de sesión, el shell neutral al compositor y cómo el stack compartido corre en Hyprland y niri.
-order: 9
+order: 10
 section: desktop
 ---
 
@@ -160,7 +160,7 @@ experimental mediante `NYX_CURSOR_PROVIDER` (un comando cuyo stdout emite línea
 ## Plugins en niri
 
 `niri-meta` despliega todo el estándar de plugins (`plugin-api`, `plugin-sdk`,
-el hub `plugins` y el conjunto de plugins por defecto), así que los mismos 63
+el hub `plugins` y el conjunto de plugins por defecto), así que los mismos 69
 plugins, páginas de ajustes, paneles, módulos de barra, tokens MD3 y entradas
 independientes corren en niri. `Super+Shift+M` abre el panel de Plugins. Las
 acciones de atajos de plugins se cubren con los binds KDL estáticos del

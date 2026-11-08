@@ -20,7 +20,7 @@ export function PluginsMock({ className }: MockProps) {
           </span>
           <h3 className="text-xs font-bold tracking-wide text-text">Plugins</h3>
           <span className="rounded-full border border-border px-1.5 py-0.5 font-mono text-[8px] text-muted">
-            63 installed
+            69 installed
           </span>
           <span className="ml-auto font-mono text-[9px] text-c2">● compatible</span>
         </div>

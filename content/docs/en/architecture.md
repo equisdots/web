@@ -1,7 +1,7 @@
 ---
 title: Architecture and repositories
 description: How the equisdots repositories fit together, the shared contracts they rely on and the decisions behind them.
-order: 12
+order: 14
 section: more
 ---
 
@@ -29,10 +29,12 @@ the invariants the pieces rely on.
 | [davinci](https://github.com/equisdots/davinci) | Wallpaper kernel | `~/.local/bin/davinci` |
 | [timex](https://github.com/equisdots/timex) | Weather/time plugin (engine, calendar, bar island) | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Terminal settings UI | `~/.local/bin/xturing` |
-| [plugins](https://github.com/equisdots/plugins) | Standard, 63-plugin hub, install registry | `.../quickshell/ui/plugins/<id>` |
+| [plugins](https://github.com/equisdots/plugins) | Standard, 69-plugin hub, install registry | `.../quickshell/ui/plugins/<id>` |
 | [plugin-api](https://github.com/equisdots/plugin-api) | Manifest schema, API version, compat evaluators | `.../quickshell/plugin-api.json` |
 | [plugin-sdk](https://github.com/equisdots/plugin-sdk) | PluginHost, Settings, surfaces, Lua mod | `.../quickshell/core/sdk` |
+| [plugins-niri](https://github.com/equisdots/plugins-niri) | Niri-native plugin variants | merged into the niri stack |
 | [transformpath](https://github.com/equisdots/transformpath) | Plugin architecture and decision log | documentation only |
+| [context](https://github.com/equisdots/context) | AI-first deep context for every repository | documentation only |
 | [web](https://github.com/equisdots/web) | Documentation and previews site | GitHub Pages |
 | [login](https://github.com/equisdots/login) | SDDM greeter | `/usr/share/sddm/themes/x` |
 
@@ -83,14 +85,15 @@ while the niri session is selected. See [niri compositor](/docs/niri).
 
 ## Plugin system
 
-The plugin layer is split into four contracts, so hosts and plugins never
+The plugin layer is split across small repositories, so hosts and plugins never
 import each other's internals:
 
 | Repository | Contract |
 |---|---|
 | [plugin-api](https://github.com/equisdots/plugin-api) | `plugin.json` schema, host API version and compat evaluators |
 | [plugin-sdk](https://github.com/equisdots/plugin-sdk) | `PluginHost`, reactive `Settings`, surfaces, Lua `mod` |
-| [plugins](https://github.com/equisdots/plugins) | Standard, 63-plugin hub, registry and smoke tests |
+| [plugins](https://github.com/equisdots/plugins) | Standard, 69-plugin hub, registry and smoke tests |
+| [plugins-niri](https://github.com/equisdots/plugins-niri) | Niri-native plugin variants for the shared standard |
 | [transformpath](https://github.com/equisdots/transformpath) | Architecture notes, decisions and migration status |
 
 Hosts discover plugins by folder (`~/.config/hypr/plugins` and
@@ -181,7 +184,7 @@ See [Updating and diagnosing](/docs/updating) for the command details.
 
 ## Design decisions
 
-- **Lua Hyprland config (0.55+)**: modular `require()` files with runtime
+- **Lua Hyprland config (0.57+)**: modular `require()` files with runtime
   overrides; runtime changes go through `hyprctl eval`, never by rewriting
   loaded files mid-session.
 - **No Matugen**: palettes are fixed JSON data, so colors are predictable and
@@ -197,6 +200,10 @@ See [Updating and diagnosing](/docs/updating) for the command details.
 - **Plugins are a first-class layer**: the manifest is the only contract, hosts
   know no plugin ids, extension points are generic (`provides`), and a failing
   plugin is isolated instead of aborting the session.
+- **Design lives in the shell**: glass, the screen frame and popup shadows are
+  host-drawn QML, so one visual system survives both compositors. Plugins import
+  the same kit (`LiquidGlass`, widget kit, palette tokens) instead of forking the
+  chrome.
 - **No CI**: each repository ships a local check script, run before pushing.
 
 ## Development checks

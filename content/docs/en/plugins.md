@@ -1,7 +1,7 @@
 ---
 title: Plugins and extensions
-description: The equisdots plugin standard, the 63-plugin hub, host discovery, enablement, extension points and the plugin CLI.
-order: 7
+description: The equisdots plugin standard, the 69-plugin hub, host discovery, enablement, extension points and the plugin CLI.
+order: 8
 section: desktop
 ---
 
@@ -15,7 +15,7 @@ The standard is implemented by four repositories:
 
 | Repository | Role |
 |---|---|
-| [plugins](https://github.com/equisdots/plugins) | The standard, the 63-plugin concentration folder, the install registry and smoke tests. |
+| [plugins](https://github.com/equisdots/plugins) | The standard, the 69-plugin concentration folder, the install registry and smoke tests. |
 | [plugin-api](https://github.com/equisdots/plugin-api) | Normative manifest schema, host API version and the bash/Lua compatibility evaluators. |
 | [plugin-sdk](https://github.com/equisdots/plugin-sdk) | Runtime kit: `PluginHost`, reactive `Settings`, surfaces, widget kit and the Lua `mod` API. |
 | [transformpath](https://github.com/equisdots/transformpath) | Architecture notes, decision log and migration status. |
@@ -64,7 +64,7 @@ as “mascots” or “weather”.
 
 - `id` is the identity: stable, globally unique and equal to the folder name.
 - `type` is `shell`, `hypr`, `mixed` or `cli`.
-- `compat` is enforced by the scan: `{ "hyprland": ">=0.55", "shell": ">=0.1.0" }`.
+- `compat` is enforced by the scan: `{ "hyprland": ">=0.57", "shell": ">=0.1.0" }`.
   An incompatible plugin is listed but never mounted; `dots plugins add` refuses
   it unless `--force` is passed.
 - `toggle` names the plugin's own master switch (default
@@ -142,23 +142,50 @@ the plugin's own settings file (`<scope>.binds.<id>` = `"KEY"` or `false`); the
 plugin owns the action and the user owns the key. Core shortcuts are listed
 read-only and cannot be captured.
 
-## The 63-plugin hub
+## The 69-plugin hub
 
-`equisdots/plugins/plugins/` concentrates the converted set. It includes:
+`equisdots/plugins/plugins/` is the concentration folder: 67 plugins, one
+folder per `id`, plus the `_template/` scaffold. Nyx and timex live in their own
+repositories and the registry references them, so the running set is 69. The
+counts below are the current set.
 
-- **Defaults**: screenshots + recording, timex, RSS reader, clipboard,
-  quicknotes, file search, sysmon and keybinds.
-- **Desktop tools**: dock, calculator, color picker, glyph picker, unit
-  converter, JSON viewer, snippets, todo, pomodoro, world clock, xfetch panel
-  and themes.
-- **Bar modules**: battery, brightness, caps lock, CPU frequency, crypto, disk,
-  DND, Docker, fan, GitHub, git, GPU, kernel, load, mail, memory, microphone,
-  media, night light, updates, process count, swap, torrents, uptime, VPN and
-  more.
-- **Complete bars**: the monochrome Samurai Bar and the `hello-bar` POC.
+| Group | Count | Plugins |
+|---|---|---|
+| Defaults | 9 | screenshots, nyx, timex, rss-reader, clipboard, quicknotes, file-search, sysmon, keybinds |
+| Tools and panels | 17 | bookmarks, calculator, cheatsheet, colorpicker, dock, emojipicker, hello, jsonview, pomodoro, pomodoropanel, power-menu, processmanager, snippetbox, todopanel, unitconv, xfetch-panel, xfetch-themes |
+| Bars and shells | 6 | hello-bar, samurai-bar, samurai-dock, mos-topbar, mos-dock, w11 |
+| Desktop widgets | 6 | cryptowidget, mos-widgets, pomodorowidget, samurai-widgets, todowidget, worldclock-widget |
+| Bar modules | 31 | batteryplus, brightnessbar, capsbar, cpufreq, cryptobar, diskspace, diskusage, dndbar, dockerbar, fanspeed, ghbar, gitbar, gitsummary, gputemp, kbdlayout, kernelbar, loadavg, mailbar, membar, micbar, mprisbar, nightlight, pkgupdates, procsbar, swapbar, todobar, torrentbar, uptimebar, vpnbar, wallpaper-motion, worldclock |
 
-Nyx and timex live in their own repositories and are referenced by the
-registry, never copied into the hub.
+### Complete bars and desktop packs
+
+The standard is no longer only panels and bar modules. Several plugins ship a
+whole shell surface, mounted by the generic hosts on its own switch:
+
+- **Samurai** (`samurai-bar`, `samurai-dock`, `samurai-widgets`): monochrome,
+  flat and typographic, with separable bar, dock and desktop-widget packs.
+- **MOS** (`mos-topbar`, `mos-dock`, `mos-widgets`): a macOS-style menu bar,
+  dock with magnification and matching desktop widgets.
+- **W11** (`w11`): an independent Windows 11-inspired taskbar with start menu,
+  search and tray.
+- **Widget packs** (`cryptowidget`, `pomodorowidget`, `todowidget`,
+  `worldclock-widget`): extra desktop faces that reuse the core redactor and
+  the palette tokens.
+- **`hello-bar`** stays as the minimal POC fixture for a complete plugin bar.
+
+Plugin UIs share the kit instead of copying the shell: `LiquidGlass`, the
+Material 3-style theme tokens and the widget kit are imported from the SDK, so
+third-party surfaces stay palette-aware and switch cleanly between light and
+dark palettes.
+
+## Capture variants on niri
+
+`equisdots/plugins-niri` ships niri-native implementations for the plugins whose
+backend must differ. Today that is `screenshots`: the plugin keeps the standard
+manifest, bar module and settings page, but routes capture to
+`niri_screenshot.sh` and recording to `niri_record.sh` (gpu-screen-recorder).
+`niri-meta` prefers the `plugins-niri` folder over the hub when both exist, so
+the same plugin id behaves correctly on both sessions.
 
 ## CLI
 

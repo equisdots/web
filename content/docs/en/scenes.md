@@ -1,7 +1,7 @@
 ---
 title: Interactive scenes
 description: Author, run and debug xwww JavaScript scenes that react to the active palette.
-order: 10
+order: 11
 section: wallpapers
 ---
 
@@ -33,7 +33,7 @@ to.
 
 ## Catalog
 
-The collection ships 21 scenes; their cards draw a shared palette swatch block
+The collection ships 58 scenes; their cards draw a shared palette swatch block
 at the position measured on the original 3840x2160 artwork
 (`x:1112 y:1104 w:1528 h:604`).
 

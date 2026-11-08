@@ -84,8 +84,8 @@ export const REPOS: Repo[] = [
     accent: "c1",
     role: { en: "compositor · Lua", es: "compositor · Lua" },
     description: {
-      en: "Modular Hyprland 0.55+ configuration, session scripts, GPU modes and the Lua plugin loader.",
-      es: "Configuración modular de Hyprland 0.55+, scripts de sesión, modos de GPU y el cargador Lua de plugins.",
+      en: "Modular Hyprland 0.57+ configuration, session scripts, GPU modes and the Lua plugin loader.",
+      es: "Configuración modular de Hyprland 0.57+, scripts de sesión, modos de GPU y el cargador Lua de plugins.",
     },
     install: "~/.config/hypr",
   },
@@ -292,10 +292,23 @@ export const REPOS: Repo[] = [
     accent: "c4",
     role: { en: "plugin hub", es: "hub de plugins" },
     description: {
-      en: "The standard, the 63-plugin concentration folder, the install registry and smoke tests.",
-      es: "El estándar, la carpeta con los 63 plugins, el registro de instalación y las pruebas de humo.",
+      en: "The standard, the 67-plugin concentration folder, the install registry and smoke tests.",
+      es: "El estándar, la carpeta con los 67 plugins, el registro de instalación y las pruebas de humo.",
     },
     install: ".../quickshell/ui/plugins/<id>",
+  },
+  {
+    name: "plugins-niri",
+    url: "https://github.com/equisdots/plugins-niri",
+    group: "plugins",
+    visual: "overlay",
+    accent: "c2",
+    role: { en: "niri plugin variants", es: "variantes niri" },
+    description: {
+      en: "Niri-native implementations that replace hub plugins when a different backend is required.",
+      es: "Implementaciones nativas de niri que sustituyen plugins del hub cuando se necesita otro backend.",
+    },
+    install: "merged into the niri stack",
   },
   {
     name: "transformpath",
@@ -307,6 +320,19 @@ export const REPOS: Repo[] = [
     description: {
       en: "Architecture notes, decision log and live status of the plugin system migration.",
       es: "Notas de arquitectura, registro de decisiones y estado de la migración al sistema de plugins.",
+    },
+    install: "documentation · no payload",
+  },
+  {
+    name: "context",
+    url: "https://github.com/equisdots/context",
+    group: "site",
+    visual: "map",
+    accent: "c5",
+    role: { en: "AI-first context", es: "contexto para IA" },
+    description: {
+      en: "Deep context for every repository: layers, contracts, deployment paths and compositor matrix.",
+      es: "Contexto profundo de cada repositorio: capas, contratos, rutas de despliegue y matriz de compositores.",
     },
     install: "documentation · no payload",
   },

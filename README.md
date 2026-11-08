@@ -1,15 +1,15 @@
 # equisdots · web
 
 Official website of the [equisdots](https://github.com/equisdots) desktop: a
-landing page with an isometric stack map and an illustrated catalog of all 22
-repositories, wiki-style documentation (English and Spanish) and a gallery of
-real captures and clips.
+landing page with an interactive 3D stack, a searchable 69-plugin explorer and
+an illustrated catalog of all 24 repositories, wiki-style documentation
+(English and Spanish) and a gallery of real captures and clips.
 
 ## Stack
 
 Next.js 16 (App Router, static export) · React 19 · TypeScript 7 · Tailwind CSS 4
-· Geist Sans/Mono · `marked`. Dependencies are pinned to the latest releases and
-`npm audit` must stay at zero vulnerabilities.
+· Geist Sans/Mono · `marked` · Three.js (r187, WebGL2). Dependencies are pinned
+to the latest releases and `npm audit` must stay at zero vulnerabilities.
 
 The documentation is a static wiki: a pinned sidebar, a per-page table of
 contents with scroll-spy and a command palette (Ctrl/⌘+K) backed by a search
@@ -48,10 +48,11 @@ scripts/build-search-index.mjs
 scripts/build-previews.sh  regenerates public/previews from raw captures
 src/app/                   routes: /, /docs, /previews and their /es counterparts
 src/components/            Navbar, Footer, previews, widget illustrations
-src/components/landing/    hero, stack and flow diagrams, repo illustrations, sections
+src/components/landing/    hero, stack, flows, design, widget gallery, plugin explorer, repo sections
+src/components/three/      client Three.js scenes: interactive stack and palette prism
 src/components/docs/       wiki shell, sidebar, search dialog, table of contents
 src/components/previews/   stills lightbox and clip cards
-src/lib/                   base path, i18n dictionaries, docs loader, repo catalog, previews manifest
+src/lib/                   base path, i18n dictionaries, docs loader, repo and plugin catalogs, previews
 ```
 
 ## Documentation pages
@@ -70,25 +71,33 @@ section: start   # start | desktop | wallpapers | more
 `src/lib/docs.ts` reads the folder at build time; new pages appear in the
 sidebar and the index automatically, in both languages (add the file to
 `content/docs/en/` and `content/docs/es/`). The current set covers the
-compositors, the shell, Nyx, the plugin standard and 63-plugin hub, theming,
-wallpapers, scenes, tools, architecture and contributing.
+compositors, the shell, Nyx, the design system, the plugin standard and 69-plugin
+hub, theming, wallpapers, scenes, tools, architecture and contributing.
 
 ## Stack map, flows and repository catalog
 
 The landing page has two data-driven sections:
 
-- **Stack map** (`src/components/landing/StackDiagram.tsx`): an accessible
-  inline-SVG isometric diagram with five layers and the plugin side rail. The
-  copy lives under `stack` in `src/lib/i18n.ts`.
-- **Flows** (`src/components/landing/FlowsSection.tsx` + `IsoFlow.tsx`): four
-  isometric flow diagrams for the palette, wallpaper, plugin and compositor paths.
-  Nodes carry an accent, a glyph and a legend entry; edges are SVG markers.
+- **Interactive stack** (`StackSection.tsx` + `components/three/StackScene.tsx`):
+  a Three.js isometric stack of the five layers with a plugin orbit. Pointer
+  parallax, per-layer hover and the palette tokens are live; static under
+  `prefers-reduced-motion` and paused when off-screen.
+- **Flows** (`FlowsSection.tsx` + `IsoFlow.tsx`): four isometric SVG flow
+  diagrams for the palette, wallpaper, plugin and compositor paths.
+- **Design system** (`DesignSystemSection.tsx` + `components/three/PaletteGem.tsx`):
+  a palette prism that recolors with the selected swatch, beside the glass,
+  frame, shadow and LiquidGlass notes.
+- **Widget gallery** (`WidgetGallery.tsx`): an interactive tabbed showcase of the
+  ten recreated shell surfaces.
+- **Plugin explorer** (`PluginExplorer.tsx` + `src/lib/plugins.ts`): search and
+  category filters over all 69 plugins with bilingual notes.
 - **Repository catalog** (`RepoList.tsx` + `RepoArt.tsx`): every repository is
-  grouped by layer and gets a simplified 3D illustration, a role, a description
-  and its payload location. Add or edit one entry in `src/lib/repos.ts`.
+  grouped by layer and gets a simplified isometric illustration, a role, a
+  description and its payload location. Add or edit one entry in `src/lib/repos.ts`.
 
-No 3D library is used: the diagrams are SVG and CSS, so they stay static,
-theme-aware, responsive and dependency-free.
+The 3D surfaces import `three` only in client components; the SVG diagrams stay
+for the flows and repository art. Every scene caps the pixel ratio, pauses when
+hidden and disposes its geometries, materials and renderer on unmount.
 
 ## Previews
 
@@ -121,8 +130,8 @@ map in the script and `src/lib/previews.ts` in sync when adding new files.
 
 ## Theme
 
-Two palettes from the equisdots collection drive the site through CSS
-variables in `src/app/globals.css`:
+Two palettes from the equisdots collection drive the site (including the 3D
+materials, which read the same CSS variables) through `src/app/globals.css`:
 
 - dark: **X** (the default desktop palette, matching the logo)
 - light: **Catppuccin Latte**
@@ -130,11 +139,10 @@ variables in `src/app/globals.css`:
 The toggle stores the choice in `localStorage` and an inline script applies it
 before the first paint. The visual language follows the flat, content-led
 direction shared with the X Linux docs: hairline borders, generous spacing,
-restrained rounding and color used for state rather than decoration. The stack
-map and the repository illustrations add a restrained isometric layer (blueprint
-grid, accent-tinted slabs and one floating plugin cube) without introducing
-motion or 3D runtime dependencies; all animation is CSS and respects
-`prefers-reduced-motion`.
+restrained rounding and color used for state rather than decoration. The
+interactive stack and palette prism add a restrained isometric 3D layer
+(blueprint grid, accent-tinted slabs and orbiting plugin satellites); all
+animation respects `prefers-reduced-motion`.
 
 ## Deploy
 

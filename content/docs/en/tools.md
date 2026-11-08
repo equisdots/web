@@ -1,7 +1,7 @@
 ---
 title: "Tools: timex, xturing, login"
 description: Reference for the timex time and weather engine, the xturing terminal settings UI and the static SDDM login theme.
-order: 11
+order: 13
 section: more
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Temas y paletas
 description: El sistema de paletas base16, la edición de paletas en vivo, los bordes de ventana y la propagación de temas entre aplicaciones con theme-sync.
-order: 8
+order: 9
 section: desktop
 ---
 
@@ -50,6 +50,9 @@ El diseño del repositorio:
 | `index.json` | Lista ordenada con nombre visible y colores de vista previa; alimenta el panel |
 | `schema.json` | Contrato v1 |
 
+En el momento de escribir esto la colección tiene 155 entradas: 30 paletas X en
+el conjunto plano y 125 portes de la comunidad bajo `community/`.
+
 Valide una copia de trabajo con:
 
 ```sh
@@ -79,7 +82,7 @@ del esquema y la atribución de su autor, y las ranuras base16 se mapean a la
 disposición `color0`-`color15` de equisdots. Se incluyen solo como referencias
 de color, sin afiliación con los proyectos originales.
 
-La interfaz agrupa las paletas en tres secciones: X (12 integradas),
+La interfaz agrupa las paletas en tres secciones: X (30 integradas),
 Personalizadas (portes de la comunidad) y Usuario (paletas que usted cree).
 
 ## Elegir y editar paletas

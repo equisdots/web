@@ -1,7 +1,7 @@
 ---
 title: Plugins y extensiones
-description: El estándar de plugins de equisdots, el hub de 63 plugins, el descubrimiento por carpetas, la activación, los puntos de extensión y la CLI.
-order: 7
+description: El estándar de plugins de equisdots, el hub de 69 plugins, el descubrimiento por carpetas, la activación, los puntos de extensión y la CLI.
+order: 8
 section: desktop
 ---
 
@@ -15,7 +15,7 @@ El estándar lo implementan cuatro repositorios:
 
 | Repositorio | Rol |
 |---|---|
-| [plugins](https://github.com/equisdots/plugins) | El estándar, la carpeta con los 63 plugins, el registro de instalación y las pruebas de humo. |
+| [plugins](https://github.com/equisdots/plugins) | El estándar, la carpeta con los 69 plugins, el registro de instalación y las pruebas de humo. |
 | [plugin-api](https://github.com/equisdots/plugin-api) | Esquema normativo del manifiesto, versión de la API y evaluadores de compatibilidad en bash/Lua. |
 | [plugin-sdk](https://github.com/equisdots/plugin-sdk) | Kit de ejecución: `PluginHost`, `Settings` reactivos, superficies, kit de widgets y API Lua `mod`. |
 | [transformpath](https://github.com/equisdots/transformpath) | Notas de arquitectura, registro de decisiones y estado de la migración. |
@@ -63,7 +63,7 @@ sus claves; el estándar nunca conoce nombres de funciones como “mascots” o
 
 - `id` es la identidad: estable, única globalmente e igual al nombre de carpeta.
 - `type` es `shell`, `hypr`, `mixed` o `cli`.
-- `compat` lo aplica el escaneo: `{ "hyprland": ">=0.55", "shell": ">=0.1.0" }`.
+- `compat` lo aplica el escaneo: `{ "hyprland": ">=0.57", "shell": ">=0.1.0" }`.
   Un plugin incompatible se lista pero nunca se monta; `dots plugins add` lo
   rechaza salvo con `--force`.
 - `toggle` nombra el interruptor maestro propio del plugin (por defecto
@@ -142,23 +142,53 @@ en el archivo de ajustes del plugin (`<scope>.binds.<id>` = `"KEY"` o `false`);
 el plugin posee la acción y el usuario la tecla. Los atajos del núcleo se listan
 solo lectura y no se pueden capturar.
 
-## El hub de 63 plugins
+## El hub de 69 plugins
 
-`equisdots/plugins/plugins/` concentra el conjunto convertido. Incluye:
+`equisdots/plugins/plugins/` es la carpeta de concentración: 67 plugins, una
+carpeta por `id`, más el andamio `_template/`. Nyx y timex viven en sus propios
+repositorios y el registro los referencia, así que el conjunto en ejecución es
+de 69. Los recuentos siguientes son el conjunto actual.
 
-- **Por defecto**: screenshots + grabación, timex, lector RSS, portapapeles,
-  quicknotes, búsqueda de archivos, sysmon y keybinds.
-- **Herramientas de escritorio**: dock, calculadora, selector de color, selector
-  de glifos, conversor de unidades, visor JSON, snippets, tareas, pomodoro,
-  reloj mundial, panel y temas de xfetch.
-- **Módulos de barra**: batería, brillo, caps lock, frecuencia de CPU, cripto,
-  disco, DND, Docker, ventilador, GitHub, git, GPU, kernel, carga, correo,
-  memoria, micrófono, media, luz nocturna, actualizaciones, procesos, swap,
-  torrents, uptime, VPN y más.
-- **Barras completas**: la Samurai Bar monocroma y el POC `hello-bar`.
+| Grupo | Total | Plugins |
+|---|---|---|
+| Por defecto | 9 | screenshots, nyx, timex, rss-reader, clipboard, quicknotes, file-search, sysmon, keybinds |
+| Herramientas y paneles | 17 | bookmarks, calculator, cheatsheet, colorpicker, dock, emojipicker, hello, jsonview, pomodoro, pomodoropanel, power-menu, processmanager, snippetbox, todopanel, unitconv, xfetch-panel, xfetch-themes |
+| Barras y shells | 6 | hello-bar, samurai-bar, samurai-dock, mos-topbar, mos-dock, w11 |
+| Widgets de escritorio | 6 | cryptowidget, mos-widgets, pomodorowidget, samurai-widgets, todowidget, worldclock-widget |
+| Módulos de barra | 31 | batteryplus, brightnessbar, capsbar, cpufreq, cryptobar, diskspace, diskusage, dndbar, dockerbar, fanspeed, ghbar, gitbar, gitsummary, gputemp, kbdlayout, kernelbar, loadavg, mailbar, membar, micbar, mprisbar, nightlight, pkgupdates, procsbar, swapbar, todobar, torrentbar, uptimebar, vpnbar, wallpaper-motion, worldclock |
 
-Nyx y timex viven en sus propios repositorios y se referencian desde el registro,
-nunca se copian al hub.
+### Barras completas y packs de escritorio
+
+El estándar ya no son solo paneles y módulos de barra. Varios plugins entregan
+una superficie completa del shell, montada por los hosts genéricos con su propio
+interruptor:
+
+- **Samurai** (`samurai-bar`, `samurai-dock`, `samurai-widgets`): monocromo,
+  plano y tipográfico, con barra, dock y packs de widgets de escritorio
+  separables.
+- **MOS** (`mos-topbar`, `mos-dock`, `mos-widgets`): barra de menús estilo
+  macOS, dock con magnificación y widgets de escritorio a juego.
+- **W11** (`w11`): barra de tareas independiente inspirada en Windows 11 con
+  menú inicio, búsqueda y bandeja.
+- **Packs de widgets** (`cryptowidget`, `pomodorowidget`, `todowidget`,
+  `worldclock-widget`): caras de escritorio extra que reutilizan el redactor
+  del núcleo y los tokens de la paleta.
+- **`hello-bar`** sigue siendo el POC mínimo de una barra completa por plugin.
+
+Las UI de los plugins comparten el kit en lugar de copiar el shell:
+`LiquidGlass`, los tokens de tema al estilo Material 3 y el kit de widgets se
+importan del SDK, así las superficies de terceros siguen la paleta y cambian
+limpiamente entre paletas claras y oscuras.
+
+## Variantes de captura en niri
+
+`equisdots/plugins-niri` entrega implementaciones nativas de niri para los
+plugins cuyo backend debe diferir. Hoy es `screenshots`: el plugin conserva el
+manifiesto estándar, el módulo de barra y la página de ajustes, pero enruta la
+captura a `niri_screenshot.sh` y la grabación a `niri_record.sh`
+(gpu-screen-recorder). `niri-meta` prefiere la carpeta de `plugins-niri` sobre
+el hub cuando existen ambas, así el mismo id se comporta bien en las dos
+sesiones.
 
 ## CLI
 

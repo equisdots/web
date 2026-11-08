@@ -1,7 +1,7 @@
 ---
 title: Escenas interactivas
 description: Cree, ejecute y depure escenas JavaScript de xwww que reaccionan a la paleta activa.
-order: 10
+order: 11
 section: wallpapers
 ---
 
@@ -36,7 +36,7 @@ rasterización por CPU. Las escenas corren igual en Hyprland y
 
 ## Catálogo
 
-La colección incluye 21 escenas; sus tarjetas dibujan un bloque compartido de
+La colección incluye 58 escenas; sus tarjetas dibujan un bloque compartido de
 muestras de paleta en la posición medida sobre el arte original 3840x2160
 (`x:1112 y:1104 w:1528 h:604`).
 

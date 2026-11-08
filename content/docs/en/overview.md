@@ -11,7 +11,7 @@ on **niri**, the scrollable-tiling compositor: bar, panels, widgets, settings
 editor, lock screen and the Nyx mascot are shared, and only the compositor layer
 changes. Every piece is its own repository, and a single meta installer, `dots`,
 clones, places and updates them together (`dotsniri` manages the niri stack).
-A plugin standard adds self-contained features on top: 63 plugins ship with the
+A plugin standard adds self-contained features on top: 69 plugins ship with the
 stack and the same hosts discover, toggle and update them without touching the
 core.
 
@@ -49,10 +49,12 @@ core.
 | [theme-sync](https://github.com/equisdots/theme-sync) | Cross-app theme regeneration | `~/.local/bin/theme-sync` |
 | [timex](https://github.com/equisdots/timex) | Time and weather plugin: engine, calendar panel, bar island | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Terminal UI for the settings panel | `~/.local/bin/xturing` |
-| [plugins](https://github.com/equisdots/plugins) | Plugin standard, 63-plugin hub and install registry | `.../quickshell/ui/plugins/<id>` |
+| [plugins](https://github.com/equisdots/plugins) | Plugin standard, 69-plugin hub and install registry | `.../quickshell/ui/plugins/<id>` |
 | [plugin-api](https://github.com/equisdots/plugin-api) | Manifest schema, host API version and compat evaluators | `.../quickshell/plugin-api.json` |
 | [plugin-sdk](https://github.com/equisdots/plugin-sdk) | Runtime SDK: PluginHost, Settings, surfaces, Lua mod | `.../quickshell/core/sdk` |
+| [plugins-niri](https://github.com/equisdots/plugins-niri) | Niri-native plugin variants (capture and recording) | merged into the niri stack |
 | [transformpath](https://github.com/equisdots/transformpath) | Plugin architecture, decisions and migration status | documentation only |
+| [context](https://github.com/equisdots/context) | AI-first deep context for every repository | documentation only |
 | [login](https://github.com/equisdots/login) | Static minimal SDDM greeter | `/usr/share/sddm/themes/x` |
 | [dots](https://github.com/equisdots/dots) | Meta installer and updater | `~/.local/bin/dots` |
 | [web](https://github.com/equisdots/web) | Documentation site, previews and repository map | GitHub Pages |
@@ -92,7 +94,7 @@ davinci (kernel) --> xwww (stills/scenes) or mpvpaper (videos)
 
 ## Requirements
 
-An Arch Linux derivative, Hyprland 0.55 or newer (the config is Lua) **or**
+An Arch Linux derivative, Hyprland 0.57 or newer (the config is Lua-only) **or**
 niri 26.04 or newer, `git`, `rsync`, `jq`, `quickshell` (`qs`), `xwww-daemon`,
 `mpvpaper` and the Hack Nerd Font. `dots doctor` (and `dotsniri doctor` for the
 niri stack) reports exactly what is missing. See
@@ -106,7 +108,8 @@ niri stack) reports exactly what is missing. See
 - [niri compositor](/docs/niri) - the alternative compositor front end.
 - [Quickshell shell](/docs/shell) - bar, panels, widgets and IPC.
 - [Nyx mascot island](/docs/nyx) - species, island/notch and the widget dock.
-- [Plugins and extensions](/docs/plugins) - the standard, the 63-plugin hub and the CLI.
+- [Design system](/docs/design) - tokens, glass, frame, shadows and effect controls.
+- [Plugins and extensions](/docs/plugins) - the standard, the 69-plugin hub and the CLI.
 - [Theming and palettes](/docs/theming) - base16 palettes and theme-sync.
 - [Wallpapers](/docs/wallpapers) - davinci, xwww and the picker.
 - [Interactive scenes](/docs/scenes) - authoring and running JS wallpapers.

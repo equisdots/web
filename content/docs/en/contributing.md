@@ -1,7 +1,7 @@
 ---
 title: Contributing and security
 description: Where to report issues, how pull requests are reviewed, the local checks to run and the security policy.
-order: 13
+order: 15
 section: more
 ---
 
@@ -27,6 +27,7 @@ Open the issue in the repository that owns the behavior:
 | Colors and theming | [palettes](https://github.com/equisdots/palettes), [theme-sync](https://github.com/equisdots/theme-sync) |
 | Time, weather, calendar | [timex](https://github.com/equisdots/timex) |
 | Plugin standard, hub, registry, converted plugins | [plugins](https://github.com/equisdots/plugins) |
+| Niri-native plugin variants | [plugins-niri](https://github.com/equisdots/plugins-niri) |
 | Manifest schema, API version, compatibility | [plugin-api](https://github.com/equisdots/plugin-api) |
 | PluginHost, Settings, surfaces, Lua `mod` | [plugin-sdk](https://github.com/equisdots/plugin-sdk) |
 | Plugin architecture and migration notes | [transformpath](https://github.com/equisdots/transformpath) |

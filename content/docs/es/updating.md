@@ -172,7 +172,7 @@ El doctor es el primer diagnóstico que debe ejecutar. Informa, en orden:
   colisiones en ejecución.
 - Rutas de la carga útil instalada (paletas, `hyprland.lua`, `Shell.qml`,
   wrappers, `settings.json` y más).
-- Versión de Hyprland (se requiere 0.55+ para Lua) y `~/.local/bin` en `PATH`.
+- Versión de Hyprland (se requiere 0.57+ para Lua) y `~/.local/bin` en `PATH`.
 - Piezas del sistema: `/etc/pam.d/quickshell`, la configuración del tema SDDM,
   el tema estático y el gestor de pantalla activo.
 - El temporizador mensual de actualización.
@@ -194,7 +194,7 @@ hace utilizable en scripts.
 - `settings.json could not be migrated` (no se pudo migrar settings.json):
   consulte la advertencia; el archivo está intacto. Compruebe que `jq` está
   instalado.
-- `hyprland < 0.55`: actualice el paquete del compositor; la configuración Lua
+- `hyprland < 0.57`: actualice el paquete del compositor; la configuración Lua
   necesita soporte de Lua.
 - Discrepancia de xwww: `dots update` (o `scripts/install-xwww.sh`) reinstala
   la versión fijada.

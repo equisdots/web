@@ -1,7 +1,7 @@
 ---
 title: niri compositor
 description: The niri alternative compositor: KDL config, session scripts, the compositor-neutral shell and how the shared stack runs on both Hyprland and niri.
-order: 9
+order: 10
 section: desktop
 ---
 
@@ -153,7 +153,7 @@ command whose stdout streams `x,y` lines). See [Nyx mascot island](/docs/nyx).
 ## Plugins on niri
 
 `niri-meta` deploys the whole plugin standard (`plugin-api`, `plugin-sdk`, the
-`plugins` hub and the default plugin set), so the same 63 plugins, settings
+`plugins` hub and the default plugin set), so the same 69 plugins, settings
 pages, panels, bar modules, MD3 theme tokens and standalone entries run on niri.
 `Super+Shift+M` opens the Plugins panel. Plugin keybind actions are covered by
 the static KDL binds in the `niri` repository, because niri reads KDL instead of

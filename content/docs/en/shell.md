@@ -219,5 +219,6 @@ executable, and glyphs must exist in the Hack Nerd Font.
 ## Related pages
 
 - [Theming and palettes](/docs/theming) for `Colors.qml` and palettes.
+- [Design system](/docs/design) for glass, frame, shadows and the shared kit.
 - [Wallpapers](/docs/wallpapers) for the picker and davinci.
 - [Architecture and repositories](/docs/architecture) for the install layout.

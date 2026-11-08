@@ -1,7 +1,7 @@
 ---
 title: Theming and palettes
 description: The base16 palette system, live palette editing, window borders and cross-app theme propagation with theme-sync.
-order: 8
+order: 9
 section: desktop
 ---
 
@@ -49,6 +49,9 @@ The repository layout:
 | `index.json` | Ordered list with display name and preview colors; drives the panel |
 | `schema.json` | Contract v1 |
 
+At the time of writing the collection holds 155 entries: 30 X palettes in the
+flat set and 125 community ports under `community/`.
+
 The `community/` set is converted from the base16 scheme definitions
 collected by [tinted-theming](https://github.com/tinted-theming)
 (`base16-schemes` and `schemes`, MIT); each file keeps its original scheme
@@ -78,7 +81,7 @@ palette slug lives in `settings.json` under `bar.palette`; the legacy
 `dock.palette` shape is migrated once and `x` is the final fallback, so it
 must always exist.
 
-The UI groups palettes in three sections: X (12 built-in), Custom (community
+The UI groups palettes in three sections: X (30 built-in), Custom (community
 ports) and User (palettes you create).
 
 ## Choosing and editing palettes

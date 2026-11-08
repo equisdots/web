@@ -165,7 +165,7 @@ The doctor is the first diagnostic to run. It reports, in order:
   `settings.json` and more).
 - The plugin registry: duplicate ids, folder/manifest mismatches and runtime
   collisions.
-- Hyprland version (0.55+ required for Lua) and `~/.local/bin` in `PATH`.
+- Hyprland version (0.57+ required for Lua) and `~/.local/bin` in `PATH`.
 - System pieces: `/etc/pam.d/quickshell`, the SDDM theme config, the static
   theme and the active display manager.
 - The monthly updater timer.
@@ -185,7 +185,7 @@ scripts.
   update continues; retry later.
 - `settings.json could not be migrated`: see the warning output; the file is
   intact. Check that `jq` is installed.
-- `hyprland < 0.55`: update the compositor package; the Lua config needs Lua
+- `hyprland < 0.57`: update the compositor package; the Lua config needs Lua
   support.
 - xwww mismatch: `dots update` (or `scripts/install-xwww.sh`) reinstalls the
   pinned release.

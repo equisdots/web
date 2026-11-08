@@ -15,7 +15,7 @@ export function RepoList({ locale }: { locale: Locale }) {
     <section id="repositories" className="border-t border-border">
       <div className="container-page max-w-6xl py-16">
         <SectionHeader
-          index="05"
+          index="07"
           label={dict.home.labels.repos}
           title={dict.home.reposTitle}
           subtitle={dict.home.reposSubtitle}
@@ -27,7 +27,7 @@ export function RepoList({ locale }: { locale: Locale }) {
             {groups.length} layers
           </span>
           <span className="rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-accent">
-            63 plugins
+            69 plugins
           </span>
         </div>
 

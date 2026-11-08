@@ -1,7 +1,7 @@
 ---
 title: Arquitectura y repositorios
 description: Cómo encajan los repositorios de equisdots, los contratos compartidos en los que se apoyan y las decisiones que hay detrás.
-order: 12
+order: 14
 section: more
 ---
 
@@ -30,10 +30,12 @@ las piezas.
 | [davinci](https://github.com/equisdots/davinci) | Núcleo de fondos de pantalla | `~/.local/bin/davinci` |
 | [timex](https://github.com/equisdots/timex) | Plugin de clima/hora (motor, calendario, isla de barra) | `.../quickshell/ui/plugins/timex` |
 | [xturing](https://github.com/equisdots/xturing) | Interfaz de ajustes de terminal | `~/.local/bin/xturing` |
-| [plugins](https://github.com/equisdots/plugins) | Estándar, hub de 63 plugins y registro | `.../quickshell/ui/plugins/<id>` |
+| [plugins](https://github.com/equisdots/plugins) | Estándar, hub de 69 plugins y registro | `.../quickshell/ui/plugins/<id>` |
 | [plugin-api](https://github.com/equisdots/plugin-api) | Esquema, versión de API y evaluadores de compatibilidad | `.../quickshell/plugin-api.json` |
 | [plugin-sdk](https://github.com/equisdots/plugin-sdk) | PluginHost, Settings, superficies, Lua mod | `.../quickshell/core/sdk` |
+| [plugins-niri](https://github.com/equisdots/plugins-niri) | Variantes nativas de niri para plugins | se fusiona en el stack niri |
 | [transformpath](https://github.com/equisdots/transformpath) | Arquitectura y registro de decisiones de plugins | solo documentación |
+| [context](https://github.com/equisdots/context) | Contexto profundo para IA de cada repositorio | solo documentación |
 | [web](https://github.com/equisdots/web) | Sitio de documentación y previews | GitHub Pages |
 | [login](https://github.com/equisdots/login) | Pantalla de inicio de sesión SDDM | `/usr/share/sddm/themes/x` |
 
@@ -88,14 +90,15 @@ variante niri mientras se selecciona la sesión niri. Ver
 
 ## Sistema de plugins
 
-La capa de plugins se divide en cuatro contratos, de modo que hosts y plugins
-nunca importan las interioridades del otro:
+La capa de plugins se reparte entre varios repositorios pequeños, de modo que
+hosts y plugins nunca importan las interioridades del otro:
 
 | Repositorio | Contrato |
 |---|---|
 | [plugin-api](https://github.com/equisdots/plugin-api) | Esquema de `plugin.json`, versión de API y evaluadores de compatibilidad |
 | [plugin-sdk](https://github.com/equisdots/plugin-sdk) | `PluginHost`, `Settings` reactivos, superficies, Lua `mod` |
-| [plugins](https://github.com/equisdots/plugins) | Estándar, hub de 63 plugins, registro y pruebas de humo |
+| [plugins](https://github.com/equisdots/plugins) | Estándar, hub de 69 plugins, registro y pruebas de humo |
+| [plugins-niri](https://github.com/equisdots/plugins-niri) | Variantes nativas de niri del estándar compartido |
 | [transformpath](https://github.com/equisdots/transformpath) | Arquitectura, decisiones y estado de la migración |
 
 Los hosts descubren plugins por carpeta (`~/.config/hypr/plugins` y
@@ -192,7 +195,7 @@ comandos.
 
 ## Decisiones de diseño
 
-- **Configuración Lua de Hyprland (0.55+)**: archivos modulares con `require()`
+- **Configuración Lua de Hyprland (0.57+)**: archivos modulares con `require()`
   y anulaciones en tiempo de ejecución; los cambios en vivo pasan por
   `hyprctl eval`, nunca reescribiendo archivos cargados a mitad de sesión.
 - **Sin Matugen**: las paletas son datos JSON fijos, así que los colores son
@@ -210,6 +213,11 @@ comandos.
 - **Los plugins son una capa de primera clase**: el manifiesto es el único
   contrato, los hosts no conocen ids de plugins, los puntos de extensión son
   genéricos (`provides`) y un plugin roto se aísla en vez de abortar la sesión.
+- **El diseño vive en el shell**: el cristal, el marco de pantalla y las sombras
+  de los popups son QML dibujado por el host, así un único sistema visual
+  sobrevive a ambos compositores. Los plugins importan el mismo kit
+  (`LiquidGlass`, kit de widgets, tokens de paleta) en lugar de bifurcar el
+  cromo.
 - **Sin CI**: cada repositorio incluye un script de comprobación local, que se
   ejecuta antes de hacer push.
 

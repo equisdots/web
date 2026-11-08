@@ -15,7 +15,7 @@ todos los repositorios.
 
 - Arch Linux o una derivada (EndeavourOS, Manjaro, CachyOS, Garuda).
 - Linux 6.x o posterior recomendado, 4 GB de RAM mínimo, 8 GB recomendado.
-- Hyprland 0.55 o posterior (la configuración es Lua), o niri 26.04 o posterior
+- Hyprland 0.57 o posterior (la configuración es solo Lua), o niri 26.04 o posterior
   para la sesión de niri.
 - `git`, `rsync`, `jq`, Quickshell (`qs`), `xwww-daemon`, `mpvpaper` y la
   Hack Nerd Font. El conjunto de plugins por defecto también usa `cliphist` y
@@ -164,7 +164,7 @@ dots plugins disable <id>
 
 El panel de Plugins (`SUPER + SHIFT + M`) hace lo mismo desde la UI: cada plugin
 instalado tiene un interruptor maestro y un acceso Configure cuando trae página
-de ajustes. El hub de 63 plugins y el estándar se documentan en
+de ajustes. El hub de 69 plugins y el estándar se documentan en
 [Plugins y extensiones](/es/docs/plugins).
 
 ## Verificar la instalación

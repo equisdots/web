@@ -6,7 +6,7 @@ section: desktop
 ---
 
 The compositor configuration lives in [equisdots/hyprland](https://github.com/equisdots/hyprland)
-and is written in Lua since Hyprland 0.55. Each concern is a module loaded
+and is written in Lua since Hyprland 0.55 (Lua-only since 0.57). Each concern is a module loaded
 with `require()`, so keybinds, animations or rules can be edited in isolation
 without touching the rest.
 
@@ -192,6 +192,15 @@ is required after switching. The installer can add a passwordless sudo rule
 for envycontrol (`%wheel ALL=(ALL) NOPASSWD: /usr/bin/envycontrol -s *`) so
 `gpu-mode.sh` switches without a prompt, and `gpu-mode.sh status` prints JSON
 (mode, icon, tooltip) for bar integrations.
+
+## Effects and design
+
+Hyprland 0.57 adds blur variants and the wobble effect; both the bar editor and
+xturing expose them from `core/EffectRanges.js` with clamped ranges, and the
+generated Lua omits the 0.57 keys on older compositors. Glass, the screen frame
+and host-drawn shadows are configured live from the Theme group and render
+identically on niri. See [Design system](/docs/design) for the full token and
+surface reference.
 
 ## Neovim
 

@@ -22,6 +22,8 @@ export function Navbar() {
     { href: root === "" ? "/" : root, label: dict.nav.home },
     { href: `${root}/#stack`, label: dict.home.labels.stack },
     { href: `${root}/#flows`, label: dict.home.labels.flows },
+    { href: `${root}/#design`, label: dict.home.labels.design },
+    { href: `${root}/#plugins`, label: dict.home.labels.plugins },
     { href: `${root}/docs`, label: dict.nav.docs },
     { href: `${root}/previews`, label: dict.nav.previews },
   ];
@@ -35,7 +37,7 @@ export function Navbar() {
           <span className="text-sm font-semibold tracking-tight">equisdots</span>
         </Link>
 
-        <nav className="hidden items-center gap-5 text-sm sm:flex" aria-label="Main">
+        <nav className="hidden items-center gap-4 text-sm md:flex xl:gap-5" aria-label="Main">
           {links.map((link) => {
             const active = link.href === "/" || link.href === "/es" ? pathname === link.href : pathname.startsWith(link.href);
             return (
