@@ -141,3 +141,13 @@ motion or 3D runtime dependencies; all animation is CSS and respects
 `.github/workflows/deploy.yml` builds the export and publishes it to GitHub
 Pages on every push to `main` (`pages: write` + OIDC). The expected URL is
 `https://equisdots.github.io/web/`.
+
+## License
+
+AGPL-3.0-or-later — see [LICENSE](LICENSE). Copyright (C) 2026 xscriptor <x@xscriptor.com>.
+
+This repository is licensed under the GNU Affero General Public License, version 3 or any later version. If you modify the software and let users interact with it over a network, you must offer them the corresponding source.
+
+No license was declared for releases before 2026-11-13; this license applies from this change.
+
+Third-party components, fonts, icons, images, sounds, vendored code and other assets keep their original licenses and are not covered by this license. See THIRD-PARTY.md / CREDITS.md where present.
