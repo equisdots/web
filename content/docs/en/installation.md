@@ -113,7 +113,7 @@ the payload right after.
 The installer pins a release of xwww. Override it when needed:
 
 ```sh
-XWWW_VERSION=v0.13.1 ./scripts/install-xwww.sh
+XWWW_VERSION=v0.13.2 ./scripts/install-xwww.sh
 FORCE_XWWW=1 ./install.sh   # reinstall an existing binary
 ```
 

@@ -121,7 +121,7 @@ la carga útil justo después.
 El instalador fija una versión de xwww. Anúlela cuando sea necesario:
 
 ```sh
-XWWW_VERSION=v0.13.1 ./scripts/install-xwww.sh
+XWWW_VERSION=v0.13.2 ./scripts/install-xwww.sh
 FORCE_XWWW=1 ./install.sh   # reinstall an existing binary
 ```
 
